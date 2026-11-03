@@ -406,7 +406,8 @@ html.collage-open { overflow: visible !important; }
 }
 /* --in (0 -> 1) is tweened when the collage opens; `scale`/`opacity` stay clear of the JS-driven transform. */
 .tile {
-  --s: 1; position: absolute; left: 50%; top: 50%; display: block; width: calc(var(--w) * 1vw * var(--s));
+  --s: 1; position: absolute; left: 50%; top: 50%; display: block;
+  width: min(calc(var(--w) * 1vw * var(--s)), calc(var(--wh, 100) * 1vh * var(--s)));
   will-change: transform; scale: calc(0.86 + 0.14 * var(--in, 1)); opacity: var(--in, 1);
 }
 .tile__media { aspect-ratio: var(--r); overflow: hidden; background: var(--soft); }

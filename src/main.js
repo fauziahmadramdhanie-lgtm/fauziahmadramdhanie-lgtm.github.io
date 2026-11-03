@@ -340,10 +340,11 @@ const SLOTS = [
   [0.2, -0.21, 23, 0.8, 1],
   [-0.2, 0.21, 23, 0.8, 1],
   [0.2, 0.21, 23, 0.8, 1],
-  [-0.48, 0, 24, 1.25, 1.2],
-  [0.48, 0, 24, 1.25, 1.2],
-  [0, -0.46, 24, 1.25, 1.2],
-  [0, 0.46, 24, 1.25, 1.2],
+  // The outer ring stays well inside the wrap seam: tiles that wrap around must not land on their neighbors.
+  [-0.4, 0, 24, 1.25, 1.2],
+  [0.4, 0, 24, 1.25, 1.2],
+  [0, -0.36, 24, 1.25, 1.2],
+  [0, 0.36, 24, 1.25, 1.2],
 ];
 const DECO = ['accent', 'soft', 'muted'];
 
@@ -351,7 +352,7 @@ const DECO = ['accent', 'soft', 'muted'];
 const tile = (w, i) => {
   const [x, y, width, ratio, speed] = SLOTS[i % SLOTS.length];
   const attrs = (cls) =>
-    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio}"`;
+    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio};--wh:40"`;
   if (!w) return `<div ${attrs(`tile--deco tile--${DECO[(i >> 1) % DECO.length]}`)} aria-hidden="true"></div>`;
   const body = `<div class="tile__media">${coverHtml(w, { lazy: true })}</div>
     <p class="tile__cap">${ph(w.title, 'Placeholder title')}<span>${esc(w.category)}</span></p>`;
@@ -363,29 +364,33 @@ const tile = (w, i) => {
 // ---------- Credentials collage (route #/credentials) ----------
 // Landscape certificate tiles on a larger field (data-field): four frame the title, three more rings wait outside.
 // Items without an image become typographic cards, so nothing in content.json is left out.
+// Every tile moves at the same speed: with 14 big tiles, different parallax speeds make them run into each other.
+// The grid is periodic (wrap-around gaps are wider than the inner ones), so tiles never overlap while panning.
 const CRED_SLOTS = [
   [-0.12, -0.12, 26, 1.4, 1],
   [0.12, -0.12, 26, 1.4, 1],
   [-0.12, 0.12, 26, 1.4, 1],
   [0.12, 0.12, 26, 1.4, 1],
-  [-0.3, -0.12, 26, 1.4, 1.15],
-  [0.3, -0.12, 26, 1.4, 1.15],
-  [-0.3, 0.12, 26, 1.4, 1.15],
-  [0.3, 0.12, 26, 1.4, 1.15],
-  [-0.12, -0.3, 26, 1.4, 1.15],
-  [0.12, -0.3, 26, 1.4, 1.15],
-  [-0.12, 0.3, 26, 1.4, 1.15],
-  [0.12, 0.3, 26, 1.4, 1.15],
-  [-0.3, -0.3, 26, 1.4, 1.3],
-  [0.3, -0.3, 26, 1.4, 1.3],
-  [-0.3, 0.3, 26, 1.4, 1.3],
-  [0.3, 0.3, 26, 1.4, 1.3],
+  [-0.3, -0.12, 26, 1.4, 1],
+  [0.3, -0.12, 26, 1.4, 1],
+  [-0.3, 0.12, 26, 1.4, 1],
+  [0.3, 0.12, 26, 1.4, 1],
+  [-0.12, -0.3, 26, 1.4, 1],
+  [0.12, -0.3, 26, 1.4, 1],
+  [-0.12, 0.3, 26, 1.4, 1],
+  [0.12, 0.3, 26, 1.4, 1],
+  [-0.3, -0.3, 26, 1.4, 1],
+  [0.3, -0.3, 26, 1.4, 1],
+  [-0.3, 0.3, 26, 1.4, 1],
+  [0.3, 0.3, 26, 1.4, 1],
 ];
 
 const credTile = (c, i) => {
   const [x, y, width, ratio, speed] = CRED_SLOTS[i % CRED_SLOTS.length];
+  // --wh caps the width by the viewport height: row spacing follows the height, so on wide screens the
+  // vw-based width alone would make a tile taller than the gap between rows.
   const attrs = (cls) =>
-    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio}"`;
+    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio};--wh:34"`;
   const year = isTodo(c.year) ? '' : ` · ${esc(c.year)}`;
   if (isTodo(c.image)) {
     return `<div ${attrs('tile--text')}>
