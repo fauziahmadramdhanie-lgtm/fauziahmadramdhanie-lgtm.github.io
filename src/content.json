@@ -141,6 +141,7 @@
       "faq": "Questions",
       "credentials": "Credentials"
     },
+    "collage": { "title": "Work", "hint": "Scroll / drag" },
     "kinds": { "award": "Award", "certification": "Certification" }
   },
   "palette": {

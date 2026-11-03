@@ -53,6 +53,10 @@ CSS murni: dua grup teks identik, `@keyframes marquee { to { transform: translat
 ## 10. Daftar baris (Publikasi / Sertifikasi)
 Baris dengan border-bottom 1px, hover: background `#f4f4f4`, panah muncul di kanan (translateX -8 → 0). 3 kolom: judul / kategori / tahun.
 
+## 11a. Work collage (`#/work`) — sudah dibangun
+Bukan halaman terpisah: layer fullscreen di halaman yang sama (`src/collage.js`), dibuka dari tumpukan kartu hero, route `#/work`
+(Back/Esc/Close menutup). Fade 0.5s, pan lewat wheel/drag/panah, parallax per tile, wrap tak berujung. Tanpa Barba.
+
 ## 11. Transisi antar halaman (opsional, fase 2)
 V1 = single page + anchor scroll (Lenis `scrollTo`). Bila nanti multi-halaman (halaman study case): Barba.js, fade lewat overlay abu→putih 0.5s.
 

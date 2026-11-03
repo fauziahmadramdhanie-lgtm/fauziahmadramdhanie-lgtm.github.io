@@ -17,6 +17,7 @@ function smoothScroll() {
   gsap.ticker.lagSmoothing(0);
 
   const onClick = (e) => {
+    if (e.defaultPrevented) return; // e.g. the work collage handles its own links
     const a = e.target.closest('a[href^="#"]');
     const target = a && document.querySelector(a.getAttribute('href'));
     if (!target) return;
