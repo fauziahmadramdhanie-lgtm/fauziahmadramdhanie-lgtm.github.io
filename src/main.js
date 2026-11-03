@@ -2,6 +2,7 @@ import content from './content.json';
 import 'lenis/dist/lenis.css';
 import './styles.css';
 import { initAnimations } from './animations.js';
+import { initMenu } from './menu.js';
 
 const { person, hero, ui } = content;
 
@@ -209,3 +210,4 @@ document.getElementById('app').innerHTML =
   footer();
 
 initAnimations();
+initMenu();

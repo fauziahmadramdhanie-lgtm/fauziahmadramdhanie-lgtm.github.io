@@ -60,9 +60,23 @@ main > section, .footer { padding-inline: var(--pad); }
 }
 .logo { font-weight: 800; letter-spacing: var(--tracking); font-size: 20px; }
 .menu-toggle { font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 14px; }
-.menu-toggle__label + .menu-toggle__label { display: none; }
-.menu { display: none; }
-/* [anim-3] */
+/* ---------- Menu [anim-3] ---------- */
+.menu-toggle { display: grid; }
+.menu-toggle__label { grid-area: 1 / 1; text-align: right; }
+.menu-toggle[aria-expanded='false'] .menu-toggle__label:last-child,
+.menu-toggle[aria-expanded='true'] .menu-toggle__label:first-child { visibility: hidden; }
+html.menu-open { overflow: hidden; }
+.menu {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: center;
+  background: var(--ink); color: var(--bg);
+}
+.menu ul { text-align: center; }
+.menu a {
+  display: block; padding-block: 0.04em;
+  font-size: clamp(40px, 8vw, 96px); font-weight: 800; letter-spacing: var(--tracking); line-height: 1.05;
+}
+.menu a:focus-visible { outline-color: var(--bg); }
 /* [anim-4] */
 
 /* ---------- Hero ---------- */
