@@ -103,24 +103,48 @@ html.menu-open { overflow: hidden; }
 
 /* ---------- Hero ---------- */
 .hero {
+  position: relative; overflow-x: clip; /* rotated sheets poke past the right edge on phones */
   min-height: 100svh;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  padding-block: 120px 40px;
+  display: flex; flex-direction: column;
+  padding-block: 110px 28px;
 }
-.hero__name {
-  font-size: clamp(48px, 14vw, 280px);
-  line-height: 0.92;
-  margin-bottom: clamp(32px, 6vw, 72px);
+.hero__top { max-width: var(--measure); }
+.hero__intro { font: 400 clamp(22px, 2.4vw, 32px)/1.2 var(--font-serif); }
+.hero__now { margin-top: 20px; font-size: 14px; line-height: 1.5; }
+.hero__now span, .hero__clock span:first-child {
+  color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px;
 }
-.hero__foot { align-items: end; row-gap: 20px; }
-.hero__intro {
-  grid-column: 1 / span 5;
-  font: 400 clamp(22px, 2.4vw, 32px)/1.2 var(--font-serif);
-  max-width: var(--measure);
+.hero__now span { display: block; }
+.hero__name { font-size: clamp(48px, 14vw, 280px); line-height: 0.92; margin-top: auto; padding-top: 40px; }
+.hero__side { display: flex; justify-content: space-between; margin-top: 24px; font-size: 14px; }
+.hero__copy { color: var(--muted); }
+.hero__clock { font-variant-numeric: tabular-nums; }
+
+/* Card stack: sheets fan out on hover; it overlaps the wordmark on purpose. */
+.stack {
+  position: absolute; z-index: 2;
+  right: var(--pad); top: 46vh; width: 44vw; aspect-ratio: 4 / 5;
 }
-.hero__now { grid-column: 7 / span 4; font-size: 14px; line-height: 1.5; }
-.hero__now span { display: block; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px; }
-.hero__copy { grid-column: 11 / span 2; justify-self: end; font-size: 14px; color: var(--muted); }
+.sheet {
+  position: absolute; inset: 0; overflow: hidden;
+  box-shadow: 0 10px 30px #0000001f;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.sheet--ink { background: var(--ink); transform: rotate(14deg) translate(8%, -2%); }
+.sheet--soft { background: #d9d9d9; transform: rotate(-12deg) translate(-6%, 2%); }
+.sheet--accent { background: var(--accent); transform: rotate(7deg) translate(4%, 3%); }
+.sheet--top { background: var(--soft); transform: rotate(-3deg); }
+.stack:hover .sheet--ink { transform: rotate(22deg) translate(14%, -4%); }
+.stack:hover .sheet--soft { transform: rotate(-20deg) translate(-12%, 3%); }
+.stack:hover .sheet--accent { transform: rotate(13deg) translate(8%, 5%); }
+.stack:hover .sheet--top { transform: rotate(-1deg) scale(1.02); }
+@media (prefers-reduced-motion: reduce) { .sheet { transition: none; } }
+
+@media (min-width: 768px) {
+  .stack { right: auto; left: 52%; top: clamp(96px, 14vh, 200px); width: clamp(200px, 24vw, 400px); }
+  .hero__side { position: absolute; right: var(--pad); bottom: 28px; flex-direction: column; align-items: flex-end; gap: 6px; margin: 0; }
+  .hero__copy { color: var(--ink); font-weight: 600; font-size: clamp(20px, 2vw, 32px); letter-spacing: -0.02em; }
+}
 
 .statement { padding-block: var(--space-section); }
 .statement p {
@@ -243,7 +267,6 @@ html.menu-open { overflow: hidden; }
 /* ---------- Responsive ---------- */
 @media (max-width: 767px) {
   :root { --gutter: 20px; }
-  .hero__intro, .hero__now, .hero__copy { grid-column: 1 / -1; justify-self: start; }
   .cards, .process, .facts { grid-template-columns: 1fr; }
   .stat__num, .stat__copy { grid-column: 1 / -1; }
   .row { grid-template-columns: 1fr auto; row-gap: 6px; padding-right: 12px; }

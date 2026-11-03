@@ -40,15 +40,41 @@ const header = () => `
     </ul>
   </nav>`;
 
+const clock = () =>
+  new Intl.DateTimeFormat(content.meta.language, {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: hero.timezone,
+    timeZoneName: 'short',
+  }).format(new Date());
+
+// Stack of rotated sheets: the first work cover on top, palette-colored sheets behind (decorative).
+const stack = () => {
+  const w = content.work[0];
+  const cover = isTodo(w?.cover)
+    ? '<div class="cover cover--ph"></div>'
+    : `<img class="cover" src="${esc(w.cover)}" alt="" width="1200" height="900" />`;
+  return `
+    <a class="stack" href="#work" data-cursor="arrow" data-hero-after aria-label="${esc(ui.sections.work)}">
+      <span class="sheet sheet--ink"></span><span class="sheet sheet--soft"></span><span class="sheet sheet--accent"></span>
+      <span class="sheet sheet--top">${cover}</span>
+    </a>`;
+};
+
 const heroSection = () => `
   <section class="hero" id="top">
-    <h1 class="hero__name" data-split="lines">${esc(hero.big_text)}</h1>
-    <div class="hero__foot grid" data-hero-after>
+    <div class="hero__top" data-hero-after>
       <p class="hero__intro">${esc(hero.intro)}</p>
       <p class="hero__now"><span>${esc(ui.now)}</span> ${ph(person.current_role.title, 'Placeholder role title')}<br />${esc(
         person.current_role.org,
       )} · ${esc(since)}</p>
+    </div>
+    ${stack()}
+    <h1 class="hero__name" data-split="lines">${esc(hero.big_text)}</h1>
+    <div class="hero__side" data-hero-after>
       <p class="hero__copy">${esc(hero.copyright_line)}</p>
+      <p class="hero__clock"><span>${esc(person.location)}</span> <span data-clock>${clock()}</span></p>
     </div>
   </section>
   <section class="statement">
@@ -212,5 +238,6 @@ document.getElementById('app').innerHTML =
   `<main id="main">${heroSection()}${marquee()}${work()}${stats()}${about()}${credentials()}${contact()}</main>` +
   footer();
 
+setInterval(() => (document.querySelector('[data-clock]').textContent = clock()), 15000);
 initAnimations();
 initMenu();
