@@ -1,67 +1,68 @@
 import gsap from 'gsap';
 import { getLenis } from './animations.js';
 
-const ROUTE = '#/work';
-
-// Work collage: a fullscreen layer (hash route #/work) holding tiles that pan with wheel, drag or arrow
-// keys. Each tile moves at its own speed (parallax) and wraps around, so the field never runs out.
+// Collages: fullscreen layers (hash routes #/work, #/credentials) holding tiles that pan with wheel, drag or
+// arrow keys. Each tile moves at its own speed (parallax) and wraps around, so the field never runs out.
+// The hash decides which collage is open; the scroll lock and the inert page are shared by all of them.
 export function initCollage() {
-  const root = document.querySelector('[data-collage]');
-  const tiles = [...root.querySelectorAll('.tile')];
   const behind = [document.getElementById('main'), document.querySelector('.footer'), document.querySelector('.skip')];
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const cur = { x: 0, y: 0 };
-  const target = { x: 0, y: 0 };
-  let open = false;
+  let locked = false;
+  let lockY = 0;
   let opener = null;
-  let origin = null; // viewport point the reveal grows from: the center of the clicked stack
-  const title = root.querySelector('.collage__title');
-  let field = { w: 0, h: 0 };
-  let items = [];
-
-  const measure = () => {
-    field = { w: innerWidth * 1.5, h: innerHeight * 1.5 };
-    items = tiles.map((el) => ({
-      el,
-      x0: el.dataset.x * field.w,
-      y0: el.dataset.y * field.h,
-      speed: reduced() ? 1 : +el.dataset.speed,
-    }));
-  };
-
-  const tick = () => {
-    const k = reduced() ? 1 : 0.08; // inertia
-    cur.x += (target.x - cur.x) * k;
-    cur.y += (target.y - cur.y) * k;
-    for (const t of items) {
-      const x = gsap.utils.wrap(-field.w / 2, field.w / 2, t.x0 - cur.x * t.speed);
-      const y = gsap.utils.wrap(-field.h / 2, field.h / 2, t.y0 - cur.y * t.speed);
-      t.el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0)`;
-    }
-  };
+  let origin = null; // viewport point the reveal grows from: the center of the clicked link
 
   // Scroll is not locked with overflow (that changes the page width); anything that still moves it
   // behind the collage (scrollbar drag, keys) is undone.
-  let lockY = 0;
   const pinScroll = () => scrollY !== lockY && scrollTo(0, lockY);
 
-  const sync = (animate = true) => {
-    const want = location.hash === ROUTE;
-    if (want === open) return;
-    open = want;
-    document.documentElement.classList.toggle('collage-open', open);
-    behind.forEach((el) => (el.inert = open));
-    root.inert = !open;
-    const animated = animate && !reduced();
-    // The page opens as a circle growing out of the clicked stack and closes back into it.
-    const o = origin ?? { x: innerWidth / 2, y: innerHeight / 2 };
-    const circle = (r) => `circle(${r}px at ${o.x}px ${o.y}px)`;
-    const reach = Math.hypot(Math.max(o.x, innerWidth - o.x), Math.max(o.y, innerHeight - o.y));
-    if (open) {
-      opener = document.activeElement;
-      lockY = scrollY;
-      addEventListener('scroll', pinScroll);
-      getLenis()?.stop();
+  const makeCollage = (root) => {
+    const name = root.dataset.collage;
+    const route = `#/${name}`;
+    const tiles = [...root.querySelectorAll('.tile')];
+    const title = root.querySelector('.collage__title');
+    const cur = { x: 0, y: 0 };
+    const target = { x: 0, y: 0 };
+    const k = +root.dataset.field || 1.5; // field size as a multiple of the viewport
+    const c = { name, route, root, open: false };
+    let field = { w: 0, h: 0 };
+    let items = [];
+
+    const measure = () => {
+      field = { w: innerWidth * k, h: innerHeight * k };
+      items = tiles.map((el) => ({
+        el,
+        x0: el.dataset.x * field.w,
+        y0: el.dataset.y * field.h,
+        speed: reduced() ? 1 : +el.dataset.speed,
+      }));
+    };
+
+    const tick = () => {
+      const ease = reduced() ? 1 : 0.08; // inertia
+      cur.x += (target.x - cur.x) * ease;
+      cur.y += (target.y - cur.y) * ease;
+      for (const t of items) {
+        const x = gsap.utils.wrap(-field.w / 2, field.w / 2, t.x0 - cur.x * t.speed);
+        const y = gsap.utils.wrap(-field.h / 2, field.h / 2, t.y0 - cur.y * t.speed);
+        t.el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0)`;
+      }
+    };
+
+    // The page opens as a circle growing out of the clicked link and closes back into it.
+    const circle = (r) => {
+      const o = origin ?? { x: innerWidth / 2, y: innerHeight / 2 };
+      return `circle(${r}px at ${o.x}px ${o.y}px)`;
+    };
+    const reach = () => {
+      const o = origin ?? { x: innerWidth / 2, y: innerHeight / 2 };
+      return Math.hypot(Math.max(o.x, innerWidth - o.x), Math.max(o.y, innerHeight - o.y));
+    };
+
+    c.show = (animated) => {
+      c.open = true;
+      root.inert = false;
+      root.style.zIndex = 81; // above a collage that is closing at the same moment
       measure();
       cur.x = cur.y = target.x = target.y = 0;
       gsap.ticker.add(tick);
@@ -70,7 +71,7 @@ export function initCollage() {
       gsap.fromTo(
         root,
         { clipPath: circle(0) },
-        { clipPath: circle(reach), duration: animated ? 1 : 0, ease: 'power3.inOut', overwrite: true, clearProps: 'clipPath' },
+        { clipPath: circle(reach()), duration: animated ? 1 : 0, ease: 'power3.inOut', overwrite: true, clearProps: 'clipPath' },
       );
       gsap.fromTo(
         [title, ...tiles],
@@ -78,12 +79,15 @@ export function initCollage() {
         { '--in': 1, duration: animated ? 1 : 0, delay: animated ? 0.3 : 0, stagger: 0.05, ease: 'power3.out', overwrite: 'auto' },
       );
       root.querySelector('[data-collage-close]').focus({ preventScroll: true });
-    } else {
-      removeEventListener('scroll', pinScroll);
-      getLenis()?.start();
+    };
+
+    c.hide = (animated) => {
+      c.open = false;
+      root.inert = true;
+      root.style.zIndex = 80;
       gsap.fromTo(
         root,
-        { clipPath: circle(reach) },
+        { clipPath: circle(reach()) },
         {
           clipPath: circle(0),
           duration: animated ? 0.8 : 0,
@@ -91,86 +95,117 @@ export function initCollage() {
           overwrite: true,
           onComplete: () => {
             gsap.set(root, { autoAlpha: 0, clearProps: 'clipPath' });
-            gsap.ticker.remove(tick);
+            if (!c.open) gsap.ticker.remove(tick);
           },
         },
       );
+    };
+
+    root.querySelector('[data-collage-close]').addEventListener('click', () => go(null));
+    root.addEventListener(
+      'wheel',
+      (e) => {
+        e.preventDefault();
+        target.x += e.deltaX;
+        target.y += e.deltaY;
+      },
+      { passive: false },
+    );
+
+    // No pointer capture: it would retarget the click away from the tile links.
+    let drag = null;
+    let dragged = false;
+    root.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('[data-collage-close]')) return;
+      drag = { x: e.clientX, y: e.clientY, moved: 0 };
+      root.classList.add('is-dragging');
+    });
+    addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      const dy = e.clientY - drag.y;
+      drag.x = e.clientX;
+      drag.y = e.clientY;
+      drag.moved += Math.abs(dx) + Math.abs(dy);
+      target.x -= dx;
+      target.y -= dy;
+    });
+    const endDrag = () => {
+      if (!drag) return;
+      dragged = drag.moved > 6;
+      drag = null;
+      root.classList.remove('is-dragging');
+      setTimeout(() => (dragged = false));
+    };
+    addEventListener('pointerup', endDrag);
+    addEventListener('pointercancel', endDrag);
+    root.addEventListener('click', (e) => dragged && (e.preventDefault(), e.stopPropagation()), true);
+
+    addEventListener('resize', () => c.open && measure());
+    addEventListener('keydown', (e) => {
+      if (!c.open) return;
+      const step = { ArrowLeft: [-160, 0], ArrowRight: [160, 0], ArrowUp: [0, -160], ArrowDown: [0, 160] }[e.key];
+      if (step) {
+        e.preventDefault();
+        target.x += step[0];
+        target.y += step[1];
+      }
+    });
+    return c;
+  };
+
+  const collages = [...document.querySelectorAll('[data-collage]')].map(makeCollage);
+
+  // Opens the collage whose route matches the hash and closes the others; the first to open locks the page.
+  const sync = (animated = true) => {
+    const was = collages.some((c) => c.open);
+    collages.forEach((c) => {
+      const want = location.hash === c.route;
+      if (want === c.open) return;
+      if (want && !was) {
+        opener = document.activeElement;
+        lockY = scrollY;
+      }
+      (want ? c.show : c.hide)(animated && !reduced());
+    });
+    const now = collages.some((c) => c.open);
+    if (now === locked) return;
+    locked = now;
+    document.documentElement.classList.toggle('collage-open', now);
+    behind.forEach((el) => (el.inert = now));
+    if (now) {
+      addEventListener('scroll', pinScroll);
+      getLenis()?.stop();
+    } else {
+      removeEventListener('scroll', pinScroll);
+      getLenis()?.start();
       opener?.isConnected && opener.focus({ preventScroll: true });
     }
   };
 
-  const go = (on) => {
-    history.pushState(null, '', on ? ROUTE : location.pathname + location.search);
+  const go = (route) => {
+    history.pushState(null, '', route ?? location.pathname + location.search);
     sync();
   };
 
-  // Capture phase: runs before the Lenis anchor handler, so the opener click is claimed here and an
-  // in-page link (menu, header nav) closes the collage first and then scrolls normally.
+  // Capture phase: runs before the Lenis anchor handler and before the router, so an opener click is
+  // claimed here and an in-page link (menu, header nav) closes the collage first and then scrolls normally.
   document.addEventListener(
     'click',
     (e) => {
       const a = e.target.closest('a');
-      if (a?.matches('[data-open-collage]')) {
+      const next = collages.find((c) => c.name === a?.dataset.openCollage);
+      if (next) {
         e.preventDefault();
         const r = a.getBoundingClientRect();
         origin = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-        go(true);
-      } else if (open && a?.getAttribute('href')?.startsWith('#')) go(false);
+        go(next.route);
+      } else if (locked && a?.getAttribute('href')?.startsWith('#')) go(null);
     },
     true,
   );
-  root.querySelector('[data-collage-close]').addEventListener('click', () => go(false));
   addEventListener('popstate', () => sync());
-  addEventListener('resize', () => open && measure());
+  addEventListener('keydown', (e) => e.key === 'Escape' && locked && go(null));
 
-  root.addEventListener(
-    'wheel',
-    (e) => {
-      e.preventDefault();
-      target.x += e.deltaX;
-      target.y += e.deltaY;
-    },
-    { passive: false },
-  );
-
-  // No pointer capture: it would retarget the click away from the tile links.
-  let drag = null;
-  let dragged = false;
-  root.addEventListener('pointerdown', (e) => {
-    if (e.target.closest('[data-collage-close]')) return;
-    drag = { x: e.clientX, y: e.clientY, moved: 0 };
-    root.classList.add('is-dragging');
-  });
-  addEventListener('pointermove', (e) => {
-    if (!drag) return;
-    const dx = e.clientX - drag.x;
-    const dy = e.clientY - drag.y;
-    drag.x = e.clientX;
-    drag.y = e.clientY;
-    drag.moved += Math.abs(dx) + Math.abs(dy);
-    target.x -= dx;
-    target.y -= dy;
-  });
-  const endDrag = () => {
-    if (!drag) return;
-    dragged = drag.moved > 6;
-    drag = null;
-    root.classList.remove('is-dragging');
-    setTimeout(() => (dragged = false));
-  };
-  addEventListener('pointerup', endDrag);
-  addEventListener('pointercancel', endDrag);
-  root.addEventListener('click', (e) => dragged && (e.preventDefault(), e.stopPropagation()), true);
-
-  addEventListener('keydown', (e) => {
-    if (!open) return;
-    const step = { ArrowLeft: [-160, 0], ArrowRight: [160, 0], ArrowUp: [0, -160], ArrowDown: [0, 160] }[e.key];
-    if (step) {
-      e.preventDefault();
-      target.x += step[0];
-      target.y += step[1];
-    } else if (e.key === 'Escape') go(false);
-  });
-
-  sync(false); // deep link: opened straight on #/work
+  sync(false); // deep link: opened straight on #/work or #/credentials
 }

@@ -23,11 +23,10 @@ const since = new Date(`${person.current_role.since}-01`).toLocaleDateString(con
   year: 'numeric',
 });
 
-// "Work" opens the collage; the other items are pages (#/about ...), handled by router.js.
+// Work and Credentials open a collage (collage.js); the other items are pages (#/about ...), handled by router.js.
+const COLLAGES = ['work', 'credentials'];
 const navLink = (n, extra = '') =>
-  n.target === 'work'
-    ? `<a href="#work" data-open-collage ${extra}>${esc(n.label)}</a>`
-    : `<a href="#/${esc(n.target)}" ${extra}>${esc(n.label)}</a>`;
+  `<a href="#/${esc(n.target)}"${COLLAGES.includes(n.target) ? ` data-open-collage="${esc(n.target)}"` : ''} ${extra}>${esc(n.label)}</a>`;
 
 const header = () => `
   <a class="skip" href="#main">${esc(ui.skip)}</a>
@@ -75,7 +74,7 @@ const portraitImg = (lazy = true) =>
 
 // ---------- Home ----------
 const stack = () => `
-  <a class="stack" href="#work" data-open-collage data-cursor="arrow" aria-label="${esc(ui.sections.work)}">
+  <a class="stack" href="#/work" data-open-collage="work" data-cursor="arrow" aria-label="${esc(ui.sections.work)}">
     ${sheets(coverHtml(content.work[0]))}
   </a>`;
 
@@ -245,40 +244,27 @@ const aboutPage = () => `
         <div class="facts skills">
           ${content.skills.map((s) => `<div><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></div>`).join('')}
         </div>
+
+        <div class="facts">
+          <div>
+            <h3 class="sub">${esc(ui.sections.education)}</h3>
+            ${content.education
+              .map((e) => `<p><strong>${esc(e.school)}</strong><br />${esc(e.degree)}<br />${esc(e.note)}</p>`)
+              .join('')}
+          </div>
+          <div>
+            <h3 class="sub">${esc(ui.sections.organizations)}</h3>
+            <ul class="plain">${content.organizations.map((o) => `<li>${esc(o)}</li>`).join('')}</ul>
+          </div>
+          <div>
+            <h3 class="sub">${esc(ui.sections.languages)}</h3>
+            <ul class="plain">${content.languages.map((l) => `<li>${esc(l.name)} — ${esc(l.level)}</li>`).join('')}</ul>
+          </div>
+        </div>
       </div>
     </section>
     ${processSection()}
     ${faq()}
-  </div>`;
-
-// ---------- Credentials ----------
-const credentialsPage = () => `
-  <div data-page="credentials" hidden tabindex="-1">
-    ${pageHead(ui.sections.credentials)}
-    <section class="section" id="credentials">
-      <ul class="rows">
-        ${content.awards.map((a) => row(esc(a.name), `${esc(a.detail)} · ${esc(ui.kinds.award)}`, ph(a.year, '0000'))).join('')}
-        ${content.certifications.map((c) => row(esc(c.name), esc(ui.kinds.certification), ph(c.year, '0000'))).join('')}
-      </ul>
-    </section>
-    <section class="section">
-      <div class="facts">
-        <div>
-          <h3 class="sub">${esc(ui.sections.education)}</h3>
-          ${content.education
-            .map((e) => `<p><strong>${esc(e.school)}</strong><br />${esc(e.degree)}<br />${esc(e.note)}</p>`)
-            .join('')}
-        </div>
-        <div>
-          <h3 class="sub">${esc(ui.sections.organizations)}</h3>
-          <ul class="plain">${content.organizations.map((o) => `<li>${esc(o)}</li>`).join('')}</ul>
-        </div>
-        <div>
-          <h3 class="sub">${esc(ui.sections.languages)}</h3>
-          <ul class="plain">${content.languages.map((l) => `<li>${esc(l.name)} — ${esc(l.level)}</li>`).join('')}</ul>
-        </div>
-      </div>
-    </section>
   </div>`;
 
 // ---------- Contact ----------
@@ -374,18 +360,72 @@ const tile = (w, i) => {
     : `<div ${attrs('')}>${body}</div>`;
 };
 
-const collage = () => `
-  <div class="collage" data-collage role="region" aria-label="${esc(ui.sections.work)}" inert>
-    <h2 class="collage__title" aria-hidden="true">${esc(ui.collage.title)}</h2>
-    ${Array.from({ length: Math.max(SLOTS.length, content.work.length) }, (_, i) => tile(content.work[i], i)).join('')}
+// ---------- Credentials collage (route #/credentials) ----------
+// Landscape certificate tiles on a larger field (data-field): four frame the title, three more rings wait outside.
+// Items without an image become typographic cards, so nothing in content.json is left out.
+const CRED_SLOTS = [
+  [-0.12, -0.12, 26, 1.4, 1],
+  [0.12, -0.12, 26, 1.4, 1],
+  [-0.12, 0.12, 26, 1.4, 1],
+  [0.12, 0.12, 26, 1.4, 1],
+  [-0.3, -0.12, 26, 1.4, 1.15],
+  [0.3, -0.12, 26, 1.4, 1.15],
+  [-0.3, 0.12, 26, 1.4, 1.15],
+  [0.3, 0.12, 26, 1.4, 1.15],
+  [-0.12, -0.3, 26, 1.4, 1.15],
+  [0.12, -0.3, 26, 1.4, 1.15],
+  [-0.12, 0.3, 26, 1.4, 1.15],
+  [0.12, 0.3, 26, 1.4, 1.15],
+  [-0.3, -0.3, 26, 1.4, 1.3],
+  [0.3, -0.3, 26, 1.4, 1.3],
+  [-0.3, 0.3, 26, 1.4, 1.3],
+  [0.3, 0.3, 26, 1.4, 1.3],
+];
+
+const credTile = (c, i) => {
+  const [x, y, width, ratio, speed] = CRED_SLOTS[i % CRED_SLOTS.length];
+  const attrs = (cls) =>
+    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio}"`;
+  const year = isTodo(c.year) ? '' : ` · ${esc(c.year)}`;
+  if (isTodo(c.image)) {
+    return `<div ${attrs('tile--text')}>
+      <div class="tile__text"><span>${esc(ui.kinds[c.kind])}${year}</span><strong>${esc(c.name)}</strong>${c.detail ? `<small>${esc(c.detail)}</small>` : ''}</div>
+    </div>`;
+  }
+  return `<div ${attrs('tile--cert')}>
+    <div class="tile__media"><img class="cover" src="${esc(c.image)}" alt="${esc(ui.kinds[c.kind])}: ${esc(c.name)}" width="900" height="640" loading="lazy" /></div>
+    <p class="tile__cap">${esc(c.name)}<span>${esc(c.detail)}${year}</span></p>
+  </div>`;
+};
+
+const collageHtml = (name, label, title, tiles, field) => `
+  <div class="collage" data-collage="${name}" data-field="${field}" role="region" aria-label="${esc(label)}" inert>
+    <h2 class="collage__title" aria-hidden="true">${esc(title)}</h2>
+    ${tiles.join('')}
     <button class="collage__close" type="button" data-collage-close>${esc(ui.close)}</button>
   </div>`;
 
+const collages = () =>
+  collageHtml(
+    'work',
+    ui.sections.work,
+    ui.collage.title,
+    Array.from({ length: Math.max(SLOTS.length, content.work.length) }, (_, i) => tile(content.work[i], i)),
+    1.5,
+  ) +
+  collageHtml(
+    'credentials',
+    ui.sections.credentials,
+    ui.sections.credentials,
+    content.credentials.map(credTile),
+    1.9,
+  );
+
 document.getElementById('app').innerHTML =
   header() +
-  `<main id="main">${homePage()}${aboutPage()}${credentialsPage()}${contactPage()}</main>` +
+  `<main id="main">${homePage()}${aboutPage()}${contactPage()}</main>` +
   footer() +
-  collage() +
+  collages() +
   '<div class="curtain" data-curtain aria-hidden="true"><span></span></div>';
 
 setInterval(() => (document.querySelector('[data-clock]').textContent = clock()), 15000);

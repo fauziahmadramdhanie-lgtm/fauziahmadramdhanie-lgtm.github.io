@@ -14,10 +14,10 @@ export function initRouter() {
   let busy = false;
   let wanted = null; // a navigation requested mid-transition, replayed when it ends
 
-  // '#/about' -> 'about', '' or '#/' -> 'home', '#/work' -> null (not a page)
+  // '#/about' -> 'about', '' or '#/' -> 'home', '#/work' and '#/credentials' -> null (collages, not pages)
   const routeOf = (hash) => {
     const name = /^#\/(\w*)/.exec(hash)?.[1] ?? '';
-    if (name === 'work') return null;
+    if (name === 'work' || name === 'credentials') return null;
     return pages[name] ? name : 'home';
   };
   const urlOf = (name) => (name === 'home' ? location.pathname + location.search : `#/${name}`);
@@ -83,5 +83,5 @@ export function initRouter() {
     if (name) go(name, false);
   });
 
-  show(routeOf(location.hash) ?? 'home'); // '#/work' deep link: the collage opens over home
+  show(routeOf(location.hash) ?? 'home'); // collage deep link: the collage opens over home
 }
