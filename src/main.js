@@ -38,7 +38,8 @@ const header = () => `
     <ul>
       ${ui.nav.map((n) => `<li><a href="#${esc(n.target)}" data-menu-link>${esc(n.label)}</a></li>`).join('')}
     </ul>
-  </nav>`;
+  </nav>
+  <p class="clock"><span>${esc(person.location)}</span> <span data-clock>${clock()}</span></p>`;
 
 const clock = () =>
   new Intl.DateTimeFormat(content.meta.language, {
@@ -71,7 +72,6 @@ const heroSection = () => `
     <h1 class="hero__name" data-split="lines">${esc(hero.big_text)}</h1>
     <div class="hero__side" data-hero-after>
       <p class="hero__copy">${esc(hero.copyright_line)}</p>
-      <p class="hero__clock"><span>${esc(person.location)}</span> <span data-clock>${clock()}</span></p>
     </div>
   </section>
   <section class="statement">
@@ -122,7 +122,9 @@ const odometer = (value) => {
       return `<span class="odo__col" aria-hidden="true"><span class="odo__roll" data-digit="${ch}" style="transform:translateY(-${ch * 10}%)">${rows}</span></span>`;
     })
     .join('');
-  return `<span class="odo" role="img" aria-label="${esc(text)}">${cols}</span>`;
+  // --em: the number's width in em (digit ~0.62, separator ~0.3), so the pinned stage can fit 2-3 characters.
+  const em = [...text].reduce((w, ch) => w + (/\d/.test(ch) ? 0.62 : 0.3), 0);
+  return `<span class="odo" role="img" aria-label="${esc(text)}" style="--em:${em.toFixed(2)}">${cols}</span>`;
 };
 
 const stat = (s) => {
@@ -137,8 +139,10 @@ const stat = (s) => {
     </article>`;
 };
 
+// On desktop with motion this section pins and swaps one stat for the next while scrolling (see numbersStage).
 const stats = () => `
-  <section class="section section--stats" aria-label="${esc(ui.sections.stats)}">
+  <section class="numbers" aria-label="${esc(ui.sections.stats)}">
+    <p class="numbers__label">${esc(ui.sections.stats)}</p>
     ${content.stats.map(stat).join('')}
   </section>`;
 
@@ -150,17 +154,43 @@ const row = (a, b, c) => `
     <span class="row__arrow" aria-hidden="true">→</span>
   </li>`;
 
-const about = () => `
-  <section class="section" id="about">
-    <h2 class="section__title">${esc(person.name)}</h2>
-    <p class="lede">${esc(person.positioning)}</p>
+// About: the portrait stays put (sticky) while the text column scrolls past it.
+const portrait = () => `
+  <figure class="portrait">
+    <div class="portrait__media" data-reveal="expand">
+      ${
+        isTodo(person.photo)
+          ? '<div class="cover cover--ph" role="img" aria-label="Placeholder portrait"></div>'
+          : `<img class="cover" src="${esc(person.photo)}" alt="${esc(person.name)}" width="1200" height="1500" loading="lazy" />`
+      }
+    </div>
+    <figcaption>${esc(person.name)} · ${esc(person.location)}</figcaption>
+  </figure>`;
 
-    <h3 class="sub">${esc(ui.sections.process)}</h3>
+// Process as a Gantt-style timeline: one bar per step, staircased over 11 columns (decorative; the list below is the content).
+const BARS = [[1, 5], [3, 8], [6, 11], [9, 12]]; // [start line, end line] on an 11-column grid
+const processSection = () => `
+  <section class="section" id="process">
+    <h2 class="section__title">${esc(ui.sections.process)}</h2>
+    <div class="gantt" aria-hidden="true">
+      ${content.process
+        .map((p, i) => `<span class="gantt__bar" data-bar style="grid-row:${i + 1};grid-column:${BARS[i % BARS.length][0]} / ${BARS[i % BARS.length][1]}">${esc(p.title)}</span>`)
+        .join('')}
+      ${Array.from({ length: 11 }, (_, i) => `<span class="gantt__tick" style="grid-row:${content.process.length + 1};grid-column:${i + 1}">${String(i + 1).padStart(2, '0')}</span>`).join('')}
+    </div>
     <ol class="process">
       ${content.process
         .map((p) => `<li><span class="process__n">${esc(p.n)}</span><h4>${esc(p.title)}</h4><p>${esc(p.text)}</p></li>`)
         .join('')}
     </ol>
+  </section>`;
+
+const about = () => `
+  <section class="section split" id="about">
+    <div class="split__side">${portrait()}</div>
+    <div class="split__main">
+    <h2 class="section__title">${esc(ui.sections.about)}</h2>
+    <p class="lede">${esc(person.positioning)}</p>
 
     <h3 class="sub">${esc(ui.sections.experience)}</h3>
     <ul class="rows">
@@ -192,8 +222,14 @@ const about = () => `
       </div>
     </div>
 
-    <h3 class="sub">${esc(ui.sections.faq)}</h3>
-    <div class="faq">
+    </div>
+  </section>`;
+
+// FAQ: label stays on the left, big accordion questions scroll on the right.
+const faq = () => `
+  <section class="section split" id="faq">
+    <div class="split__side"><h2 class="split__label">${esc(ui.sections.faq)}</h2></div>
+    <div class="split__main faq">
       ${content.faq.map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}
     </div>
   </section>`;
@@ -220,10 +256,26 @@ const footerLinks = () => {
   return [...social, link(ui.cv, person.links.cv)].map((l) => `<li>${l}</li>`).join('');
 };
 
-const contact = () => `
+const contact = (f = content.contact.form) => `
   <section class="contact" id="contact">
     <h2 class="contact__title">${esc(content.contact.headline)}</h2>
-    <a class="btn" href="mailto:${esc(person.email)}">${esc(content.contact.cta)} <span aria-hidden="true">→</span></a>
+    <form class="madlib" data-madlib>
+      <p>
+        <label for="ml-name">${esc(f.name_lead)}</label>
+        <input id="ml-name" name="name" placeholder="${esc(f.name)}" required autocomplete="name" />
+        <label for="ml-org">${esc(f.org_lead)}</label>
+        <input id="ml-org" name="org" placeholder="${esc(f.org)}" autocomplete="organization" />
+      </p>
+      <p>
+        <label for="ml-topic">${esc(f.topic_lead)}</label>
+        <input id="ml-topic" name="topic" placeholder="${esc(f.topic)}" />
+      </p>
+      <p>
+        <label for="ml-email">${esc(f.email_lead)}</label>
+        <input id="ml-email" name="email" type="email" placeholder="${esc(f.email)}" required autocomplete="email" />
+      </p>
+      <button class="btn" type="submit">${esc(f.send)} <span aria-hidden="true">→</span></button>
+    </form>
   </section>`;
 
 const footer = () => `
@@ -270,11 +322,22 @@ const collage = () => `
 
 document.getElementById('app').innerHTML =
   header() +
-  `<main id="main">${heroSection()}${marquee()}${work()}${stats()}${about()}${credentials()}${contact()}</main>` +
+  `<main id="main">${heroSection()}${marquee()}${work()}${stats()}${about()}${processSection()}${credentials()}${faq()}${contact()}</main>` +
   footer() +
   collage();
 
 setInterval(() => (document.querySelector('[data-clock]').textContent = clock()), 15000);
+
+// No backend: the sentence form composes a mailto: link (the browser's own mail client sends it).
+document.querySelector('[data-madlib]').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target));
+  const f = content.contact.form;
+  const body = [`${f.name_lead} ${d.name} ${d.org ? `${f.org_lead} ${d.org}` : ''}.`, d.topic && `${f.topic_lead} ${d.topic}.`, `${f.email_lead} ${d.email}.`]
+    .filter(Boolean)
+    .join('\n');
+  location.href = `mailto:${person.email}?subject=${encodeURIComponent(f.subject)}&body=${encodeURIComponent(body)}`;
+});
 
 // The fixed header bar keeps its position and takes the color of what is under it: dark over contact/footer.
 const headerBar = document.querySelector('[data-header]');

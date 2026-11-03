@@ -17,6 +17,7 @@
       "since": "2026-08"
     },
     "email": "fa419441@gmail.com",
+    "photo": "TODO: /assets/portrait.webp",
     "links": {
       "linkedin": "TODO: LinkedIn URL",
       "irfolks": "https://irfolks.wordpress.com",
@@ -109,6 +110,18 @@
   "contact": {
     "headline": "Let's talk.",
     "cta": "Get in touch",
+    "form": {
+      "name_lead": "Hey, my name is",
+      "name": "Your name",
+      "org_lead": "and I'm writing from",
+      "org": "Organization",
+      "topic_lead": "I'd like to talk about",
+      "topic": "Topic",
+      "email_lead": "You can reach me at",
+      "email": "Email",
+      "send": "Send email",
+      "subject": "Hello"
+    },
     "form_endpoint": "TODO: Formspree/Getform endpoint (free tier) — or use mailto fallback"
   },
   "footer": {
@@ -131,6 +144,7 @@
       { "label": "Contact", "target": "contact" }
     ],
     "sections": {
+      "about": "About",
       "work": "Selected work",
       "stats": "At a glance",
       "process": "How I work",

@@ -178,9 +178,10 @@ function heroFade() {
 // Every content block fades and rises in as it enters and fades out as it leaves, scrubbed to the scroll
 // (Lenis already smooths it, so scrub: true avoids a second layer of lag).
 const FADE_TARGETS =
-  '.section__title, .lede, .sub, .card, .stat, .process li, .facts > div, .row, .faq details, .contact__title, .btn';
-function fadeBlocks() {
-  gsap.utils.toArray(FADE_TARGETS).forEach((el) => {
+  '.section__title, .lede, .sub, .card, .process li, .facts > div, .row, .faq details, .contact__title, .madlib';
+function fadeBlocks(desktop) {
+  // On desktop the stats live in the pinned numbers stage, which owns their opacity.
+  gsap.utils.toArray(desktop ? FADE_TARGETS : `${FADE_TARGETS}, .stat`).forEach((el) => {
     gsap
       .timeline({
         defaults: { ease: 'none' },
@@ -202,24 +203,70 @@ function expandCovers() {
   });
 }
 
-// 8. Odometer: each digit column rolls from 0 to its value once, when the stat enters the viewport.
+// 8. Odometer: each digit column rolls from 0 to its value.
 // CSS already parks every roll on its final digit, so reduced-motion users see the real number.
+// y: 0 drops the px GSAP derives from the inline translateY(%) fallback.
+const rollTo = (rolls, vars) =>
+  gsap.fromTo(
+    rolls,
+    { yPercent: 0, y: 0 },
+    { y: 0, yPercent: (_, roll) => -roll.dataset.digit * 10, ...vars },
+  );
+
+// Phones: every stat rolls once, when the whole (tall) number is on screen.
 function odometers() {
   gsap.utils.toArray('[data-stat]').forEach((stat) => {
-    gsap.fromTo(
-      stat.querySelectorAll('.odo__roll'),
-      { yPercent: 0, y: 0 }, // y: 0 drops the px GSAP derives from the inline translateY(%) fallback
-      {
-        y: 0,
-        yPercent: (_, roll) => -roll.dataset.digit * 10,
-        duration: 1.4,
-        ease: 'power3.out',
-        stagger: 0.15,
-        // 'top 55%': the whole (tall) number is on screen before it rolls.
-        scrollTrigger: { trigger: stat, start: 'top 55%', once: true },
-      },
-    );
+    rollTo(stat.querySelectorAll('.odo__roll'), {
+      duration: 1.4,
+      ease: 'power3.out',
+      stagger: 0.15,
+      scrollTrigger: { trigger: stat, start: 'top 55%', once: true },
+    });
   });
+}
+
+// Desktop: the numbers section pins and swaps one stat for the next as you scroll. The number rolls
+// to its value and the text changes with it. CSS stacks the stats only while `.is-stacked` is set.
+function numbersStage() {
+  const stage = document.querySelector('.numbers');
+  const stats = gsap.utils.toArray('.numbers .stat');
+  const parts = (s) => [s.querySelector('.stat__num'), s.querySelector('.stat__copy')];
+  stage.classList.add('is-stacked');
+
+  // The first stat rolls once as the stage arrives; the others roll while the scroll brings them in.
+  rollTo(stats[0].querySelectorAll('.odo__roll'), {
+    duration: 1.4,
+    ease: 'power3.out',
+    stagger: 0.15,
+    scrollTrigger: { trigger: stage, start: 'top 60%', once: true },
+  });
+  const tl = gsap.timeline({
+    defaults: { ease: 'power2.out' },
+    scrollTrigger: { trigger: stage, start: 'top top', end: `+=${stats.length * 70}%`, pin: true, scrub: true },
+  });
+  stats.slice(1).forEach((s, k) => {
+    const at = k + 0.5; // each hand-over takes one "page" of scroll: hold, swap, hold
+    tl.to(parts(stats[k]), { opacity: 0, y: -60, duration: 0.4 }, at)
+      .fromTo(parts(s), { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5 }, at + 0.2)
+      .add(rollTo(s.querySelectorAll('.odo__roll'), { duration: 0.7, stagger: 0.08 }), at + 0.2);
+  });
+  tl.to({}, { duration: 0.5 }); // hold on the last stat
+  return () => stage.classList.remove('is-stacked');
+}
+
+// Process timeline: the bars grow from the left, one after another, as the section scrolls in.
+function ganttBars() {
+  gsap.fromTo(
+    '[data-bar]',
+    { scaleX: 0 },
+    {
+      scaleX: 1,
+      transformOrigin: 'left center',
+      ease: 'power2.out',
+      stagger: 0.25,
+      scrollTrigger: { trigger: '.gantt', start: 'top 80%', end: 'bottom 45%', scrub: true },
+    },
+  );
 }
 
 export function initAnimations() {
@@ -236,11 +283,15 @@ export function initAnimations() {
 
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
-      cleanups.push(heroIntro(), wordsScrub(desktop));
+      cleanups.push(heroIntro());
+      // The pin goes first: ScrollTrigger measures later triggers against the pin spacer that exists by then.
+      if (desktop) cleanups.push(numbersStage());
+      cleanups.push(wordsScrub(desktop));
       heroFade();
-      fadeBlocks();
+      fadeBlocks(desktop);
       expandCovers();
-      odometers();
+      ganttBars();
+      if (!desktop) odometers();
       // [anim-hooks]
       return () => cleanups.forEach((fn) => fn());
     },
