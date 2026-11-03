@@ -114,6 +114,33 @@
     "social": ["LinkedIn", "irfolks", "Email"],
     "note": "Built with HTML, CSS, GSAP. Reference: interaction patterns inspired by Framer template Möbius."
   },
+  "ui": {
+    "skip": "Skip to content",
+    "menu": "Menu",
+    "close": "Close",
+    "home": "Back to top",
+    "now": "Now",
+    "cv": "CV",
+    "visit": "Visit",
+    "nav": [
+      { "label": "Work", "target": "work" },
+      { "label": "About", "target": "about" },
+      { "label": "Credentials", "target": "credentials" },
+      { "label": "Contact", "target": "contact" }
+    ],
+    "sections": {
+      "work": "Selected work",
+      "stats": "At a glance",
+      "process": "How I work",
+      "experience": "Experience",
+      "education": "Education",
+      "organizations": "Organizations",
+      "languages": "Languages",
+      "faq": "Questions",
+      "credentials": "Credentials"
+    },
+    "kinds": { "award": "Award", "certification": "Certification" }
+  },
   "palette": {
     "bg": "#ffffff",
     "ink": "#0a0a0a",
