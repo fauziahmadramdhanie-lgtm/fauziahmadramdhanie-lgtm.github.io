@@ -123,6 +123,25 @@ function expandCovers() {
   });
 }
 
+// 8. Odometer: each digit column rolls from 0 to its value once, when the stat enters the viewport.
+// CSS already parks every roll on its final digit, so reduced-motion users see the real number.
+function odometers() {
+  gsap.utils.toArray('[data-stat]').forEach((stat) => {
+    gsap.fromTo(
+      stat.querySelectorAll('.odo__roll'),
+      { yPercent: 0, y: 0 }, // y: 0 drops the px GSAP derives from the inline translateY(%) fallback
+      {
+        y: 0,
+        yPercent: (_, roll) => -roll.dataset.digit * 10,
+        duration: 1.4,
+        ease: 'power3.out',
+        stagger: 0.15,
+        scrollTrigger: { trigger: stat, start: 'top 85%', once: true },
+      },
+    );
+  });
+}
+
 export function initAnimations() {
   const mm = gsap.matchMedia();
   mm.add(
@@ -139,6 +158,7 @@ export function initAnimations() {
       if (desktop && fine) cleanups.push(customCursor());
       cleanups.push(headlineReveal(), wordsScrub());
       expandCovers();
+      odometers();
       // [anim-hooks]
       return () => cleanups.forEach((fn) => fn());
     },
