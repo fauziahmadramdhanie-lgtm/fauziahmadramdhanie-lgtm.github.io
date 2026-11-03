@@ -14,6 +14,8 @@ export function initCollage() {
   const target = { x: 0, y: 0 };
   let open = false;
   let opener = null;
+  let origin = null; // viewport point the reveal grows from: the center of the clicked stack
+  const title = root.querySelector('.collage__title');
   let field = { w: 0, h: 0 };
   let items = [];
 
@@ -45,7 +47,11 @@ export function initCollage() {
     document.documentElement.classList.toggle('collage-open', open);
     behind.forEach((el) => (el.inert = open));
     root.inert = !open;
-    const d = animate && !reduced() ? 0.5 : 0;
+    const animated = animate && !reduced();
+    // The page opens as a circle growing out of the clicked stack and closes back into it.
+    const o = origin ?? { x: innerWidth / 2, y: innerHeight / 2 };
+    const circle = (r) => `circle(${r}px at ${o.x}px ${o.y}px)`;
+    const reach = Math.hypot(Math.max(o.x, innerWidth - o.x), Math.max(o.y, innerHeight - o.y));
     if (open) {
       opener = document.activeElement;
       getLenis()?.stop();
@@ -53,12 +59,34 @@ export function initCollage() {
       cur.x = cur.y = target.x = target.y = 0;
       gsap.ticker.add(tick);
       tick();
-      gsap.to(root, { autoAlpha: 1, duration: d, ease: 'power2.out', overwrite: true });
-      if (d) gsap.from(tiles, { opacity: 0, duration: 0.7, stagger: 0.05, ease: 'power3.out' });
+      gsap.set(root, { autoAlpha: 1 }); // visible at once; the clip-path circle does the revealing
+      gsap.fromTo(
+        root,
+        { clipPath: circle(0) },
+        { clipPath: circle(reach), duration: animated ? 1 : 0, ease: 'power3.inOut', overwrite: true, clearProps: 'clipPath' },
+      );
+      gsap.fromTo(
+        [title, ...tiles],
+        { '--in': 0 },
+        { '--in': 1, duration: animated ? 1 : 0, delay: animated ? 0.3 : 0, stagger: 0.05, ease: 'power3.out', overwrite: 'auto' },
+      );
       root.querySelector('[data-collage-close]').focus({ preventScroll: true });
     } else {
       getLenis()?.start();
-      gsap.to(root, { autoAlpha: 0, duration: d, ease: 'power2.in', overwrite: true, onComplete: () => gsap.ticker.remove(tick) });
+      gsap.fromTo(
+        root,
+        { clipPath: circle(reach) },
+        {
+          clipPath: circle(0),
+          duration: animated ? 0.8 : 0,
+          ease: 'power3.inOut',
+          overwrite: true,
+          onComplete: () => {
+            gsap.set(root, { autoAlpha: 0, clearProps: 'clipPath' });
+            gsap.ticker.remove(tick);
+          },
+        },
+      );
       opener?.isConnected && opener.focus({ preventScroll: true });
     }
   };
@@ -76,6 +104,8 @@ export function initCollage() {
       const a = e.target.closest('a');
       if (a?.matches('[data-open-collage]')) {
         e.preventDefault();
+        const r = a.getBoundingClientRect();
+        origin = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
         go(true);
       } else if (open && a?.getAttribute('href')?.startsWith('#')) go(false);
     },

@@ -70,29 +70,42 @@ function customCursor() {
   };
 }
 
-// 5. Hero headline reveal on load: masked lines rise, the intro row follows 0.15s later.
-function headlineReveal() {
-  const title = document.querySelector('[data-split="lines"]');
-  const after = document.querySelectorAll('[data-hero-after]');
-  gsap.set(title, { autoAlpha: 0 }); // hidden until fonts load and the lines are split
-  gsap.set(after, { autoAlpha: 0, y: 24 });
-  let played = false;
-  const split = SplitText.create(title, {
-    type: 'lines',
-    mask: 'lines',
-    autoSplit: true, // re-splits on resize; only the first split animates
-    onSplit(self) {
-      if (played) return;
-      played = true;
-      gsap.set(title, { autoAlpha: 1 });
-      // Not returned: SplitText would revert it on the next re-split, hiding the intro row again.
-      gsap
-        .timeline()
-        .from(self.lines, { yPercent: 110, duration: 1.1, stagger: 0.08, ease: 'power4.out' })
-        .to(after, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.15);
-    },
-  });
-  return () => split.revert();
+// 5. Hero entrance as one connected cascade: the name's masked lines rise, then the intro lines, the
+// role lines and the paper sheets follow with the same ease and a shared cadence.
+function heroIntro() {
+  const $ = (s) => document.querySelector(s);
+  const parts = [$('[data-split="lines"]'), $('.hero__intro'), $('.hero__now')];
+  const sheets = gsap.utils.toArray('.sheet');
+  const side = $('.hero__side');
+  gsap.set(parts, { autoAlpha: 0 }); // hidden until fonts load and the lines are split
+  gsap.set(side, { autoAlpha: 0, y: 24 });
+  gsap.set(sheets, { '--pop': 1 }); // CSS turns --pop into translate + opacity, so :hover transforms stay intact
+
+  const lines = new Map();
+  const play = () => {
+    const [name, intro, now] = parts.map((el) => lines.get(el));
+    gsap
+      .timeline({ defaults: { ease: 'power4.out' } })
+      .set(parts, { autoAlpha: 1 })
+      .from(name, { yPercent: 110, duration: 1.1, stagger: 0.08 }, 0)
+      .from(intro, { yPercent: 110, duration: 0.9, stagger: 0.08 }, 0.25)
+      .from(now, { yPercent: 110, duration: 0.8, stagger: 0.06 }, 0.45)
+      .to(sheets, { '--pop': 0, duration: 1, stagger: 0.07 }, 0.5)
+      .to(side, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.8);
+  };
+  const splits = parts.map((el) =>
+    SplitText.create(el, {
+      type: 'lines',
+      mask: 'lines',
+      autoSplit: true, // re-splits on resize; only the first round animates (timeline is not returned on purpose)
+      onSplit(self) {
+        const first = !lines.has(el);
+        lines.set(el, self.lines);
+        if (first && lines.size === parts.length) play();
+      },
+    }),
+  );
+  return () => splits.forEach((s) => s.revert());
 }
 
 // Stable pseudo-random in [0, 1): scatter positions must not change on every refresh.
@@ -188,7 +201,7 @@ export function initAnimations() {
 
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
-      cleanups.push(headlineReveal(), wordsScrub(desktop));
+      cleanups.push(heroIntro(), wordsScrub(desktop));
       expandCovers();
       odometers();
       // [anim-hooks]

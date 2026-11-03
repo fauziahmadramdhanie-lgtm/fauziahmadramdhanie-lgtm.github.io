@@ -55,9 +55,12 @@ main > section, .footer { padding-inline: var(--pad); }
   position: fixed; inset: 0 0 auto 0; z-index: 100;
   display: flex; justify-content: space-between; align-items: center;
   padding: 20px var(--pad);
-  color: #fff;
-  mix-blend-mode: difference;
+  /* A solid bar, so scrolling content never shows through the nav; colors follow the section below. */
+  background: var(--bg); color: var(--ink);
+  transition: background-color 0.3s, color 0.3s;
 }
+html.collage-open .site-header { background: var(--bg); color: var(--ink); }
+.site-header[data-theme='dark'], html.menu-open .site-header { background: var(--ink); color: var(--bg); }
 .logo { font-weight: 800; letter-spacing: var(--tracking); font-size: 20px; }
 .menu-toggle { font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 14px; }
 /* ---------- Menu [anim-3] ---------- */
@@ -80,7 +83,7 @@ html.menu-open { overflow: hidden; }
 
 /* Inline nav on desktop, hamburger + overlay below 768px. */
 .site-nav { display: none; }
-.site-header :focus-visible { outline-color: #fff; } /* header is blended: white renders dark on light */
+.site-header :focus-visible { outline-color: currentColor; }
 @media (min-width: 768px) {
   .site-nav { display: flex; gap: clamp(20px, 3vw, 48px); }
   .site-nav a { font-size: 14px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -115,7 +118,11 @@ html.menu-open { overflow: hidden; }
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px;
 }
 .hero__now span { display: block; }
-.hero__name { font-size: clamp(48px, 14vw, 280px); line-height: 0.92; margin-top: auto; padding-top: 40px; }
+/* The name sits above the paper stack; pointer-events let clicks fall through to the stack beneath. */
+.hero__name {
+  position: relative; z-index: 3; pointer-events: none;
+  font-size: clamp(48px, 14vw, 280px); line-height: 0.92; margin-top: auto; padding-top: 40px;
+}
 .hero__side { display: flex; justify-content: space-between; margin-top: 24px; font-size: 14px; }
 .hero__copy { color: var(--muted); }
 .hero__clock { font-variant-numeric: tabular-nums; }
@@ -125,16 +132,18 @@ html.menu-open { overflow: hidden; }
   position: absolute; z-index: 2;
   right: var(--pad); top: 46vh; width: 44vw; aspect-ratio: 4 / 5;
 }
+/* --pop (1 -> 0) is tweened by heroIntro: sheets rise into place without touching `transform`. */
 .sheet {
   position: absolute; inset: 0; overflow: hidden;
   box-shadow: 0 10px 30px #0000001f;
-  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  translate: 0 calc(var(--pop, 0) * 24vh); opacity: calc(1 - var(--pop, 0));
+  transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.3, 1);
 }
-.sheet--ink { background: var(--ink); transform: rotate(14deg) translate(8%, -2%); }
+.sheet--mid { background: var(--muted); transform: rotate(14deg) translate(8%, -2%); }
 .sheet--soft { background: #d9d9d9; transform: rotate(-12deg) translate(-6%, 2%); }
 .sheet--accent { background: var(--accent); transform: rotate(7deg) translate(4%, 3%); }
 .sheet--top { background: var(--soft); transform: rotate(-3deg); }
-.stack:hover .sheet--ink { transform: rotate(22deg) translate(14%, -4%); }
+.stack:hover .sheet--mid { transform: rotate(22deg) translate(14%, -4%); }
 .stack:hover .sheet--soft { transform: rotate(-20deg) translate(-12%, 3%); }
 .stack:hover .sheet--accent { transform: rotate(13deg) translate(8%, 5%); }
 .stack:hover .sheet--top { transform: rotate(-1deg) scale(1.02); }
@@ -279,12 +288,17 @@ html.collage-open { overflow: hidden; }
 .collage__title {
   position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%);
   font-size: clamp(120px, 26vw, 460px); line-height: 0.8; pointer-events: none;
+  scale: calc(0.9 + 0.1 * var(--in, 1)); opacity: var(--in, 1);
 }
 .collage__hint {
   position: absolute; left: 50%; top: calc(46% + clamp(70px, 11vw, 190px)); transform: translateX(-50%);
   font-size: 14px; pointer-events: none;
 }
-.tile { --s: 1; position: absolute; left: 50%; top: 50%; display: block; width: calc(var(--w) * 1vw * var(--s)); will-change: transform; }
+/* --in (0 -> 1) is tweened when the collage opens; `scale`/`opacity` stay clear of the JS-driven transform. */
+.tile {
+  --s: 1; position: absolute; left: 50%; top: 50%; display: block; width: calc(var(--w) * 1vw * var(--s));
+  will-change: transform; scale: calc(0.86 + 0.14 * var(--in, 1)); opacity: var(--in, 1);
+}
 .tile__media { aspect-ratio: var(--r); overflow: hidden; background: var(--soft); }
 .tile--deco { aspect-ratio: var(--r); box-shadow: 0 10px 30px #0000001f; }
 .tile--accent { background: var(--accent); }
@@ -298,7 +312,7 @@ html.collage-open { overflow: hidden; }
   background: var(--ink); color: var(--bg); font-weight: 600; font-size: 14px;
 }
 .collage__close:focus-visible { outline-color: var(--accent); }
-@media (max-width: 767px) { .tile { --s: 1.9; } }
+@media (max-width: 767px) { .tile { --s: 1.7; } }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 767px) {

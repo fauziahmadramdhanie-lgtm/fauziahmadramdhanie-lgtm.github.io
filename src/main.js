@@ -54,15 +54,15 @@ const clock = () =>
 const stack = () => {
   const cover = coverHtml(content.work[0]);
   return `
-    <a class="stack" href="#work" data-open-collage data-cursor="arrow" data-hero-after aria-label="${esc(ui.sections.work)}">
-      <span class="sheet sheet--ink"></span><span class="sheet sheet--soft"></span><span class="sheet sheet--accent"></span>
+    <a class="stack" href="#work" data-open-collage data-cursor="arrow" aria-label="${esc(ui.sections.work)}">
+      <span class="sheet sheet--mid"></span><span class="sheet sheet--soft"></span><span class="sheet sheet--accent"></span>
       <span class="sheet sheet--top">${cover}</span>
     </a>`;
 };
 
 const heroSection = () => `
   <section class="hero" id="top">
-    <div class="hero__top" data-hero-after>
+    <div class="hero__top">
       <p class="hero__intro">${esc(hero.intro)}</p>
       <p class="hero__now"><span>${esc(ui.now)}</span> ${ph(person.current_role.title, 'Placeholder role title')}<br />${esc(
         person.current_role.org,
@@ -236,15 +236,16 @@ const footer = () => `
 
 // Work collage (route #/work): [x, y] as fractions of the pan field, width in vw, aspect (w/h), parallax speed.
 // shortcut: 8 layout slots, extra work items reuse them cyclically; hand-place more when work grows past ~12.
+// Mirrored layout: four tiles frame the title, four wait just outside the viewport for the pan.
 const SLOTS = [
-  [-0.3, -0.15, 17, 0.8, 1],
-  [0.02, -0.3, 14, 1.25, 1.25],
-  [0.3, -0.05, 19, 0.8, 0.85],
-  [-0.12, 0.22, 15, 1, 1.1],
-  [0.18, 0.3, 12, 0.8, 1.35],
-  [-0.38, 0.28, 13, 1.25, 0.9],
-  [0.4, -0.35, 12, 1, 1.2],
-  [-0.05, 0.02, 11, 0.8, 1.4],
+  [-0.2, -0.21, 23, 0.8, 1],
+  [0.2, -0.21, 23, 0.8, 1],
+  [-0.2, 0.21, 23, 0.8, 1],
+  [0.2, 0.21, 23, 0.8, 1],
+  [-0.48, 0, 24, 1.25, 1.2],
+  [0.48, 0, 24, 1.25, 1.2],
+  [0, -0.46, 24, 1.25, 1.2],
+  [0, 0.46, 24, 1.25, 1.2],
 ];
 const DECO = ['accent', 'soft', 'muted'];
 
@@ -253,7 +254,7 @@ const tile = (w, i) => {
   const [x, y, width, ratio, speed] = SLOTS[i % SLOTS.length];
   const attrs = (cls) =>
     `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio}"`;
-  if (!w) return `<div ${attrs(`tile--deco tile--${DECO[i % DECO.length]}`)} aria-hidden="true"></div>`;
+  if (!w) return `<div ${attrs(`tile--deco tile--${DECO[(i >> 1) % DECO.length]}`)} aria-hidden="true"></div>`;
   const body = `<div class="tile__media">${coverHtml(w, { lazy: true })}</div>
     <p class="tile__cap">${ph(w.title, 'Placeholder title')}<span>${esc(w.category)}</span></p>`;
   return isUrl(w.url)
@@ -276,6 +277,21 @@ document.getElementById('app').innerHTML =
   collage();
 
 setInterval(() => (document.querySelector('[data-clock]').textContent = clock()), 15000);
+
+// The fixed header bar keeps its position and takes the color of what is under it: dark over contact/footer.
+const headerBar = document.querySelector('[data-header]');
+const darkBlocks = [...document.querySelectorAll('.contact, .footer')];
+const paintHeader = () => {
+  const mid = headerBar.offsetHeight / 2;
+  const dark = darkBlocks.some((el) => {
+    const r = el.getBoundingClientRect();
+    return r.top <= mid && r.bottom > mid;
+  });
+  headerBar.dataset.theme = dark ? 'dark' : 'light';
+};
+addEventListener('scroll', paintHeader, { passive: true });
+addEventListener('resize', paintHeader);
+paintHeader();
 initAnimations();
 initMenu();
 initCollage();

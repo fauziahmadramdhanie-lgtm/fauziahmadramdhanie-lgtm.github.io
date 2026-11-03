@@ -19,7 +19,8 @@ Kerjakan berurutan. Selector pakai atribut `data-*` biar markup bersih.
 `duration: 1.1`, `easing: t => 1 - Math.pow(1 - t, 3)`. Matikan saat menu overlay terbuka (`lenis.stop()` / `start()`).
 
 ## 2. Header tetap + blend
-`header { position: fixed; mix-blend-mode: difference; color: #fff; }`
+`header { position: fixed; }` dengan bar solid yang warnanya mengikuti section di bawahnya (gelap di contact/footer/menu) —
+menggantikan `mix-blend-mode: difference` agar konten tidak tembus di belakang nav.
 Logo kiri, tombol MENU kanan. Konten lewat di bawahnya.
 
 ## 3. Menu fullscreen
