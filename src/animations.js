@@ -114,22 +114,17 @@ const rand = (i, k) => {
   return s - Math.floor(s);
 };
 
-// 6. Positioning statement. Desktop: the section pins while its words fly in from random spots and
-// settle into the sentence. Phones: no pin, the words just light up in order.
+// 6. Positioning statement. Desktop: the words fade in and fly together while the section scrolls in,
+// so nothing freezes first; the pin only holds the finished sentence. Phones: no pin, words light up in order.
 function wordsScrub(desktop) {
   const splits = gsap.utils.toArray('[data-split="words"]').map((el) => {
     const split = SplitText.create(el, { type: 'words' });
     if (desktop) {
+      const section = el.closest('.statement');
+      ScrollTrigger.create({ trigger: section, start: 'top top', end: '+=70%', pin: true });
       gsap
         .timeline({
-          scrollTrigger: {
-            trigger: el.closest('.statement'),
-            start: 'top top',
-            end: '+=130%',
-            pin: true,
-            scrub: 0.6,
-            invalidateOnRefresh: true,
-          },
+          scrollTrigger: { trigger: section, start: 'top 90%', end: 'top top', scrub: 0.6, invalidateOnRefresh: true },
         })
         .fromTo(
           split.words,
@@ -138,9 +133,10 @@ function wordsScrub(desktop) {
             y: (i) => (rand(i, 1) - 0.5) * innerHeight * 0.7,
             rotation: (i) => (rand(i, 2) - 0.5) * 24,
           },
-          { x: 0, y: 0, rotation: 0, duration: 1, ease: 'power3.inOut', stagger: 0.02 },
+          { x: 0, y: 0, rotation: 0, duration: 1, ease: 'power3.out', stagger: 0.02 },
+          0,
         )
-        .to({}, { duration: 0.4 }); // hold so the finished sentence can be read before the pin releases
+        .fromTo(split.words, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'none', stagger: 0.02 }, 0);
       return split;
     }
     gsap.fromTo(
@@ -156,6 +152,16 @@ function wordsScrub(desktop) {
     return split;
   });
   return () => splits.forEach((s) => s.revert());
+}
+
+// The hero fades out while the next section's words start to appear. Targets the section itself:
+// heroIntro owns the opacity of the elements inside it.
+function heroFade() {
+  gsap.to('.hero', {
+    opacity: 0,
+    ease: 'none',
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 55%', scrub: true },
+  });
 }
 
 // 7. Cover strips widen as they scroll in; the image settles from 1.2x. Transform/clip-path only.
@@ -202,6 +208,7 @@ export function initAnimations() {
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
       cleanups.push(heroIntro(), wordsScrub(desktop));
+      heroFade();
       expandCovers();
       odometers();
       // [anim-hooks]

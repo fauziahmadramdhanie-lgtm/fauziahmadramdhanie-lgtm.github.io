@@ -26,7 +26,6 @@ const since = new Date(`${person.current_role.since}-01`).toLocaleDateString(con
 const header = () => `
   <a class="skip" href="#main">${esc(ui.skip)}</a>
   <header class="site-header" data-header>
-    <a class="logo" href="#top" aria-label="${esc(ui.home)}">${esc(person.nickname)}</a>
     <nav class="site-nav" aria-label="${esc(ui.primary)}">
       ${ui.nav.map((n) => `<a href="#${esc(n.target)}">${esc(n.label)}</a>`).join('')}
     </nav>
@@ -265,7 +264,6 @@ const tile = (w, i) => {
 const collage = () => `
   <div class="collage" data-collage role="region" aria-label="${esc(ui.sections.work)}" inert>
     <h2 class="collage__title" aria-hidden="true">${esc(ui.collage.title)}</h2>
-    <p class="collage__hint">${esc(ui.collage.hint)}</p>
     ${Array.from({ length: Math.max(SLOTS.length, content.work.length) }, (_, i) => tile(content.work[i], i)).join('')}
     <button class="collage__close" type="button" data-collage-close>${esc(ui.close)}</button>
   </div>`;
