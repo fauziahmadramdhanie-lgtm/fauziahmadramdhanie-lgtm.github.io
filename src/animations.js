@@ -1,8 +1,9 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 let lenis = null;
 export const getLenis = () => lenis;
@@ -68,6 +69,31 @@ function customCursor() {
   };
 }
 
+// 5. Hero headline reveal on load: masked lines rise, the intro row follows 0.15s later.
+function headlineReveal() {
+  const title = document.querySelector('[data-split="lines"]');
+  const after = document.querySelectorAll('[data-hero-after]');
+  gsap.set(title, { autoAlpha: 0 }); // hidden until fonts load and the lines are split
+  gsap.set(after, { autoAlpha: 0, y: 24 });
+  let played = false;
+  const split = SplitText.create(title, {
+    type: 'lines',
+    mask: 'lines',
+    autoSplit: true, // re-splits on resize; only the first split animates
+    onSplit(self) {
+      if (played) return;
+      played = true;
+      gsap.set(title, { autoAlpha: 1 });
+      // Not returned: SplitText would revert it on the next re-split, hiding the intro row again.
+      gsap
+        .timeline()
+        .from(self.lines, { yPercent: 110, duration: 1.1, stagger: 0.08, ease: 'power4.out' })
+        .to(after, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.15);
+    },
+  });
+  return () => split.revert();
+}
+
 export function initAnimations() {
   const mm = gsap.matchMedia();
   mm.add(
@@ -82,6 +108,7 @@ export function initAnimations() {
 
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
+      cleanups.push(headlineReveal());
       // [anim-hooks]
       return () => cleanups.forEach((fn) => fn());
     },
