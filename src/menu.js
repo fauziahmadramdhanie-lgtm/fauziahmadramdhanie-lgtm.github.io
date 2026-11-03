@@ -39,6 +39,8 @@ export function initMenu() {
   };
 
   toggle.addEventListener('click', () => set(!open));
+  // The overlay is mobile-only: growing past 768px while open must release scroll and focus.
+  matchMedia('(min-width: 768px)').addEventListener('change', (e) => e.matches && open && set(false));
   links.forEach((a) => a.addEventListener('click', () => set(false)));
   document.addEventListener('keydown', (e) => {
     if (!open) return;

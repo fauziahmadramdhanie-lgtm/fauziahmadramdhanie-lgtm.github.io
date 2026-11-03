@@ -117,6 +117,7 @@
   "ui": {
     "skip": "Skip to content",
     "menu": "Menu",
+    "primary": "Primary",
     "close": "Close",
     "home": "Back to top",
     "now": "Now",

@@ -26,6 +26,9 @@ const header = () => `
   <a class="skip" href="#main">${esc(ui.skip)}</a>
   <header class="site-header" data-header>
     <a class="logo" href="#top" aria-label="${esc(ui.home)}">${esc(person.nickname)}</a>
+    <nav class="site-nav" aria-label="${esc(ui.primary)}">
+      ${ui.nav.map((n) => `<a href="#${esc(n.target)}">${esc(n.label)}</a>`).join('')}
+    </nav>
     <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">
       <span class="menu-toggle__label">${esc(ui.menu)}</span>
       <span class="menu-toggle__label" aria-hidden="true">${esc(ui.close)}</span>
