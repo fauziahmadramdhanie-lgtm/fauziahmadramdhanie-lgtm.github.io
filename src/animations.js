@@ -114,29 +114,40 @@ const rand = (i, k) => {
   return s - Math.floor(s);
 };
 
-// 6. Positioning statement. Desktop: the words fade in and fly together while the section scrolls in,
-// so nothing freezes first; the pin only holds the finished sentence. Phones: no pin, words light up in order.
+// 6. Positioning statement. Desktop: no pin (a pin freezes the screen while the scrollbar moves); the words
+// tumble in from all around while the section scrolls into view, then the sentence fades out as it leaves.
+// Phones: words just light up in order.
 function wordsScrub(desktop) {
   const splits = gsap.utils.toArray('[data-split="words"]').map((el) => {
     const split = SplitText.create(el, { type: 'words' });
     if (desktop) {
       const section = el.closest('.statement');
-      ScrollTrigger.create({ trigger: section, start: 'top top', end: '+=70%', pin: true });
-      gsap
-        .timeline({
-          scrollTrigger: { trigger: section, start: 'top 90%', end: 'top top', scrub: 0.6, invalidateOnRefresh: true },
-        })
-        .fromTo(
-          split.words,
-          {
-            x: (i) => (rand(i, 0) - 0.5) * innerWidth * 0.8,
-            y: (i) => (rand(i, 1) - 0.5) * innerHeight * 0.7,
-            rotation: (i) => (rand(i, 2) - 0.5) * 24,
-          },
-          { x: 0, y: 0, rotation: 0, duration: 1, ease: 'power3.out', stagger: 0.02 },
-          0,
-        )
-        .fromTo(split.words, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'none', stagger: 0.02 }, 0);
+      gsap.fromTo(
+        split.words,
+        {
+          x: (i) => (rand(i, 0) - 0.5) * innerWidth * 1.1,
+          y: (i) => (rand(i, 1) - 0.5) * innerHeight,
+          rotation: (i) => (rand(i, 2) - 0.5) * 80,
+          scale: 0.6,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scale: 1,
+          opacity: 1,
+          ease: 'power2.out',
+          stagger: { each: 0.04, from: 'random' }, // words land one after another across the whole scroll window
+          scrollTrigger: { trigger: section, start: 'top 80%', end: 'top 5%', scrub: true, invalidateOnRefresh: true },
+        },
+      );
+      gsap.to(el, {
+        opacity: 0,
+        y: -40,
+        ease: 'none',
+        scrollTrigger: { trigger: section, start: 'bottom 45%', end: 'bottom 5%', scrub: true },
+      });
       return split;
     }
     gsap.fromTo(
@@ -164,11 +175,28 @@ function heroFade() {
   });
 }
 
+// Every content block fades and rises in as it enters and fades out as it leaves, scrubbed to the scroll
+// (Lenis already smooths it, so scrub: true avoids a second layer of lag).
+const FADE_TARGETS =
+  '.section__title, .lede, .sub, .card, .stat, .process li, .facts > div, .row, .faq details, .contact__title, .btn';
+function fadeBlocks() {
+  gsap.utils.toArray(FADE_TARGETS).forEach((el) => {
+    gsap
+      .timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
+      })
+      .fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.2 })
+      .to(el, { duration: 0.6 }) // hold fully visible
+      .to(el, { opacity: 0, y: -30, duration: 0.2 });
+  });
+}
+
 // 7. Cover strips widen as they scroll in; the image settles from 1.2x. Transform/clip-path only.
 function expandCovers() {
   gsap.utils.toArray('[data-reveal="expand"]').forEach((el) => {
     gsap
-      .timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 25%', scrub: 0.6 } })
+      .timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 25%', scrub: true } })
       .fromTo(el, { clipPath: 'inset(0 85% 0 0)' }, { clipPath: 'inset(0 0% 0 0)' }, 0)
       .fromTo(el.firstElementChild, { scale: 1.2 }, { scale: 1 }, 0);
   });
@@ -187,7 +215,8 @@ function odometers() {
         duration: 1.4,
         ease: 'power3.out',
         stagger: 0.15,
-        scrollTrigger: { trigger: stat, start: 'top 85%', once: true },
+        // 'top 55%': the whole (tall) number is on screen before it rolls.
+        scrollTrigger: { trigger: stat, start: 'top 55%', once: true },
       },
     );
   });
@@ -209,6 +238,7 @@ export function initAnimations() {
       if (desktop && fine) cleanups.push(customCursor());
       cleanups.push(heroIntro(), wordsScrub(desktop));
       heroFade();
+      fadeBlocks();
       expandCovers();
       odometers();
       // [anim-hooks]
