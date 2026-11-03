@@ -44,6 +44,11 @@
     { "value": "TODO", "label": "Articles on irfolks", "text": "Independent economics and geopolitics analysis, published outside formal work.", "image": "TODO: /assets/stat-irfolks.webp" },
     { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor.", "image": "TODO: /assets/stat-gpa.webp" }
   ],
+  "journey": [
+    "Bank Indonesia (Kediri)",
+    "OJK (East Java)",
+    "Ministry of Trade (Kemendag) — Ditjen PEN"
+  ],
   "experience": [
     { "org": "Ministry of Trade (Kemendag) — Ditjen PEN", "role": "TODO: confirm — internship, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
     { "org": "Bank Indonesia (Kediri)", "role": "Intern — Public Relations & inflation analysis", "period": "TODO", "summary": "TODO: public-safe summary." },
@@ -110,18 +115,6 @@
   "contact": {
     "headline": "Let's talk.",
     "cta": "Get in touch",
-    "form": {
-      "name_lead": "Hey, my name is",
-      "name": "Your name",
-      "org_lead": "and I'm writing from",
-      "org": "Organization",
-      "topic_lead": "I'd like to talk about",
-      "topic": "Topic",
-      "email_lead": "You can reach me at",
-      "email": "Email",
-      "send": "Send email",
-      "subject": "Hello"
-    },
     "form_endpoint": "TODO: Formspree/Getform endpoint (free tier) — or use mailto fallback"
   },
   "footer": {
@@ -147,6 +140,7 @@
       "about": "About",
       "work": "Selected work",
       "stats": "At a glance",
+      "journey": "Career path",
       "process": "How I work",
       "experience": "Experience",
       "education": "Education",

@@ -211,11 +211,16 @@ html.menu-open { overflow: hidden; }
 .numbers.is-stacked { height: 100svh; padding-block: 96px 0; }
 .numbers.is-stacked .numbers__label { position: absolute; left: var(--pad); top: 92px; padding: 0; }
 .numbers.is-stacked .stat { position: absolute; inset: 0 var(--pad); border-top: 0; padding-block: 0; align-items: center; }
-.numbers.is-stacked .stat__num { grid-column: 6 / span 7; grid-row: 1; justify-self: end; }
+.numbers.is-stacked .stat__num { display: none; } /* the shared dial replaces the per-step numbers */
 .numbers.is-stacked .stat__copy { grid-column: 1 / span 5; grid-row: 1; }
 .numbers.is-stacked .stat__copy h3 { font-size: clamp(32px, 3.4vw, 56px); }
 .numbers.is-stacked .stat__copy p { font-size: 16px; }
-.numbers.is-stacked .odo { font-size: min(62svh, 34vw, calc(46vw / var(--em, 1.24))); }
+.numbers__dial { display: none; --stat-bg: linear-gradient(135deg, var(--accent), var(--ink)); }
+.numbers.is-stacked .numbers__dial {
+  display: inline-flex; position: absolute; right: var(--pad); top: 50%; translate: 0 -50%;
+  font-size: min(62svh, 34vw);
+}
+.stat__role { color: var(--ink); font-weight: 500; margin-bottom: 8px; }
 .stat { align-items: end; padding-block: clamp(32px, 6vw, 80px); border-top: 1px solid var(--line); row-gap: 16px; }
 .stat__num { grid-column: 1 / span 8; --stat-bg: linear-gradient(135deg, var(--accent), var(--ink)); }
 .stat__copy { grid-column: 9 / span 4; }
@@ -304,17 +309,6 @@ html.menu-open { overflow: hidden; }
 /* ---------- Contact & footer ---------- */
 .contact { background: var(--ink); color: var(--bg); margin-top: var(--space-section); padding-block: var(--space-section) 80px; }
 .contact__title { font-size: clamp(64px, 16vw, 280px); line-height: 0.9; margin-bottom: 56px; }
-/* Sentence-style form: inputs sit inline in the text and share its size. */
-.madlib { max-width: 1100px; font-size: clamp(22px, 2.6vw, 40px); line-height: 1.9; letter-spacing: -0.02em; }
-.madlib p { margin-bottom: 8px; }
-.madlib label { margin-right: 0.35em; }
-.madlib input {
-  font: inherit; letter-spacing: inherit; color: inherit; width: min(100%, 11em);
-  background: #ffffff14; border: 0; border-bottom: 1px solid #ffffff55; border-radius: 4px; padding: 0 0.3em; margin-right: 0.5em;
-}
-.madlib input::placeholder { color: #ffffff77; }
-.madlib input:focus-visible { outline: 2px solid var(--bg); outline-offset: 2px; }
-.madlib .btn { margin-top: 28px; font-size: 16px; }
 .btn {
   display: inline-flex; gap: 12px; align-items: center;
   padding: 18px 32px; border-radius: 999px;

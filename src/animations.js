@@ -178,7 +178,7 @@ function heroFade() {
 // Every content block fades and rises in as it enters and fades out as it leaves, scrubbed to the scroll
 // (Lenis already smooths it, so scrub: true avoids a second layer of lag).
 const FADE_TARGETS =
-  '.section__title, .lede, .sub, .card, .process li, .facts > div, .row, .faq details, .contact__title, .madlib';
+  '.section__title, .lede, .sub, .card, .process li, .facts > div, .row, .faq details, .contact__title, .btn';
 function fadeBlocks(desktop) {
   // On desktop the stats live in the pinned numbers stage, which owns their opacity.
   gsap.utils.toArray(desktop ? FADE_TARGETS : `${FADE_TARGETS}, .stat`).forEach((el) => {
@@ -225,32 +225,38 @@ function odometers() {
   });
 }
 
-// Desktop: the numbers section pins and swaps one stat for the next as you scroll. The number rolls
-// to its value and the text changes with it. CSS stacks the stats only while `.is-stacked` is set.
+// Desktop: the career-path section pins. One big dial ticks 1 -> 2 -> 3 as you scroll while the text
+// beside it changes (Bank Indonesia, OJK, Kemendag). CSS stacks the steps only while `.is-stacked` is set.
 function numbersStage() {
   const stage = document.querySelector('.numbers');
-  const stats = gsap.utils.toArray('.numbers .stat');
-  const parts = (s) => [s.querySelector('.stat__num'), s.querySelector('.stat__copy')];
+  const steps = gsap.utils.toArray('.numbers .stat');
+  const copy = (s) => s.querySelector('.stat__copy');
+  const roll = stage.querySelector('.numbers__dial .odo__roll');
   stage.classList.add('is-stacked');
 
-  // The first stat rolls once as the stage arrives; the others roll while the scroll brings them in.
-  rollTo(stats[0].querySelectorAll('.odo__roll'), {
-    duration: 1.4,
-    ease: 'power3.out',
-    stagger: 0.15,
-    scrollTrigger: { trigger: stage, start: 'top 60%', once: true },
-  });
+  // The dial counts up to 1 as the stage arrives; y: 0 drops the px GSAP derives from the inline fallback.
+  gsap.fromTo(
+    roll,
+    { yPercent: 0, y: 0 },
+    {
+      yPercent: -10,
+      y: 0,
+      duration: 1.1,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: stage, start: 'top 75%', once: true },
+    },
+  );
   const tl = gsap.timeline({
     defaults: { ease: 'power2.out' },
-    scrollTrigger: { trigger: stage, start: 'top top', end: `+=${stats.length * 70}%`, pin: true, scrub: true },
+    scrollTrigger: { trigger: stage, start: 'top top', end: `+=${steps.length * 70}%`, pin: true, scrub: true },
   });
-  stats.slice(1).forEach((s, k) => {
+  steps.slice(1).forEach((s, k) => {
     const at = k + 0.5; // each hand-over takes one "page" of scroll: hold, swap, hold
-    tl.to(parts(stats[k]), { opacity: 0, y: -60, duration: 0.4 }, at)
-      .fromTo(parts(s), { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5 }, at + 0.2)
-      .add(rollTo(s.querySelectorAll('.odo__roll'), { duration: 0.7, stagger: 0.08 }), at + 0.2);
+    tl.to(roll, { yPercent: -(k + 2) * 10, duration: 0.6, ease: 'power3.inOut' }, at)
+      .to(copy(steps[k]), { opacity: 0, y: -60, duration: 0.4 }, at)
+      .fromTo(copy(s), { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5 }, at + 0.2);
   });
-  tl.to({}, { duration: 0.5 }); // hold on the last stat
+  tl.to({}, { duration: 0.5 }); // hold on the last step
   return () => stage.classList.remove('is-stacked');
 }
 

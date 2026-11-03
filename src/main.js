@@ -127,23 +127,32 @@ const odometer = (value) => {
   return `<span class="odo" role="img" aria-label="${esc(text)}" style="--em:${em.toFixed(2)}">${cols}</span>`;
 };
 
-const stat = (s) => {
-  const bg = isTodo(s.image) ? '' : ` style="--stat-bg:url(${esc(s.image)}) center/cover"`;
+// Career path: 1 Bank Indonesia, 2 OJK, 3 Kemendag (order set in content.json -> journey), text from `experience`.
+const step = (org, i) => {
+  const e = content.experience.find((x) => x.org === org) ?? {};
   return `
     <article class="stat grid">
-      <div class="stat__num" data-stat${bg}>${odometer(s.value)}</div>
+      <div class="stat__num" data-stat>${odometer(i + 1)}</div>
       <div class="stat__copy">
-        <h3>${ph(s.label, 'Placeholder label')}</h3>
-        <p>${esc(s.text)}</p>
+        <h3>${esc(org)}</h3>
+        <p class="stat__role">${ph(e.role, 'Placeholder role')} · ${ph(e.period, 'Placeholder period')}</p>
+        <p>${ph(e.summary, 'Placeholder summary.')}</p>
       </div>
     </article>`;
 };
 
-// On desktop with motion this section pins and swaps one stat for the next while scrolling (see numbersStage).
+// The dial is the single number the pinned stage ticks from 1 to 3 (hidden unless the stage is stacked).
+const dial = () => {
+  const rows = Array.from({ length: 10 }, (_, i) => `<span>${i}</span>`).join('');
+  return `<span class="odo numbers__dial" aria-hidden="true" style="--em:0.62"><span class="odo__col"><span class="odo__roll" style="transform:translateY(-10%)">${rows}</span></span></span>`;
+};
+
+// On desktop with motion this section pins and swaps one step for the next while scrolling (see numbersStage).
 const stats = () => `
-  <section class="numbers" aria-label="${esc(ui.sections.stats)}">
-    <p class="numbers__label">${esc(ui.sections.stats)}</p>
-    ${content.stats.map(stat).join('')}
+  <section class="numbers" aria-label="${esc(ui.sections.journey)}">
+    <p class="numbers__label">${esc(ui.sections.journey)}</p>
+    ${dial()}
+    ${content.journey.map(step).join('')}
   </section>`;
 
 const row = (a, b, c) => `
@@ -256,26 +265,10 @@ const footerLinks = () => {
   return [...social, link(ui.cv, person.links.cv)].map((l) => `<li>${l}</li>`).join('');
 };
 
-const contact = (f = content.contact.form) => `
+const contact = () => `
   <section class="contact" id="contact">
     <h2 class="contact__title">${esc(content.contact.headline)}</h2>
-    <form class="madlib" data-madlib>
-      <p>
-        <label for="ml-name">${esc(f.name_lead)}</label>
-        <input id="ml-name" name="name" placeholder="${esc(f.name)}" required autocomplete="name" />
-        <label for="ml-org">${esc(f.org_lead)}</label>
-        <input id="ml-org" name="org" placeholder="${esc(f.org)}" autocomplete="organization" />
-      </p>
-      <p>
-        <label for="ml-topic">${esc(f.topic_lead)}</label>
-        <input id="ml-topic" name="topic" placeholder="${esc(f.topic)}" />
-      </p>
-      <p>
-        <label for="ml-email">${esc(f.email_lead)}</label>
-        <input id="ml-email" name="email" type="email" placeholder="${esc(f.email)}" required autocomplete="email" />
-      </p>
-      <button class="btn" type="submit">${esc(f.send)} <span aria-hidden="true">→</span></button>
-    </form>
+    <a class="btn" href="mailto:${esc(person.email)}">${esc(content.contact.cta)} <span aria-hidden="true">→</span></a>
   </section>`;
 
 const footer = () => `
@@ -327,17 +320,6 @@ document.getElementById('app').innerHTML =
   collage();
 
 setInterval(() => (document.querySelector('[data-clock]').textContent = clock()), 15000);
-
-// No backend: the sentence form composes a mailto: link (the browser's own mail client sends it).
-document.querySelector('[data-madlib]').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const d = Object.fromEntries(new FormData(e.target));
-  const f = content.contact.form;
-  const body = [`${f.name_lead} ${d.name} ${d.org ? `${f.org_lead} ${d.org}` : ''}.`, d.topic && `${f.topic_lead} ${d.topic}.`, `${f.email_lead} ${d.email}.`]
-    .filter(Boolean)
-    .join('\n');
-  location.href = `mailto:${person.email}?subject=${encodeURIComponent(f.subject)}&body=${encodeURIComponent(body)}`;
-});
 
 // The fixed header bar keeps its position and takes the color of what is under it: dark over contact/footer.
 const headerBar = document.querySelector('[data-header]');
