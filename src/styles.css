@@ -267,6 +267,8 @@ html.menu-open { overflow: hidden; }
 .portrait__media { aspect-ratio: 4 / 5; overflow: hidden; background: var(--soft); }
 .portrait figcaption { margin-top: 12px; font-size: 13px; color: var(--muted); }
 .split__main .section__title { margin-bottom: 32px; }
+.skills h4 { font-size: 20px; margin-bottom: 8px; }
+.skills p { color: var(--muted); font-size: 15px; }
 .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--gutter); }
 .facts p, .plain li { max-width: var(--measure); }
 .plain li + li { margin-top: 4px; }

@@ -206,6 +206,11 @@ const about = () => `
         .join('')}
     </ul>
 
+    <h3 class="sub">${esc(ui.sections.skills)}</h3>
+    <div class="facts skills">
+      ${content.skills.map((s) => `<div><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></div>`).join('')}
+    </div>
+
     <div class="facts">
       <div>
         <h3 class="sub">${esc(ui.sections.education)}</h3>

@@ -19,7 +19,7 @@
     "email": "fauziahmadramdhanie@gmail.com",
     "photo": "TODO: /assets/portrait.webp",
     "links": {
-      "linkedin": "TODO: LinkedIn URL",
+      "linkedin": "https://www.linkedin.com/in/fauzi-ahmad-ramdhani",
       "irfolks": "https://irfolks.com",
       "cv": "https://drive.google.com/file/d/1ufLHYIRAztOY9ueLb48adsIlh_gij_ky/view",
       "old_portfolio": "https://fauziahmadr.my.canva.site"
@@ -46,9 +46,9 @@
   ],
   "experience": [
     { "org": "Ministry of Trade (Kemendag) — Ditjen PEN", "role": "TODO: confirm — internship, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
-    { "org": "Bank Indonesia (Kediri)", "role": "Intern — Public Relations & inflation analysis", "period": "TODO", "summary": "TODO: public-safe summary." },
-    { "org": "OJK (East Java)", "role": "Intern — Consumer protection", "period": "TODO", "summary": "Evaluated 9.0/10 by supervisor. TODO: add one concrete output." },
-    { "org": "Wesclic", "role": "Content writer", "period": "TODO", "summary": "TODO" }
+    { "org": "Bank Indonesia (Kediri)", "role": "Intern — Public Relations & inflation analysis", "period": "TODO", "summary": "Wrote 5+ analytical reports on regional economic data (inflation and food security), used as input for decisions in the regional inflation control forum (TPID). Planned and coordinated 10+ institutional programs end to end across local government, academic institutions and community organizations, and ran public education programs on digital financial literacy for 300+ participants." },
+    { "org": "OJK (East Java)", "role": "Intern — Education & consumer protection", "period": "TODO", "summary": "Rated 9.0/10 (Very Good) in the internship evaluation by OJK East Java. Handled 50+ cases in the digital case-administration system (IASC) and mapped coordination flows between consumers and financial service providers to standardize how cases are resolved." },
+    { "org": "Wesclic Indonesia Neotech", "role": "Copywriter", "period": "TODO", "summary": "Produced 100+ research-based pieces for digital communication and marketing, turning business concepts and technical information into clear material for different audiences, in coordination with the marketing team." }
   ],
   "work": [
     {
@@ -56,7 +56,7 @@
       "title": "irfolks",
       "category": "Independent analysis",
       "year": "2025–2026",
-      "summary": "Economics and geopolitics analysis platform.",
+      "summary": "Independent macroeconomic and geopolitical analysis blog, founded and run by me: essays on dependency theory, protectionism and monetary policy that turn global trends into applicable insight.",
       "cover": "TODO: /assets/work-irfolks.webp",
       "url": "https://irfolks.com"
     },
@@ -77,10 +77,19 @@
     { "n": "04", "title": "Coordinate", "text": "Align inputs across institutions and follow through to delivery." }
   ],
   "education": [
-    { "school": "Universitas Darussalam Gontor (UNIDA Gontor)", "degree": "B.A. International Relations — International Political Economy", "note": "Cum laude, GPA 3.82" }
+    { "school": "Universitas Darussalam Gontor (UNIDA Gontor), 2022–2026", "degree": "B.A. International Relations — International Political Economy", "note": "Cum laude, GPA 3.82 / 4.00" },
+    { "school": "SMAT Darussalam Tasikmalaya, 2019–2022", "degree": "Senior high school (full boarding)", "note": "Student council chair: 93 active members across 21 divisions; average academic score 87.8." }
+  ],
+  "skills": [
+    { "title": "Diplomatic communication", "text": "Liaison Officer for senior diplomats and Ministry of Foreign Affairs officials at high-profile institutional events; at ease with internal and external stakeholders." },
+    { "title": "Leadership & coordination", "text": "Led 93 members across 21 divisions (student council chair) and 50+ active members (GenBI management), designing workflows that keep programs consistent." },
+    { "title": "Accuracy & compliance", "text": "Validated 50+ cases through a digital administration system at OJK; used to working under regulation and strict procedure." },
+    { "title": "Process improvement", "text": "Redesigned an organization's KPI framework and mapped standard benchmarks for institutional processes: fixing the system, not just finishing the task." }
   ],
   "awards": [
-    { "name": "Outstanding Student, Faculty of Humanities", "detail": "UNIDA Gontor", "year": "TODO" },
+    { "name": "Outstanding Student, Faculty of Humanities", "detail": "UNIDA Gontor", "year": "2023 & 2024" },
+    { "name": "PILMAPRES 2024", "detail": "Finalist", "year": "2024" },
+    { "name": "Bank Indonesia Unggulan Scholarship", "detail": "Awardee, two consecutive years", "year": "2024–2026" },
     { "name": "Darussalam MUN", "detail": "Honourable Mention", "year": "TODO" },
     { "name": "Writing competition", "detail": "3rd place", "year": "TODO" }
   ],
@@ -133,6 +142,7 @@
     ],
     "sections": {
       "about": "About",
+      "skills": "Strengths",
       "work": "Selected work",
       "stats": "At a glance",      "process": "How I work",
       "experience": "Experience",
