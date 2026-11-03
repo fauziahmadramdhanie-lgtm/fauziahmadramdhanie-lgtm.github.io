@@ -113,6 +113,16 @@ function wordsScrub() {
   return () => splits.forEach((s) => s.revert());
 }
 
+// 7. Cover strips widen as they scroll in; the image settles from 1.2x. Transform/clip-path only.
+function expandCovers() {
+  gsap.utils.toArray('[data-reveal="expand"]').forEach((el) => {
+    gsap
+      .timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 25%', scrub: 0.6 } })
+      .fromTo(el, { clipPath: 'inset(0 85% 0 0)' }, { clipPath: 'inset(0 0% 0 0)' }, 0)
+      .fromTo(el.firstElementChild, { scale: 1.2 }, { scale: 1 }, 0);
+  });
+}
+
 export function initAnimations() {
   const mm = gsap.matchMedia();
   mm.add(
@@ -128,6 +138,7 @@ export function initAnimations() {
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
       cleanups.push(headlineReveal(), wordsScrub());
+      expandCovers();
       // [anim-hooks]
       return () => cleanups.forEach((fn) => fn());
     },
