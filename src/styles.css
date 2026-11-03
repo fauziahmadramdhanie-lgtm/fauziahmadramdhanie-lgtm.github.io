@@ -323,7 +323,9 @@ html.menu-open { overflow: hidden; }
 .footer__note { margin-top: 8px; max-width: var(--measure); }
 
 /* ---------- Work collage (#/work) ---------- */
-html.collage-open { overflow: hidden; }
+/* No overflow lock here: hiding the scrollbar (or Lenis' `overflow: clip`) widens the page by 15px and
+   makes everything jump on open/close. The scrollbar stays; collage.js pins the scroll position instead. */
+html.collage-open { overflow-y: scroll !important; }
 .collage {
   position: fixed; inset: 0; z-index: 80; overflow: hidden;
   background: var(--bg);

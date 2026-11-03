@@ -40,6 +40,11 @@ export function initCollage() {
     }
   };
 
+  // Scroll is not locked with overflow (that changes the page width); anything that still moves it
+  // behind the collage (scrollbar drag, keys) is undone.
+  let lockY = 0;
+  const pinScroll = () => scrollY !== lockY && scrollTo(0, lockY);
+
   const sync = (animate = true) => {
     const want = location.hash === ROUTE;
     if (want === open) return;
@@ -54,6 +59,8 @@ export function initCollage() {
     const reach = Math.hypot(Math.max(o.x, innerWidth - o.x), Math.max(o.y, innerHeight - o.y));
     if (open) {
       opener = document.activeElement;
+      lockY = scrollY;
+      addEventListener('scroll', pinScroll);
       getLenis()?.stop();
       measure();
       cur.x = cur.y = target.x = target.y = 0;
@@ -72,6 +79,7 @@ export function initCollage() {
       );
       root.querySelector('[data-collage-close]').focus({ preventScroll: true });
     } else {
+      removeEventListener('scroll', pinScroll);
       getLenis()?.start();
       gsap.fromTo(
         root,
