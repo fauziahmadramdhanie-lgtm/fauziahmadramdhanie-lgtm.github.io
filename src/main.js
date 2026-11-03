@@ -1,5 +1,7 @@
 import content from './content.json';
+import 'lenis/dist/lenis.css';
 import './styles.css';
+import { initAnimations } from './animations.js';
 
 const { person, hero, ui } = content;
 
@@ -205,3 +207,5 @@ document.getElementById('app').innerHTML =
   header() +
   `<main id="main">${heroSection()}${marquee()}${work()}${stats()}${about()}${credentials()}${contact()}</main>` +
   footer();
+
+initAnimations();
