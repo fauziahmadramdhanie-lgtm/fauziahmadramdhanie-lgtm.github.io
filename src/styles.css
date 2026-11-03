@@ -132,6 +132,12 @@ html.menu-open { overflow: hidden; }
   font-weight: 800; letter-spacing: var(--tracking);
 }
 .marquee__group li::after { content: '✦'; margin-left: 56px; color: var(--accent); }
+/* Two identical groups: shifting the track by half a width loops seamlessly. */
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .marquee__track { animation: marquee 30s linear infinite; }
+  .marquee:hover .marquee__track { animation-play-state: paused; }
+}
 
 /* ---------- Work cards ---------- */
 .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px var(--gutter); }
