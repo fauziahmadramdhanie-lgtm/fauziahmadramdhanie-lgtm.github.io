@@ -1,9 +1,9 @@
 import content from './content.json';
 import 'lenis/dist/lenis.css';
 import './styles.css';
-import { initAnimations } from './animations.js';
 import { initMenu } from './menu.js';
 import { initCollage } from './collage.js';
+import { initRouter } from './router.js';
 
 const { person, hero, ui } = content;
 
@@ -23,11 +23,18 @@ const since = new Date(`${person.current_role.since}-01`).toLocaleDateString(con
   year: 'numeric',
 });
 
+// "Work" opens the collage; the other items are pages (#/about ...), handled by router.js.
+const navLink = (n, extra = '') =>
+  n.target === 'work'
+    ? `<a href="#work" data-open-collage ${extra}>${esc(n.label)}</a>`
+    : `<a href="#/${esc(n.target)}" ${extra}>${esc(n.label)}</a>`;
+
 const header = () => `
   <a class="skip" href="#main">${esc(ui.skip)}</a>
   <header class="site-header" data-header>
+    <a class="home-link" href="#/"><span aria-hidden="true">←</span> ${esc(ui.home)}</a>
     <nav class="site-nav" aria-label="${esc(ui.primary)}">
-      ${ui.nav.map((n) => `<a href="#${esc(n.target)}">${esc(n.label)}</a>`).join('')}
+      ${ui.nav.map((n) => navLink(n)).join('')}
     </nav>
     <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">
       <span class="menu-toggle__label">${esc(ui.menu)}</span>
@@ -36,7 +43,8 @@ const header = () => `
   </header>
   <nav class="menu" id="menu" data-menu aria-label="${esc(ui.menu)}" inert>
     <ul>
-      ${ui.nav.map((n) => `<li><a href="#${esc(n.target)}" data-menu-link>${esc(n.label)}</a></li>`).join('')}
+      <li><a href="#/" data-menu-link>${esc(ui.home)}</a></li>
+      ${ui.nav.map((n) => `<li>${navLink(n, 'data-menu-link')}</li>`).join('')}
     </ul>
   </nav>
   <p class="clock"><span>${esc(person.location)}</span> <span data-clock>${clock()}</span></p>`;
@@ -50,27 +58,38 @@ const clock = () =>
     timeZoneName: 'short',
   }).format(new Date());
 
-// Stack of rotated sheets: the first work cover on top, palette-colored sheets behind (decorative).
-const stack = () => {
-  const cover = coverHtml(content.work[0]);
-  return `
-    <a class="stack" href="#work" data-open-collage data-cursor="arrow" aria-label="${esc(ui.sections.work)}">
-      <span class="sheet sheet--mid"></span><span class="sheet sheet--soft"></span><span class="sheet sheet--accent"></span>
-      <span class="sheet sheet--top">${cover}</span>
-    </a>`;
-};
+const coverHtml = (w, { lazy = false, label = false } = {}) =>
+  isTodo(w?.cover)
+    ? `<div class="cover cover--ph"${label ? ' role="img" aria-label="Placeholder cover"' : ''}></div>`
+    : `<img class="cover" src="${esc(w.cover)}" alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
+
+// Sheets of rotated paper: palette-colored ones behind, `top` (an image) in front. Decorative.
+const sheets = (top) => `
+  <span class="sheet sheet--mid"></span><span class="sheet sheet--soft"></span><span class="sheet sheet--accent"></span>
+  <span class="sheet sheet--top">${top}</span>`;
+
+const portraitImg = (lazy = true) =>
+  isTodo(person.photo)
+    ? '<div class="cover cover--ph" role="img" aria-label="Placeholder portrait"></div>'
+    : `<img class="cover" src="${esc(person.photo)}" alt="${esc(person.name)}" width="1000" height="1337"${lazy ? ' loading="lazy"' : ''} />`;
+
+// ---------- Home ----------
+const stack = () => `
+  <a class="stack" href="#work" data-open-collage data-cursor="arrow" aria-label="${esc(ui.sections.work)}">
+    ${sheets(coverHtml(content.work[0]))}
+  </a>`;
 
 const heroSection = () => `
   <section class="hero" id="top">
     <div class="hero__top">
-      <p class="hero__intro">${esc(hero.intro)}</p>
-      <p class="hero__now"><span>${esc(ui.now)}</span> ${ph(person.current_role.title, 'Placeholder role title')}<br />${esc(
+      <p class="hero__intro" data-intro="1">${esc(hero.intro)}</p>
+      <p class="hero__now" data-intro="2"><span>${esc(ui.now)}</span> ${ph(person.current_role.title, 'Placeholder role title')}<br />${esc(
         person.current_role.org,
       )} · ${esc(since)}</p>
     </div>
     ${stack()}
-    <h1 class="hero__name" data-split="lines">${esc(hero.big_text)}</h1>
-    <div class="hero__side" data-hero-after>
+    <h1 class="hero__name" data-intro="0">${esc(hero.big_text)}</h1>
+    <div class="hero__side" data-intro-fade>
       <p class="hero__copy">${esc(hero.copyright_line)}</p>
     </div>
   </section>
@@ -85,11 +104,6 @@ const marquee = () => {
       .join('')}</ul>`;
   return `<div class="marquee" data-marquee><div class="marquee__track">${group(false)}${group(true)}</div></div>`;
 };
-
-const coverHtml = (w, { lazy = false, label = false } = {}) =>
-  isTodo(w?.cover)
-    ? `<div class="cover cover--ph"${label ? ' role="img" aria-label="Placeholder cover"' : ''}></div>`
-    : `<img class="cover" src="${esc(w.cover)}" alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
 
 const card = (w) => {
   const live = isUrl(w.url);
@@ -147,6 +161,17 @@ const stats = () => `
     ${content.stats.map(stat).join('')}
   </section>`;
 
+// Home ends with a teaser that leads to the contact page.
+const teaser = () => `
+  <section class="contact" data-dark>
+    <h2 class="contact__title">${esc(content.contact.headline)}</h2>
+    <a class="btn" href="#/contact">${esc(content.contact.cta)} <span aria-hidden="true">→</span></a>
+  </section>`;
+
+const homePage = () => `
+  <div data-page="home" tabindex="-1">${heroSection()}${marquee()}${work()}${stats()}${teaser()}</div>`;
+
+// ---------- Shared bits ----------
 const row = (a, b, c) => `
   <li class="row">
     <span class="row__a">${a}</span>
@@ -155,16 +180,18 @@ const row = (a, b, c) => `
     <span class="row__arrow" aria-hidden="true">→</span>
   </li>`;
 
-// About: the portrait stays put (sticky) while the text column scrolls past it.
+// Big title at the top of every inner page; [data-intro] makes it rise line by line on entry.
+const pageHead = (title, lede) => `
+  <section class="page-head">
+    <h1 class="page-title" data-intro="0">${esc(title)}</h1>
+    ${lede ? `<p class="page-lede" data-intro="1">${esc(lede)}</p>` : ''}
+  </section>`;
+
+// ---------- About ----------
+// The portrait stays put (sticky) while the text column scrolls past it.
 const portrait = () => `
   <figure class="portrait">
-    <div class="portrait__media" data-reveal="expand">
-      ${
-        isTodo(person.photo)
-          ? '<div class="cover cover--ph" role="img" aria-label="Placeholder portrait"></div>'
-          : `<img class="cover" src="${esc(person.photo)}" alt="${esc(person.name)}" width="1000" height="1337" loading="lazy" />`
-      }
-    </div>
+    <div class="portrait__media" data-reveal="expand">${portraitImg()}</div>
     <figcaption>${esc(person.name)} · ${esc(person.location)}</figcaption>
   </figure>`;
 
@@ -186,51 +213,6 @@ const processSection = () => `
     </ol>
   </section>`;
 
-const about = () => `
-  <section class="section split" id="about">
-    <div class="split__side">${portrait()}</div>
-    <div class="split__main">
-    <h2 class="section__title">${esc(ui.sections.about)}</h2>
-    <p class="lede">${esc(person.positioning)}</p>
-
-    <h3 class="sub">${esc(ui.sections.experience)}</h3>
-    <ul class="rows">
-      ${content.experience
-        .map((e) =>
-          row(
-            esc(e.org),
-            `${ph(e.role, 'Placeholder role')}<small>${ph(e.summary, 'Placeholder summary.')}</small>`,
-            ph(e.period, 'Placeholder period'),
-          ),
-        )
-        .join('')}
-    </ul>
-
-    <h3 class="sub">${esc(ui.sections.skills)}</h3>
-    <div class="facts skills">
-      ${content.skills.map((s) => `<div><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></div>`).join('')}
-    </div>
-
-    <div class="facts">
-      <div>
-        <h3 class="sub">${esc(ui.sections.education)}</h3>
-        ${content.education
-          .map((e) => `<p><strong>${esc(e.school)}</strong><br />${esc(e.degree)}<br />${esc(e.note)}</p>`)
-          .join('')}
-      </div>
-      <div>
-        <h3 class="sub">${esc(ui.sections.organizations)}</h3>
-        <ul class="plain">${content.organizations.map((o) => `<li>${esc(o)}</li>`).join('')}</ul>
-      </div>
-      <div>
-        <h3 class="sub">${esc(ui.sections.languages)}</h3>
-        <ul class="plain">${content.languages.map((l) => `<li>${esc(l.name)} — ${esc(l.level)}</li>`).join('')}</ul>
-      </div>
-    </div>
-
-    </div>
-  </section>`;
-
 // FAQ: label stays on the left, big accordion questions scroll on the right.
 const faq = () => `
   <section class="section split" id="faq">
@@ -240,17 +222,99 @@ const faq = () => `
     </div>
   </section>`;
 
-const credentials = () => `
-  <section class="section" id="credentials">
-    <h2 class="section__title">${esc(ui.sections.credentials)}</h2>
-    <ul class="rows">
-      ${content.awards.map((a) => row(esc(a.name), `${esc(a.detail)} · ${esc(ui.kinds.award)}`, ph(a.year, '0000'))).join('')}
-      ${content.certifications
-        .map((c) => row(esc(c.name), esc(ui.kinds.certification), ph(c.year, '0000')))
-        .join('')}
-    </ul>
-  </section>`;
+const aboutPage = () => `
+  <div data-page="about" hidden tabindex="-1">
+    ${pageHead(ui.sections.about, person.positioning)}
+    <section class="section split" id="about">
+      <div class="split__side">${portrait()}</div>
+      <div class="split__main">
+        <h3 class="sub">${esc(ui.sections.experience)}</h3>
+        <ul class="rows">
+          ${content.experience
+            .map((e) =>
+              row(
+                esc(e.org),
+                `${ph(e.role, 'Placeholder role')}<small>${ph(e.summary, 'Placeholder summary.')}</small>`,
+                ph(e.period, 'Placeholder period'),
+              ),
+            )
+            .join('')}
+        </ul>
 
+        <h3 class="sub">${esc(ui.sections.skills)}</h3>
+        <div class="facts skills">
+          ${content.skills.map((s) => `<div><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></div>`).join('')}
+        </div>
+      </div>
+    </section>
+    ${processSection()}
+    ${faq()}
+  </div>`;
+
+// ---------- Credentials ----------
+const credentialsPage = () => `
+  <div data-page="credentials" hidden tabindex="-1">
+    ${pageHead(ui.sections.credentials)}
+    <section class="section" id="credentials">
+      <ul class="rows">
+        ${content.awards.map((a) => row(esc(a.name), `${esc(a.detail)} · ${esc(ui.kinds.award)}`, ph(a.year, '0000'))).join('')}
+        ${content.certifications.map((c) => row(esc(c.name), esc(ui.kinds.certification), ph(c.year, '0000'))).join('')}
+      </ul>
+    </section>
+    <section class="section">
+      <div class="facts">
+        <div>
+          <h3 class="sub">${esc(ui.sections.education)}</h3>
+          ${content.education
+            .map((e) => `<p><strong>${esc(e.school)}</strong><br />${esc(e.degree)}<br />${esc(e.note)}</p>`)
+            .join('')}
+        </div>
+        <div>
+          <h3 class="sub">${esc(ui.sections.organizations)}</h3>
+          <ul class="plain">${content.organizations.map((o) => `<li>${esc(o)}</li>`).join('')}</ul>
+        </div>
+        <div>
+          <h3 class="sub">${esc(ui.sections.languages)}</h3>
+          <ul class="plain">${content.languages.map((l) => `<li>${esc(l.name)} — ${esc(l.level)}</li>`).join('')}</ul>
+        </div>
+      </div>
+    </section>
+  </div>`;
+
+// ---------- Contact ----------
+// Same composition as the home hero: intro top-left, paper stack on the right (the portrait on top),
+// the big headline docked at the bottom, and the contact links as large rows in between.
+const shown = (url) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+const contactRow = (label, href, value, copy) => {
+  const live = isUrl(href) || href?.startsWith('mailto:');
+  const inner = `<span class="contact-row__label">${esc(label)}</span><span class="contact-row__value">${live ? esc(value) : `<span class="ph">Placeholder link</span>`}</span><span class="contact-row__arrow" aria-hidden="true">→</span>`;
+  return `
+    <li class="contact-row" data-intro-fade>
+      ${
+        live
+          ? `<a class="contact-row__link" href="${esc(href)}"${isUrl(href) ? ' target="_blank" rel="noopener"' : ''}>${inner}</a>`
+          : `<span class="contact-row__link">${inner}</span>`
+      }
+      ${copy ? `<button class="contact-row__copy" type="button" data-copy="${esc(copy)}">${esc(ui.copy)}</button>` : ''}
+    </li>`;
+};
+
+const contactPage = () => `
+  <div data-page="contact" hidden tabindex="-1">
+    <section class="contact-page" data-dark>
+      <p class="contact-page__intro" data-intro="1">${esc(content.contact.intro)}</p>
+      <div class="stack" aria-hidden="true">${sheets(portraitImg(false))}</div>
+      <ul class="contact-rows">
+        ${contactRow('Email', `mailto:${person.email}`, person.email, person.email)}
+        ${contactRow('LinkedIn', person.links.linkedin, shown(person.links.linkedin ?? ''))}
+        ${contactRow('irfolks', person.links.irfolks, shown(person.links.irfolks ?? ''))}
+        ${contactRow(ui.cv, person.links.cv, ui.cvOpen)}
+      </ul>
+      <h1 class="contact-page__title" data-intro="0">${esc(content.contact.headline)}</h1>
+    </section>
+  </div>`;
+
+// ---------- Footer (icon links) ----------
 // Footer links are icons (outline glyphs drawn here); the label stays as the accessible name.
 // shortcut: generic glyphs, swap the irfolks one for the real logo once /assets has it.
 const ICONS = {
@@ -274,20 +338,15 @@ const footerLinks = () => {
   return [...social, iconLink('cv', ui.cv, person.links.cv)].map((l) => `<li>${l}</li>`).join('');
 };
 
-const contact = () => `
-  <section class="contact" id="contact">
-    <h2 class="contact__title">${esc(content.contact.headline)}</h2>
-    <a class="btn" href="mailto:${esc(person.email)}">${esc(content.contact.cta)} <span aria-hidden="true">→</span></a>
-  </section>`;
-
 const footer = () => `
-  <footer class="footer">
+  <footer class="footer" data-dark>
     <ul class="footer__links">${footerLinks()}</ul>
     <p>${esc(person.name)} ${esc(hero.copyright_line)} · ${esc(person.location)}</p>
     <p class="footer__note">${esc(content.footer.note)}</p>
   </footer>`;
 
-// Work collage (route #/work): [x, y] as fractions of the pan field, width in vw, aspect (w/h), parallax speed.
+// ---------- Work collage (route #/work) ----------
+// [x, y] as fractions of the pan field, width in vw, aspect (w/h), parallax speed.
 // shortcut: 8 layout slots, extra work items reuse them cyclically; hand-place more when work grows past ~12.
 // Mirrored layout: four tiles frame the title, four wait just outside the viewport for the pan.
 const SLOTS = [
@@ -324,26 +383,40 @@ const collage = () => `
 
 document.getElementById('app').innerHTML =
   header() +
-  `<main id="main">${heroSection()}${marquee()}${work()}${stats()}${about()}${processSection()}${credentials()}${faq()}${contact()}</main>` +
+  `<main id="main">${homePage()}${aboutPage()}${credentialsPage()}${contactPage()}</main>` +
   footer() +
-  collage();
+  collage() +
+  '<div class="curtain" data-curtain aria-hidden="true"><span></span></div>';
 
 setInterval(() => (document.querySelector('[data-clock]').textContent = clock()), 15000);
 
-// The fixed header bar keeps its position and takes the color of what is under it: dark over contact/footer.
+// The fixed header bar keeps its position and takes the color of what is under it: dark over [data-dark] blocks.
 const headerBar = document.querySelector('[data-header]');
-const darkBlocks = [...document.querySelectorAll('.contact, .footer')];
 const paintHeader = () => {
   const mid = headerBar.offsetHeight / 2;
-  const dark = darkBlocks.some((el) => {
+  const dark = [...document.querySelectorAll('[data-dark]')].some((el) => {
     const r = el.getBoundingClientRect();
-    return r.top <= mid && r.bottom > mid;
+    return r.height > 0 && r.top <= mid && r.bottom > mid;
   });
   headerBar.dataset.theme = dark ? 'dark' : 'light';
 };
 addEventListener('scroll', paintHeader, { passive: true });
 addEventListener('resize', paintHeader);
-paintHeader();
-initAnimations();
+addEventListener('pagechange', paintHeader);
+
+// Copy-to-clipboard buttons on the contact page.
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-copy]');
+  if (!b) return;
+  try {
+    await navigator.clipboard.writeText(b.dataset.copy);
+    b.textContent = ui.copied;
+    setTimeout(() => (b.textContent = ui.copy), 1600);
+  } catch {
+    /* clipboard blocked: the address is on screen and the row is a mailto link anyway */
+  }
+});
+
 initMenu();
-initCollage();
+initCollage(); // before the router: both listen for link clicks in the capture phase, in this order
+initRouter();

@@ -8,7 +8,12 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 let lenis = null;
 export const getLenis = () => lenis;
 
-// 1. Smooth scroll (Lenis) driven by the GSAP ticker; also owns in-page anchor links.
+// Everything below runs against the active page only; the router rebuilds it on each page change.
+let scope = document;
+const $ = (s) => scope.querySelector(s);
+const $$ = (s) => gsap.utils.toArray(s, scope);
+
+// 1. Smooth scroll (Lenis) driven by the GSAP ticker; also owns in-page anchor links (#id; "#/page" routes are the router's).
 function smoothScroll() {
   lenis = new Lenis({ duration: 1.1, easing: (t) => 1 - Math.pow(1 - t, 3) });
   lenis.on('scroll', ScrollTrigger.update);
@@ -17,9 +22,9 @@ function smoothScroll() {
   gsap.ticker.lagSmoothing(0);
 
   const onClick = (e) => {
-    if (e.defaultPrevented) return; // e.g. the work collage handles its own links
-    const a = e.target.closest('a[href^="#"]');
-    const target = a && document.querySelector(a.getAttribute('href'));
+    if (e.defaultPrevented) return; // e.g. the work collage and the router handle their own links
+    const href = e.target.closest('a[href^="#"]')?.getAttribute('href');
+    const target = href && !href.startsWith('#/') && document.querySelector(href);
     if (!target) return;
     e.preventDefault();
     lenis.scrollTo(target);
@@ -70,29 +75,28 @@ function customCursor() {
   };
 }
 
-// 5. Hero entrance as one connected cascade: the name's masked lines rise, then the intro lines, the
-// role lines and the paper sheets follow with the same ease and a shared cadence.
-function heroIntro() {
-  const $ = (s) => document.querySelector(s);
-  const parts = [$('[data-split="lines"]'), $('.hero__intro'), $('.hero__now')];
-  const sheets = gsap.utils.toArray('.sheet');
-  const side = $('.hero__side');
-  gsap.set(parts, { autoAlpha: 0 }); // hidden until fonts load and the lines are split
-  gsap.set(side, { autoAlpha: 0, y: 24 });
-  gsap.set(sheets, { '--pop': 1 }); // CSS turns --pop into translate + opacity, so :hover transforms stay intact
+// 5. Page entrance as one connected cascade. [data-intro="n"] elements (ordered by n) rise line by line,
+// then the paper sheets pop in and [data-intro-fade] blocks follow, all with the same ease and cadence.
+function pageIntro() {
+  const parts = $$('[data-intro]').sort((a, b) => a.dataset.intro - b.dataset.intro);
+  const sheets = $$('.sheet');
+  const fades = $$('[data-intro-fade]');
+  if (parts.length) gsap.set(parts, { autoAlpha: 0 }); // hidden until fonts load and the lines are split
+  if (fades.length) gsap.set(fades, { autoAlpha: 0, y: 24 });
+  if (sheets.length) gsap.set(sheets, { '--pop': 1 }); // CSS turns --pop into translate + opacity, so :hover transforms stay intact
 
   const lines = new Map();
   const play = () => {
-    const [name, intro, now] = parts.map((el) => lines.get(el));
-    gsap
-      .timeline({ defaults: { ease: 'power4.out' } })
-      .set(parts, { autoAlpha: 1 })
-      .from(name, { yPercent: 110, duration: 1.1, stagger: 0.08 }, 0)
-      .from(intro, { yPercent: 110, duration: 0.9, stagger: 0.08 }, 0.25)
-      .from(now, { yPercent: 110, duration: 0.8, stagger: 0.06 }, 0.45)
-      .to(sheets, { '--pop': 0, duration: 1, stagger: 0.07 }, 0.5)
-      .to(side, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.8);
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+    if (parts.length) tl.set(parts, { autoAlpha: 1 });
+    parts.forEach((el, i) => tl.from(lines.get(el), { yPercent: 110, duration: i ? 0.9 : 1.1, stagger: 0.08 }, i * 0.22));
+    if (sheets.length) tl.to(sheets, { '--pop': 0, duration: 1, stagger: 0.07 }, 0.5);
+    if (fades.length) tl.to(fades, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12 }, 0.8);
   };
+  if (!parts.length) {
+    play();
+    return () => {};
+  }
   const splits = parts.map((el) =>
     SplitText.create(el, {
       type: 'lines',
@@ -118,7 +122,7 @@ const rand = (i, k) => {
 // tumble in from all around while the section scrolls into view, then the sentence fades out as it leaves.
 // Phones: words just light up in order.
 function wordsScrub(desktop) {
-  const splits = gsap.utils.toArray('[data-split="words"]').map((el) => {
+  const splits = $$('[data-split="words"]').map((el) => {
     const split = SplitText.create(el, { type: 'words' });
     if (desktop) {
       const section = el.closest('.statement');
@@ -166,12 +170,14 @@ function wordsScrub(desktop) {
 }
 
 // The hero fades out while the next section's words start to appear. Targets the section itself:
-// heroIntro owns the opacity of the elements inside it.
+// pageIntro owns the opacity of the elements inside it.
 function heroFade() {
-  gsap.to('.hero', {
+  const hero = $('.hero');
+  if (!hero) return;
+  gsap.to(hero, {
     opacity: 0,
     ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom 55%', scrub: true },
+    scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom 55%', scrub: true },
   });
 }
 
@@ -181,7 +187,7 @@ const FADE_TARGETS =
   '.section__title, .lede, .sub, .card, .process li, .facts > div, .row, .faq details, .contact__title, .btn';
 function fadeBlocks(desktop) {
   // On desktop the stats live in the pinned numbers stage, which owns their opacity.
-  gsap.utils.toArray(desktop ? FADE_TARGETS : `${FADE_TARGETS}, .stat`).forEach((el) => {
+  $$(desktop ? FADE_TARGETS : `${FADE_TARGETS}, .stat`).forEach((el) => {
     gsap
       .timeline({
         defaults: { ease: 'none' },
@@ -195,7 +201,7 @@ function fadeBlocks(desktop) {
 
 // 7. Cover strips widen as they scroll in; the image settles from 1.2x. Transform/clip-path only.
 function expandCovers() {
-  gsap.utils.toArray('[data-reveal="expand"]').forEach((el) => {
+  $$('[data-reveal="expand"]').forEach((el) => {
     gsap
       .timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 25%', scrub: true } })
       .fromTo(el, { clipPath: 'inset(0 85% 0 0)' }, { clipPath: 'inset(0 0% 0 0)' }, 0)
@@ -215,7 +221,7 @@ const rollTo = (rolls, vars) =>
 
 // Phones: every stat rolls once, when the whole (tall) number is on screen.
 function odometers() {
-  gsap.utils.toArray('[data-stat]').forEach((stat) => {
+  $$('[data-stat]').forEach((stat) => {
     rollTo(stat.querySelectorAll('.odo__roll'), {
       duration: 1.4,
       ease: 'power3.out',
@@ -228,12 +234,13 @@ function odometers() {
 // Desktop: the stats section pins. All three stats are on one screen in a zigzag (CSS, while `.is-stacked`
 // is set) and their numbers roll one after another as you scroll, each with its text fading in.
 function numbersStage() {
-  const stage = document.querySelector('.numbers');
+  const stage = $('.numbers');
+  if (!stage) return () => {};
   stage.classList.add('is-stacked');
   const tl = gsap.timeline({
     scrollTrigger: { trigger: stage, start: 'top top', end: '+=150%', pin: true, scrub: true },
   });
-  gsap.utils.toArray('.numbers .stat').forEach((s, i) => {
+  $$('.numbers .stat').forEach((s, i) => {
     const at = i * 0.8;
     tl.add(rollTo(s.querySelectorAll('.odo__roll'), { duration: 1, ease: 'power3.out', stagger: 0.1 }), at).fromTo(
       s.querySelector('.stat__copy'),
@@ -248,21 +255,28 @@ function numbersStage() {
 
 // Process timeline: the bars grow from the left, one after another, as the section scrolls in.
 function ganttBars() {
+  const gantt = $('.gantt');
+  if (!gantt) return;
   gsap.fromTo(
-    '[data-bar]',
+    $$('[data-bar]'),
     { scaleX: 0 },
     {
       scaleX: 1,
       transformOrigin: 'left center',
       ease: 'power2.out',
       stagger: 0.25,
-      scrollTrigger: { trigger: '.gantt', start: 'top 80%', end: 'bottom 45%', scrub: true },
+      scrollTrigger: { trigger: gantt, start: 'top 80%', end: 'bottom 45%', scrub: true },
     },
   );
 }
 
-export function initAnimations() {
-  const mm = gsap.matchMedia();
+// Builds every effect for one page. Called by the router on load and after each page swap; the previous
+// build is killed first (its cleanups run: Lenis destroyed, splits reverted, triggers killed).
+let mm = null;
+export function initAnimations(page) {
+  mm?.kill();
+  scope = page;
+  mm = gsap.matchMedia();
   mm.add(
     {
       motion: '(prefers-reduced-motion: no-preference)',
@@ -275,7 +289,7 @@ export function initAnimations() {
 
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
-      cleanups.push(heroIntro());
+      cleanups.push(pageIntro());
       // The pin goes first: ScrollTrigger measures later triggers against the pin spacer that exists by then.
       if (desktop) cleanups.push(numbersStage());
       cleanups.push(wordsScrub(desktop));
@@ -284,7 +298,6 @@ export function initAnimations() {
       expandCovers();
       ganttBars();
       if (!desktop) odometers();
-      // [anim-hooks]
       return () => cleanups.forEach((fn) => fn());
     },
   );

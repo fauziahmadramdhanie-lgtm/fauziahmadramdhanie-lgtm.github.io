@@ -118,6 +118,7 @@
   ],
   "contact": {
     "headline": "Let's talk.",
+    "intro": "Policy analysis, institutional affairs, and international cooperation roles in government, multilateral organizations, and think tanks.",
     "cta": "Get in touch",
     "form_endpoint": "TODO: Formspree/Getform endpoint (free tier) — or use mailto fallback"
   },
@@ -130,7 +131,10 @@
     "menu": "Menu",
     "primary": "Primary",
     "close": "Close",
-    "home": "Back to top",
+    "home": "Home",
+    "copy": "Copy",
+    "copied": "Copied",
+    "cvOpen": "View CV",
     "now": "Now",
     "cv": "CV",
     "visit": "Visit",
