@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "title": "Fauzi Ahmad Ramdhani — Trade Policy & Institutional Affairs",
+    "description": "International Political Economy graduate working on national export development, with experience across Bank Indonesia, OJK, and Kemendag.",
+    "url": "https://portofauzi.github.io/",
+    "language": "en"
+  },
+  "person": {
+    "name": "Fauzi Ahmad Ramdhani",
+    "nickname": "Uzi",
+    "headline": "Government & institutional affairs professional.",
+    "positioning": "International Political Economy graduate working at the intersection of trade policy, economic analysis, and public institutions. Experience across Bank Indonesia, OJK, and the Ministry of Trade.",
+    "location": "Indonesia",
+    "current_role": {
+      "title": "TODO: confirm exact wording — internship (magang), Ditjen PEN, Kemendag",
+      "org": "Directorate General of National Export Development (Ditjen PEN), Ministry of Trade",
+      "since": "2026-08"
+    },
+    "email": "fa419441@gmail.com",
+    "links": {
+      "linkedin": "TODO: LinkedIn URL",
+      "irfolks": "https://irfolks.wordpress.com",
+      "cv": "TODO: link PDF CV (Google Drive, set to view)",
+      "old_portfolio": "https://fauziahmadr.my.canva.site"
+    }
+  },
+  "hero": {
+    "big_text": "Fauzi Ahmad Ramdhani",
+    "intro": "Trade policy and institutional affairs — from central bank to export development.",
+    "copyright_line": "© 2026"
+  },
+  "statement": "I connect economic analysis, policy context, and clear writing — so complex trade and institutional questions turn into something stakeholders can act on.",
+  "marquee": [
+    "Trade Policy",
+    "Export Development",
+    "Economic Diplomacy",
+    "Institutional Affairs",
+    "Analytical Writing"
+  ],
+  "stats": [
+    { "value": 3, "label": "Institutions", "text": "Bank Indonesia, OJK, and the Ministry of Trade — experience across monetary, financial-sector, and trade policy.", "image": "TODO: /assets/stat-institutions.webp" },
+    { "value": "TODO", "label": "Articles on irfolks", "text": "Independent economics and geopolitics analysis, published outside formal work.", "image": "TODO: /assets/stat-irfolks.webp" },
+    { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor.", "image": "TODO: /assets/stat-gpa.webp" }
+  ],
+  "experience": [
+    { "org": "Ministry of Trade (Kemendag) — Ditjen PEN", "role": "TODO: confirm — internship, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
+    { "org": "Bank Indonesia (Kediri)", "role": "Intern — Public Relations & inflation analysis", "period": "TODO", "summary": "TODO: public-safe summary." },
+    { "org": "OJK (East Java)", "role": "Intern — Consumer protection", "period": "TODO", "summary": "Evaluated 9.0/10 by supervisor. TODO: add one concrete output." },
+    { "org": "Wesclic", "role": "Content writer", "period": "TODO", "summary": "TODO" }
+  ],
+  "work": [
+    {
+      "slug": "irfolks",
+      "title": "irfolks",
+      "category": "Independent analysis",
+      "year": "2025–2026",
+      "summary": "Economics and geopolitics analysis platform.",
+      "cover": "TODO: /assets/work-irfolks.webp",
+      "url": "https://irfolks.wordpress.com"
+    },
+    {
+      "slug": "publication-1",
+      "title": "TODO: title of published academic work on international economic cooperation policy",
+      "category": "Academic paper",
+      "year": "TODO",
+      "summary": "TODO",
+      "cover": "TODO: /assets/work-paper.webp",
+      "url": "TODO"
+    }
+  ],
+  "process": [
+    { "n": "01", "title": "Scope", "text": "Clarify the policy question, the stakeholders, and what a useful output looks like." },
+    { "n": "02", "title": "Analyze", "text": "Gather data and regulation, map the trade-offs, test the argument." },
+    { "n": "03", "title": "Write", "text": "Turn analysis into concise memos, briefs, and factsheets." },
+    { "n": "04", "title": "Coordinate", "text": "Align inputs across institutions and follow through to delivery." }
+  ],
+  "education": [
+    { "school": "Universitas Darussalam Gontor (UNIDA Gontor)", "degree": "B.A. International Relations — International Political Economy", "note": "Cum laude, GPA 3.82" }
+  ],
+  "awards": [
+    { "name": "Outstanding Student, Faculty of Humanities", "detail": "UNIDA Gontor", "year": "TODO" },
+    { "name": "Darussalam MUN", "detail": "Honourable Mention", "year": "TODO" },
+    { "name": "Writing competition", "detail": "3rd place", "year": "TODO" }
+  ],
+  "certifications": [
+    { "name": "Microsoft Office Specialist — Excel Associate", "year": "2019" },
+    { "name": "AI Career Readiness Training", "year": "TODO" },
+    { "name": "Claude Academy — Claude Code 101", "year": "TODO" },
+    { "name": "Data analyst training", "year": "TODO" }
+  ],
+  "organizations": [
+    "GenBI",
+    "FPCI",
+    "FKMHII",
+    "HMPHI — Head of External Division"
+  ],
+  "languages": [
+    { "name": "Indonesian", "level": "Professional working" },
+    { "name": "English", "level": "Limited working" },
+    { "name": "Arabic", "level": "Limited working" },
+    { "name": "French", "level": "Elementary" }
+  ],
+  "faq": [
+    { "q": "What are you working on right now?", "a": "National export development at the Ministry of Trade, and writing on trade and geopolitics at irfolks." },
+    { "q": "What kind of roles are you looking for?", "a": "Policy analysis, institutional affairs, and international cooperation roles in government, multilateral organizations, and think tanks." },
+    { "q": "Can I see your CV?", "a": "Yes — use the CV link in the footer." }
+  ],
+  "contact": {
+    "headline": "Let's talk.",
+    "cta": "Get in touch",
+    "form_endpoint": "TODO: Formspree/Getform endpoint (free tier) — or use mailto fallback"
+  },
+  "footer": {
+    "social": ["LinkedIn", "irfolks", "Email"],
+    "note": "Built with HTML, CSS, GSAP. Reference: interaction patterns inspired by Framer template Möbius."
+  },
+  "palette": {
+    "bg": "#ffffff",
+    "ink": "#0a0a0a",
+    "muted": "#6b6b6b",
+    "accent": "#ff6a00"
+  }
+}
