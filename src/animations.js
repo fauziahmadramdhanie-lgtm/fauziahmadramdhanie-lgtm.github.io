@@ -94,10 +94,41 @@ function headlineReveal() {
   return () => split.revert();
 }
 
-// 6. Scrubbed word-by-word light-up for the positioning statement.
-function wordsScrub() {
+// Stable pseudo-random in [0, 1): scatter positions must not change on every refresh.
+const rand = (i, k) => {
+  const s = Math.sin((i + 1) * 12.9898 + k * 78.233) * 43758.5453;
+  return s - Math.floor(s);
+};
+
+// 6. Positioning statement. Desktop: the section pins while its words fly in from random spots and
+// settle into the sentence. Phones: no pin, the words just light up in order.
+function wordsScrub(desktop) {
   const splits = gsap.utils.toArray('[data-split="words"]').map((el) => {
     const split = SplitText.create(el, { type: 'words' });
+    if (desktop) {
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: el.closest('.statement'),
+            start: 'top top',
+            end: '+=130%',
+            pin: true,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+        })
+        .fromTo(
+          split.words,
+          {
+            x: (i) => (rand(i, 0) - 0.5) * innerWidth * 0.8,
+            y: (i) => (rand(i, 1) - 0.5) * innerHeight * 0.7,
+            rotation: (i) => (rand(i, 2) - 0.5) * 24,
+          },
+          { x: 0, y: 0, rotation: 0, duration: 1, ease: 'power3.inOut', stagger: 0.02 },
+        )
+        .to({}, { duration: 0.4 }); // hold so the finished sentence can be read before the pin releases
+      return split;
+    }
     gsap.fromTo(
       split.words,
       { opacity: 0.15 },
@@ -156,7 +187,7 @@ export function initAnimations() {
 
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
-      cleanups.push(headlineReveal(), wordsScrub());
+      cleanups.push(headlineReveal(), wordsScrub(desktop));
       expandCovers();
       odometers();
       // [anim-hooks]
