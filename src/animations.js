@@ -94,6 +94,25 @@ function headlineReveal() {
   return () => split.revert();
 }
 
+// 6. Scrubbed word-by-word light-up for the positioning statement.
+function wordsScrub() {
+  const splits = gsap.utils.toArray('[data-split="words"]').map((el) => {
+    const split = SplitText.create(el, { type: 'words' });
+    gsap.fromTo(
+      split.words,
+      { opacity: 0.15 },
+      {
+        opacity: 1,
+        stagger: 0.1,
+        ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 40%', scrub: true },
+      },
+    );
+    return split;
+  });
+  return () => splits.forEach((s) => s.revert());
+}
+
 export function initAnimations() {
   const mm = gsap.matchMedia();
   mm.add(
@@ -108,7 +127,7 @@ export function initAnimations() {
 
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
-      cleanups.push(headlineReveal());
+      cleanups.push(headlineReveal(), wordsScrub());
       // [anim-hooks]
       return () => cleanups.forEach((fn) => fn());
     },
