@@ -246,15 +246,27 @@ const credentials = () => `
     </ul>
   </section>`;
 
-const link = (label, href) =>
-  isUrl(href) || href?.startsWith('mailto:')
-    ? `<a href="${esc(href)}"${isUrl(href) ? ' target="_blank" rel="noopener"' : ''}>${esc(label)}</a>`
-    : `<span class="ph" title="Placeholder link">${esc(label)}</span>`;
+// Footer links are icons (outline glyphs drawn here); the label stays as the accessible name.
+// shortcut: generic glyphs, swap the irfolks one for the real logo once /assets has it.
+const ICONS = {
+  linkedin:
+    '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10.5V16M12 16v-5.5M12 13c0-1.7 1-2.6 2.4-2.6S17 11.3 17 13v3"/><circle cx="8" cy="7.4" r=".6" fill="currentColor"/>',
+  irfolks: '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>',
+  cv: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 15.5h5"/>',
+  email: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+};
+
+const iconLink = (key, label, href) => {
+  const svg = `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[key]}</svg>`;
+  return isUrl(href) || href?.startsWith('mailto:')
+    ? `<a class="icon-link" href="${esc(href)}"${isUrl(href) ? ' target="_blank" rel="noopener"' : ''} aria-label="${esc(label)}" title="${esc(label)}">${svg}</a>`
+    : `<span class="icon-link icon-link--ph" title="${esc(label)} (placeholder link)">${svg}<span class="sr-only">${esc(label)}</span></span>`;
+};
 
 const footerLinks = () => {
   const hrefs = { linkedin: person.links.linkedin, irfolks: person.links.irfolks, email: `mailto:${person.email}` };
-  const social = content.footer.social.map((s) => link(s, hrefs[s.toLowerCase()]));
-  return [...social, link(ui.cv, person.links.cv)].map((l) => `<li>${l}</li>`).join('');
+  const social = content.footer.social.map((s) => iconLink(s.toLowerCase(), s, hrefs[s.toLowerCase()]));
+  return [...social, iconLink('cv', ui.cv, person.links.cv)].map((l) => `<li>${l}</li>`).join('');
 };
 
 const contact = () => `

@@ -318,7 +318,16 @@ html.menu-open { overflow: hidden; }
 .footer { background: var(--ink); color: var(--bg); padding-block: 0 40px; font-size: 14px; }
 .footer a:focus-visible { outline-color: var(--bg); }
 .footer .ph { color: #a8a8a8; }
-.footer__links { display: flex; flex-wrap: wrap; gap: 8px 32px; padding-block: 32px; border-top: 1px solid #ffffff33; margin-bottom: 24px; }
+.footer__links { display: flex; flex-wrap: wrap; gap: 8px 20px; padding-block: 32px; border-top: 1px solid #ffffff33; margin-bottom: 24px; }
+.icon-link {
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid #ffffff44; color: var(--bg);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+a.icon-link:hover { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+.icon-link--ph { color: #a8a8a8; border-style: dashed; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .icon-link { transition: none; } }
 .footer p { color: #a8a8a8; }
 .footer__note { margin-top: 8px; max-width: var(--measure); }
 
