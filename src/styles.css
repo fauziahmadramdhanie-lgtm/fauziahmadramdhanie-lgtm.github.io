@@ -197,13 +197,21 @@ html.menu-open { overflow: hidden; }
 .row {
   position: relative;
   display: grid; grid-template-columns: 5fr 5fr 2fr; column-gap: var(--gutter);
-  padding: 24px 40px 24px 0;
+  margin-inline: -12px; padding: 24px 52px 24px 12px;
   border-bottom: 1px solid var(--line);
+  transition: background-color 0.25s;
 }
+.row:hover { background: var(--soft); }
 .row__a { font-weight: 600; font-size: clamp(18px, 1.8vw, 24px); letter-spacing: -0.02em; line-height: 1.2; }
 .row__b small { display: block; margin-top: 6px; max-width: var(--measure); color: var(--muted); font-size: 14px; line-height: 1.5; }
 .row__c { text-align: right; color: var(--muted); }
-.row__arrow { display: none; }
+.row__arrow {
+  position: absolute; right: 12px; top: 50%;
+  opacity: 0; transform: translate(-8px, -50%);
+  transition: opacity 0.25s, transform 0.25s;
+}
+.row:hover .row__arrow { opacity: 1; transform: translate(0, -50%); }
+@media (prefers-reduced-motion: reduce) { .row, .row__arrow { transition: none; } }
 
 /* ---------- Contact & footer ---------- */
 .contact { background: var(--ink); color: var(--bg); margin-top: var(--space-section); padding-block: var(--space-section) 80px; }
@@ -228,6 +236,7 @@ html.menu-open { overflow: hidden; }
   .hero__intro, .hero__now, .hero__copy { grid-column: 1 / -1; justify-self: start; }
   .cards, .process, .facts { grid-template-columns: 1fr; }
   .stat__num, .stat__copy { grid-column: 1 / -1; }
-  .row { grid-template-columns: 1fr auto; row-gap: 6px; padding-right: 0; }
+  .row { grid-template-columns: 1fr auto; row-gap: 6px; padding-right: 12px; }
+  .row__arrow { display: none; }
   .row__a { grid-column: 1 / -1; }
 }
