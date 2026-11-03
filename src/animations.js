@@ -34,7 +34,7 @@ function smoothScroll() {
   return () => {
     document.removeEventListener('click', onClick);
     gsap.ticker.remove(tick);
-    lenis.destroy();
+    lenis?.destroy(); // safe to call twice: initAnimations also runs the cleanup itself
     lenis = null;
   };
 }
@@ -273,8 +273,14 @@ function ganttBars() {
 // Builds every effect for one page. Called by the router on load and after each page swap; the previous
 // build is killed first (its cleanups run: Lenis destroyed, splits reverted, triggers killed).
 let mm = null;
+let lastCleanup = null;
 export function initAnimations(page) {
+  // kill() alone does not run the cleanups returned below (cursor, Lenis, splits would pile up on every
+  // page change), so revert and run the last cleanup explicitly; every cleanup is safe to run twice.
+  mm?.revert();
   mm?.kill();
+  lastCleanup?.();
+  lastCleanup = null;
   scope = page;
   mm = gsap.matchMedia();
   mm.add(
@@ -298,7 +304,8 @@ export function initAnimations(page) {
       expandCovers();
       ganttBars();
       if (!desktop) odometers();
-      return () => cleanups.forEach((fn) => fn());
+      lastCleanup = () => cleanups.forEach((fn) => fn());
+      return lastCleanup;
     },
   );
 }
