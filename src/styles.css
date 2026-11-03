@@ -208,19 +208,18 @@ html.menu-open { overflow: hidden; }
 .numbers { margin-top: var(--space-section); position: relative; }
 .numbers__label { font-size: 14px; color: var(--muted); padding-block: 12px; }
 /* Pinned stage (desktop + motion): stats stack in one cell, number on the right, text on the left. */
-.numbers.is-stacked { height: 100svh; padding-block: 96px 0; }
-.numbers.is-stacked .numbers__label { position: absolute; left: var(--pad); top: 92px; padding: 0; }
-.numbers.is-stacked .stat { position: absolute; inset: 0 var(--pad); border-top: 0; padding-block: 0; align-items: center; }
-.numbers.is-stacked .stat__num { display: none; } /* the shared dial replaces the per-step numbers */
-.numbers.is-stacked .stat__copy { grid-column: 1 / span 5; grid-row: 1; }
-.numbers.is-stacked .stat__copy h3 { font-size: clamp(32px, 3.4vw, 56px); }
-.numbers.is-stacked .stat__copy p { font-size: 16px; }
-.numbers__dial { display: none; --stat-bg: linear-gradient(135deg, var(--accent), var(--ink)); }
-.numbers.is-stacked .numbers__dial {
-  display: inline-flex; position: absolute; right: var(--pad); top: 50%; translate: 0 -50%;
-  font-size: min(62svh, 34vw);
+/* Pinned stage (desktop + motion): three stats in one screen, zigzag left / right / left. */
+.numbers.is-stacked { height: 100svh; padding-block: 88px 24px; display: flex; flex-direction: column; }
+.numbers.is-stacked .numbers__label { padding-block: 0 4px; }
+.numbers.is-stacked .stat {
+  flex: 1; min-height: 0; display: flex; align-items: center; gap: clamp(24px, 3vw, 56px);
+  border-top: 0; padding-block: 0;
 }
-.stat__role { color: var(--ink); font-weight: 500; margin-bottom: 8px; }
+.numbers.is-stacked .stat:nth-of-type(even) { flex-direction: row-reverse; text-align: right; } /* flush right */
+.numbers.is-stacked .stat:nth-of-type(3) { padding-left: 8vw; }
+.numbers.is-stacked .odo { font-size: min(24svh, 16vw); }
+.numbers.is-stacked .stat__copy h3 { font-size: clamp(24px, 2.4vw, 36px); margin-bottom: 8px; }
+.numbers.is-stacked .stat__copy p { font-size: 15px; }
 .stat { align-items: end; padding-block: clamp(32px, 6vw, 80px); border-top: 1px solid var(--line); row-gap: 16px; }
 .stat__num { grid-column: 1 / span 8; --stat-bg: linear-gradient(135deg, var(--accent), var(--ink)); }
 .stat__copy { grid-column: 9 / span 4; }

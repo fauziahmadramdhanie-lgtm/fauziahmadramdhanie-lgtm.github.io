@@ -225,38 +225,24 @@ function odometers() {
   });
 }
 
-// Desktop: the career-path section pins. One big dial ticks 1 -> 2 -> 3 as you scroll while the text
-// beside it changes (Bank Indonesia, OJK, Kemendag). CSS stacks the steps only while `.is-stacked` is set.
+// Desktop: the stats section pins. All three stats are on one screen in a zigzag (CSS, while `.is-stacked`
+// is set) and their numbers roll one after another as you scroll, each with its text fading in.
 function numbersStage() {
   const stage = document.querySelector('.numbers');
-  const steps = gsap.utils.toArray('.numbers .stat');
-  const copy = (s) => s.querySelector('.stat__copy');
-  const roll = stage.querySelector('.numbers__dial .odo__roll');
   stage.classList.add('is-stacked');
-
-  // The dial counts up to 1 as the stage arrives; y: 0 drops the px GSAP derives from the inline fallback.
-  gsap.fromTo(
-    roll,
-    { yPercent: 0, y: 0 },
-    {
-      yPercent: -10,
-      y: 0,
-      duration: 1.1,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: stage, start: 'top 75%', once: true },
-    },
-  );
   const tl = gsap.timeline({
-    defaults: { ease: 'power2.out' },
-    scrollTrigger: { trigger: stage, start: 'top top', end: `+=${steps.length * 70}%`, pin: true, scrub: true },
+    scrollTrigger: { trigger: stage, start: 'top top', end: '+=150%', pin: true, scrub: true },
   });
-  steps.slice(1).forEach((s, k) => {
-    const at = k + 0.5; // each hand-over takes one "page" of scroll: hold, swap, hold
-    tl.to(roll, { yPercent: -(k + 2) * 10, duration: 0.6, ease: 'power3.inOut' }, at)
-      .to(copy(steps[k]), { opacity: 0, y: -60, duration: 0.4 }, at)
-      .fromTo(copy(s), { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5 }, at + 0.2);
+  gsap.utils.toArray('.numbers .stat').forEach((s, i) => {
+    const at = i * 0.8;
+    tl.add(rollTo(s.querySelectorAll('.odo__roll'), { duration: 1, ease: 'power3.out', stagger: 0.1 }), at).fromTo(
+      s.querySelector('.stat__copy'),
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+      at + 0.1,
+    );
   });
-  tl.to({}, { duration: 0.5 }); // hold on the last step
+  tl.to({}, { duration: 0.6 }); // hold so the finished numbers can be read before the pin releases
   return () => stage.classList.remove('is-stacked');
 }
 

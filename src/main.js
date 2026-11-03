@@ -127,32 +127,24 @@ const odometer = (value) => {
   return `<span class="odo" role="img" aria-label="${esc(text)}" style="--em:${em.toFixed(2)}">${cols}</span>`;
 };
 
-// Career path: 1 Bank Indonesia, 2 OJK, 3 Kemendag (order set in content.json -> journey), text from `experience`.
-const step = (org, i) => {
-  const e = content.experience.find((x) => x.org === org) ?? {};
+const stat = (s) => {
+  const bg = isTodo(s.image) ? '' : ` style="--stat-bg:url(${esc(s.image)}) center/cover"`;
   return `
     <article class="stat grid">
-      <div class="stat__num" data-stat>${odometer(i + 1)}</div>
+      <div class="stat__num" data-stat${bg}>${odometer(s.value)}</div>
       <div class="stat__copy">
-        <h3>${esc(org)}</h3>
-        <p class="stat__role">${ph(e.role, 'Placeholder role')} · ${ph(e.period, 'Placeholder period')}</p>
-        <p>${ph(e.summary, 'Placeholder summary.')}</p>
+        <h3>${ph(s.label, 'Placeholder label')}</h3>
+        <p>${esc(s.text)}</p>
       </div>
     </article>`;
 };
 
-// The dial is the single number the pinned stage ticks from 1 to 3 (hidden unless the stage is stacked).
-const dial = () => {
-  const rows = Array.from({ length: 10 }, (_, i) => `<span>${i}</span>`).join('');
-  return `<span class="odo numbers__dial" aria-hidden="true" style="--em:0.62"><span class="odo__col"><span class="odo__roll" style="transform:translateY(-10%)">${rows}</span></span></span>`;
-};
-
-// On desktop with motion this section pins and swaps one step for the next while scrolling (see numbersStage).
+// On desktop with motion this section pins: all three stats sit in one screen in a zigzag and their
+// numbers roll as you scroll (see numbersStage).
 const stats = () => `
-  <section class="numbers" aria-label="${esc(ui.sections.journey)}">
-    <p class="numbers__label">${esc(ui.sections.journey)}</p>
-    ${dial()}
-    ${content.journey.map(step).join('')}
+  <section class="numbers" aria-label="${esc(ui.sections.stats)}">
+    <p class="numbers__label">${esc(ui.sections.stats)}</p>
+    ${content.stats.map(stat).join('')}
   </section>`;
 
 const row = (a, b, c) => `
