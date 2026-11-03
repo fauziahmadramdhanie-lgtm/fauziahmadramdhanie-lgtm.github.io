@@ -265,6 +265,7 @@ html.menu-open { overflow: hidden; }
 .split__label { font: 600 18px/1.2 var(--font-sans); letter-spacing: -0.01em; }
 .portrait { margin: 0; }
 .portrait__media { aspect-ratio: 4 / 5; overflow: hidden; background: var(--soft); }
+.portrait .cover { object-position: 50% 18%; } /* keep the face when the 4:5 frame crops a taller photo */
 .portrait figcaption { margin-top: 12px; font-size: 13px; color: var(--muted); }
 .split__main .section__title { margin-bottom: 32px; }
 .skills h4 { font-size: 20px; margin-bottom: 8px; }

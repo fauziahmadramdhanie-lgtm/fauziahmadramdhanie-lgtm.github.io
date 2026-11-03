@@ -162,7 +162,7 @@ const portrait = () => `
       ${
         isTodo(person.photo)
           ? '<div class="cover cover--ph" role="img" aria-label="Placeholder portrait"></div>'
-          : `<img class="cover" src="${esc(person.photo)}" alt="${esc(person.name)}" width="1200" height="1500" loading="lazy" />`
+          : `<img class="cover" src="${esc(person.photo)}" alt="${esc(person.name)}" width="1000" height="1337" loading="lazy" />`
       }
     </div>
     <figcaption>${esc(person.name)} · ${esc(person.location)}</figcaption>
