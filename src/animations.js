@@ -32,6 +32,42 @@ function smoothScroll() {
   };
 }
 
+// 4. Custom cursor: a 120px disc scaled down to a 14px dot, grows into an arrow over [data-cursor="arrow"].
+function customCursor() {
+  const REST = 14 / 120;
+  const el = document.createElement('div');
+  el.className = 'cursor';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = '<span>→</span>';
+  document.body.append(el);
+  document.documentElement.classList.add('has-cursor');
+  gsap.set(el, { xPercent: -50, yPercent: -50, scale: REST, autoAlpha: 0 });
+
+  const x = gsap.quickTo(el, 'x', { duration: 0.35, ease: 'power3' });
+  const y = gsap.quickTo(el, 'y', { duration: 0.35, ease: 'power3' });
+  let on = false;
+  const move = (e) => {
+    x(e.clientX);
+    y(e.clientY);
+    if (el.style.visibility !== 'inherit') gsap.to(el, { autoAlpha: 1, duration: 0.2 });
+    const next = !!e.target.closest('[data-cursor="arrow"]');
+    if (next === on) return;
+    on = next;
+    el.classList.toggle('is-arrow', on);
+    gsap.to(el, { scale: on ? 1 : REST, duration: 0.4, ease: 'power3.out', overwrite: 'auto' });
+  };
+  const leave = () => gsap.to(el, { autoAlpha: 0, duration: 0.2 });
+  document.addEventListener('mousemove', move);
+  document.documentElement.addEventListener('mouseleave', leave);
+
+  return () => {
+    document.removeEventListener('mousemove', move);
+    document.documentElement.removeEventListener('mouseleave', leave);
+    document.documentElement.classList.remove('has-cursor');
+    el.remove();
+  };
+}
+
 export function initAnimations() {
   const mm = gsap.matchMedia();
   mm.add(
@@ -41,10 +77,11 @@ export function initAnimations() {
       fine: '(hover: hover) and (pointer: fine)',
     },
     (ctx) => {
-      const { motion } = ctx.conditions;
+      const { motion, desktop, fine } = ctx.conditions;
       if (!motion) return; // reduced motion: content stays in its final, static state
 
       const cleanups = [smoothScroll()];
+      if (desktop && fine) cleanups.push(customCursor());
       // [anim-hooks]
       return () => cleanups.forEach((fn) => fn());
     },

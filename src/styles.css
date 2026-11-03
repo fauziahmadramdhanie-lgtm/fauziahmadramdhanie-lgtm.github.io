@@ -77,7 +77,19 @@ html.menu-open { overflow: hidden; }
   font-size: clamp(40px, 8vw, 96px); font-weight: 800; letter-spacing: var(--tracking); line-height: 1.05;
 }
 .menu a:focus-visible { outline-color: var(--bg); }
-/* [anim-4] */
+
+/* ---------- Cursor [anim-4] ---------- */
+.cursor {
+  position: fixed; left: 0; top: 0; z-index: 300; pointer-events: none;
+  width: 120px; height: 120px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: #fff; mix-blend-mode: difference; /* black dot on light, white on dark */
+  color: var(--bg); font-size: 44px; line-height: 1;
+}
+.cursor span { opacity: 0; transition: opacity 0.2s; }
+.cursor.is-arrow { background: var(--ink); mix-blend-mode: normal; }
+.cursor.is-arrow span { opacity: 1; }
+.has-cursor a, .has-cursor button, .has-cursor summary { cursor: none; }
 
 /* ---------- Hero ---------- */
 .hero {
