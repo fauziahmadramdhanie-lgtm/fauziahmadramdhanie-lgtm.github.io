@@ -52,8 +52,11 @@ main > section, .footer { padding-inline: var(--pad); }
 
 /* ---------- Header [anim-2] ---------- */
 .site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 100;
   display: flex; justify-content: space-between; align-items: center;
   padding: 20px var(--pad);
+  color: #fff;
+  mix-blend-mode: difference;
 }
 .logo { font-weight: 800; letter-spacing: var(--tracking); font-size: 20px; }
 .menu-toggle { font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 14px; }
