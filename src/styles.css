@@ -24,7 +24,7 @@ html[data-mode='color'] {
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
 body {
   margin: 0;
   background: var(--bg);
@@ -75,7 +75,8 @@ h1, h2, h3, h4 { font-weight: 800; letter-spacing: var(--tracking); line-height:
 }
 html.collage-open .site-header { background: var(--bg); color: var(--ink); }
 .site-header[data-theme='dark'], html.menu-open .site-header { background: var(--ink); color: var(--bg); }
-.menu-toggle { font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 14px; }
+.menu-toggle { position: relative; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 14px; }
+.menu-toggle::after { content: ''; position: absolute; inset: -12px -10px; } /* 44px touch target */
 .site-header { gap: clamp(16px, 2.4vw, 32px); }
 /* Color mode slider: fixed bottom right, vertical, three stops (light / dark / color) and a thumb that glides.
    Blended like the clock so it reads on light and dark alike. */
@@ -91,6 +92,7 @@ html.collage-open .site-header { background: var(--bg); color: var(--ink); }
   display: grid; place-items: center;
 }
 .mode-slider__stop::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.mode-slider__stop::before { content: ''; position: absolute; inset: -10px; } /* 44px touch target */
 .mode-slider__stop:nth-of-type(1) { top: 0; }
 .mode-slider__stop:nth-of-type(2) { top: 50%; }
 .mode-slider__stop:nth-of-type(3) { top: 100%; }
@@ -153,7 +155,7 @@ html[data-mode='color'] .clock { color: #faeb92; }
 /* ---------- Hero ---------- */
 .hero {
   position: relative; overflow-x: clip; /* rotated sheets poke past the right edge on phones */
-  min-height: 100svh;
+  min-height: 100vh; min-height: 100svh; /* vh first: iOS < 15.4 has no svh */
   display: flex; flex-direction: column;
   padding-block: 110px 28px;
 }
@@ -210,7 +212,7 @@ html[data-mode='color'] .clock { color: #faeb92; }
 
 .statement { padding-block: var(--space-section); }
 @media (min-width: 768px) {
-  .statement { min-height: 100svh; display: grid; align-content: center; padding-block: 0; overflow-x: clip; }
+  .statement { min-height: 100vh; min-height: 100svh; display: grid; align-content: center; padding-block: 0; overflow-x: clip; }
 }
 .statement p {
   font-size: clamp(28px, 4.6vw, 72px);
@@ -256,7 +258,7 @@ html[data-mode='color'] .clock { color: #faeb92; }
 .numbers__label { font-size: 14px; color: var(--muted); padding-block: 12px; }
 /* Pinned stage (desktop + motion): stats stack in one cell, number on the right, text on the left. */
 /* Pinned stage (desktop + motion): three stats in one screen, zigzag left / right / left. */
-.numbers.is-stacked { height: 100svh; padding-block: 88px 24px; display: flex; flex-direction: column; }
+.numbers.is-stacked { height: 100vh; height: 100svh; padding-block: 88px 24px; display: flex; flex-direction: column; }
 .numbers.is-stacked .numbers__label { padding-block: 0 4px; }
 .numbers.is-stacked .stat {
   flex: 1; min-height: 0; display: flex; align-items: center; gap: clamp(24px, 3vw, 56px);
@@ -440,12 +442,13 @@ html.is-transitioning { overflow: visible !important; }
 }
 html[data-route='home'] .page-close, html.collage-open .page-close, html.menu-open .page-close { opacity: 0; visibility: hidden; transition: none; }
 .page-close:focus-visible { outline-color: var(--accent); }
+.page-close::after { content: ''; position: absolute; inset: -8px; } /* 44px touch target */
 .site-nav a[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; }
 
 /* Page change: the new page is laid over the old one as a one-screen layer while the circle (router.js)
    reveals it; the circle's clip-path is set inline. */
 .page-layer {
-  position: fixed; top: 0; left: 0; right: 0; height: 100svh; overflow: hidden; z-index: 79;
+  position: fixed; top: 0; left: 0; right: 0; height: 100vh; height: 100svh; overflow: hidden; z-index: 79;
   background: var(--bg);
 }
 /* Going home: home waits under the page you are leaving, which stays in the flow (scroll kept) and shrinks away. */
@@ -460,7 +463,7 @@ html[data-route='home'] .page-close, html.collage-open .page-close, html.menu-op
 
 /* Contact page: the headline on top in the dark, then a full-width photo with the links in a card over it. */
 .contact-page { position: relative; overflow-x: clip; padding-block: 112px 28px; background: var(--ink); color: var(--bg); }
-.contact-photo { position: relative; overflow: hidden; height: 100svh; perspective: 1200px; background: var(--ink); color: var(--bg); }
+.contact-photo { position: relative; overflow: hidden; height: 100vh; height: 100svh; perspective: 1200px; background: var(--ink); color: var(--bg); }
 .contact-photo__tilt { position: absolute; inset: 0; will-change: transform; }
 .contact-rows {
   position: absolute; z-index: 2; left: var(--pad); right: calc(var(--pad) + 36px); bottom: var(--pad); /* clear of the mode slider */
