@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import content from './content.json';
-import { initAnimations, startIntro, getLenis } from './animations.js';
+import { initAnimations, startIntro, cancelIntro, getLenis } from './animations.js';
 import { circle, reach } from './reveal.js';
 
 // Hash router over the pages in the DOM ([data-page]). "#/about" etc. reveal the new page inside a circle
@@ -11,9 +11,10 @@ export function initRouter() {
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const labels = { home: content.ui.home, ...Object.fromEntries(content.ui.nav.map((n) => [n.target, n.label])) };
   const root = document.documentElement;
-  let current = null;
-  let busy = false;
-  let wanted = null; // a navigation requested mid-transition, replayed when it ends
+  let current = null; // the page being navigated to (the header already shows it)
+  let shown = null; // the page actually in the flow
+  let flight = null; // cancels the running transition
+  let timer = 0;
 
   // '#/about' -> 'about', '' or '#/' -> 'home', '#/work' and '#/credentials' -> null (collages, not pages)
   const routeOf = (hash) => {
@@ -34,6 +35,7 @@ export function initRouter() {
   // What changes once the new page is in place: scroll, focus, and the page's animations.
   const settle = (name, introStarted) => {
     chrome(name);
+    shown = name;
     scrollTo(0, 0);
     initAnimations(pages[name], { introStarted });
     pages[name].focus({ preventScroll: true });
@@ -50,10 +52,24 @@ export function initRouter() {
   // swap, so its jump (the document height changes) never shows.
   // Going back home is the same circle played the other way, like a collage closing: the page you are on
   // (scrolled or not) shrinks into the link while home waits under it as the layer.
+  // A click during a transition cancels it (flight) and starts the new one from the page that is still shown.
+  const unlock = () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => root.classList.remove('is-transitioning'), 250);
+  };
+
   const reveal = (name) => {
-    busy = true;
+    flight?.();
+    if (name === shown) {
+      // back to the page that never left: nothing to animate
+      chrome(name);
+      getLenis()?.start();
+      unlock();
+      return;
+    }
+    clearTimeout(timer);
     const closing = name === 'home';
-    const old = pages[current];
+    const old = pages[shown];
     const moving = closing ? old : pages[name]; // the page the circle clips
     root.classList.add('is-transitioning');
     getLenis()?.stop();
@@ -61,6 +77,11 @@ export function initRouter() {
     const dy = closing ? y : 0; // a scrolled page is clipped in its own coordinates
     const pin = () => scrollY !== y && scrollTo(0, y); // overflow is not locked (see styles.css), so undo wheel/keys
     const [from, to] = closing ? [circle(reach(), dy), circle(0, dy)] : [circle(0), circle(reach())];
+    const tidy = (keep) =>
+      Object.entries(pages).forEach(([key, el]) => {
+        el.hidden = key !== keep;
+        el.classList.remove('page-layer', 'page-layer--under', 'page-closing');
+      });
     moving.style.clipPath = from; // set before it shows: the tween below only renders on the next frame
     pages[name].hidden = false;
     if (closing) {
@@ -70,7 +91,7 @@ export function initRouter() {
     addEventListener('scroll', pin);
     startIntro(pages[name], closing ? 0.15 : 0.4);
     chrome(name);
-    gsap.fromTo(
+    const tween = gsap.fromTo(
       moving,
       { clipPath: from },
       {
@@ -78,32 +99,32 @@ export function initRouter() {
         duration: closing ? 0.9 : 1,
         ease: 'power3.inOut',
         onComplete: () => {
+          flight = null;
           removeEventListener('scroll', pin);
-          Object.entries(pages).forEach(([key, el]) => {
-            el.hidden = key !== name;
-            el.classList.remove('page-layer', 'page-layer--under', 'page-closing');
-          });
+          tidy(name);
           gsap.set(moving, { clearProps: 'clipPath' });
           settle(name, true);
-          setTimeout(() => root.classList.remove('is-transitioning'), 250);
-          busy = false;
-          if (wanted && wanted !== current) go(wanted, false);
-          wanted = null;
+          unlock();
         },
       },
     );
+    flight = () => {
+      flight = null;
+      tween.kill();
+      removeEventListener('scroll', pin);
+      cancelIntro();
+      tidy(shown);
+      gsap.set(moving, { clearProps: 'clipPath' });
+    };
   };
 
   const go = (name, push = true) => {
-    if (busy) {
-      if (push && name !== (wanted ?? current)) history.pushState(null, '', urlOf(name)); // the URL follows the click, the page follows later
-      wanted = name;
-      return;
-    }
-    if (name === current) return;
+    if (name === current) return; // current is where the page is headed, shown is where it is
     if (push) history.pushState(null, '', urlOf(name));
-    if (reduced()) show(name);
-    else reveal(name);
+    if (reduced()) {
+      flight?.();
+      show(name);
+    } else reveal(name);
   };
 
   // Capture phase and registered after the collage's, so an open collage has closed before the page changes.
@@ -115,7 +136,7 @@ export function initRouter() {
       const name = routeOf(a.getAttribute('href'));
       if (!name) return;
       e.preventDefault();
-      if (name === current && !busy) scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' });
+      if (name === current) flight || scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' });
       else go(name);
     },
     true,

@@ -86,8 +86,9 @@ function pageIntro(delay = 0) {
   if (sheets.length) gsap.set(sheets, { '--pop': 1 }); // CSS turns --pop into translate + opacity, so :hover transforms stay intact
 
   const lines = new Map();
+  let tl;
   const play = () => {
-    const tl = gsap.timeline({ delay, defaults: { ease: 'power4.out' } });
+    tl = gsap.timeline({ delay, defaults: { ease: 'power4.out' } });
     if (parts.length) tl.set(parts, { autoAlpha: 1 });
     parts.forEach((el, i) => tl.from(lines.get(el), { yPercent: 110, duration: i ? 0.9 : 1.1, stagger: 0.08 }, i * 0.22));
     if (sheets.length) tl.to(sheets, { '--pop': 0, duration: 1, stagger: 0.07 }, 0.5);
@@ -95,7 +96,7 @@ function pageIntro(delay = 0) {
   };
   if (!parts.length) {
     play();
-    return () => {};
+    return () => tl.kill();
   }
   const splits = parts.map((el) =>
     SplitText.create(el, {
@@ -109,7 +110,10 @@ function pageIntro(delay = 0) {
       },
     }),
   );
-  return () => splits.forEach((s) => s.revert());
+  return () => {
+    tl?.kill();
+    splits.forEach((s) => s.revert());
+  };
 }
 
 // Stable pseudo-random in [0, 1): scatter positions must not change on every refresh.
@@ -284,6 +288,12 @@ export function startIntro(page, delay = 0.4) {
   started = pageIntro(delay);
 }
 
+// A transition was interrupted: the entrance that had started for the page that never arrived is dropped.
+export function cancelIntro() {
+  started?.();
+  started = null;
+}
+
 export function initAnimations(page, { introStarted = false } = {}) {
   // kill() alone does not run the cleanups returned below (cursor, Lenis, splits would pile up on every
   // page change), so revert and run the last cleanup explicitly; every cleanup is safe to run twice.
@@ -293,6 +303,7 @@ export function initAnimations(page, { introStarted = false } = {}) {
   lastCleanup = null;
   scope = page;
   const intro = introStarted ? started : null;
+  started = null;
   mm = gsap.matchMedia();
   mm.add(
     {
