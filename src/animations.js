@@ -77,7 +77,7 @@ function customCursor() {
 
 // 5. Page entrance as one connected cascade. [data-intro="n"] elements (ordered by n) rise line by line,
 // then the paper sheets pop in and [data-intro-fade] blocks follow, all with the same ease and cadence.
-function pageIntro() {
+function pageIntro(delay = 0) {
   const parts = $$('[data-intro]').sort((a, b) => a.dataset.intro - b.dataset.intro);
   const sheets = $$('.sheet');
   const fades = $$('[data-intro-fade]');
@@ -87,7 +87,7 @@ function pageIntro() {
 
   const lines = new Map();
   const play = () => {
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+    const tl = gsap.timeline({ delay, defaults: { ease: 'power4.out' } });
     if (parts.length) tl.set(parts, { autoAlpha: 1 });
     parts.forEach((el, i) => tl.from(lines.get(el), { yPercent: 110, duration: i ? 0.9 : 1.1, stagger: 0.08 }, i * 0.22));
     if (sheets.length) tl.to(sheets, { '--pop': 0, duration: 1, stagger: 0.07 }, 0.5);
@@ -278,9 +278,10 @@ let started = null; // cleanup of an entrance already playing (see startIntro)
 
 // Plays a page's entrance now, while the router is still revealing it inside the growing circle; the next
 // initAnimations(page, { introStarted: true }) then keeps it instead of playing it a second time.
-export function startIntro(page) {
+// The delay lets the circle uncover the page first, so the entrance is seen instead of happening behind it.
+export function startIntro(page, delay = 0.4) {
   scope = page;
-  started = pageIntro();
+  started = pageIntro(delay);
 }
 
 export function initAnimations(page, { introStarted = false } = {}) {

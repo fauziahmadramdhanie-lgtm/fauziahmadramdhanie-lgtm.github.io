@@ -339,6 +339,9 @@ a.icon-link:hover { background: var(--accent); border-color: var(--accent); colo
 /* While a page is revealed the scrollbar thumb is invisible (its width is kept): the swap changes the
    document height and the thumb would visibly jump. */
 html.is-transitioning { scrollbar-color: transparent transparent; }
+/* Lenis' `overflow: clip` (it is stopped during the reveal) would remove the scrollbar and slide the header
+   and page 15px sideways; router.js pins the scroll position instead. */
+html.is-transitioning { overflow: visible !important; }
 
 /* ---------- Pages ---------- */
 .home-link { margin-right: auto; font-size: 14px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
