@@ -1,6 +1,7 @@
 /* Design tokens. Palette (--bg --ink --muted --accent) is injected from content.json by vite.config.js. */
 :root {
   --soft: #f4f4f4;
+  --soft2: #d9d9d9;
   --line: color-mix(in srgb, var(--ink) 16%, transparent);
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;
@@ -9,6 +10,17 @@
   --space-section: clamp(96px, 16vw, 200px);
   --measure: 520px;
   --tracking: -0.03em;
+}
+
+/* Color modes (the toggle in the header sets html[data-mode]); light is the palette from content.json.
+   Dark: the page goes dark and the [data-dark] blocks become the light ones.
+   Color: black / purple / pink / yellow. */
+html[data-mode='dark'] {
+  color-scheme: dark;
+  --bg: #0a0a0a; --ink: #f4f4f4; --muted: #9a9a9a; --soft: #1c1c1c; --soft2: #2e2e2e;
+}
+html[data-mode='color'] {
+  --bg: #faeb92; --ink: #000000; --muted: #9929ea; --accent: #ff5fcf; --soft: #ff5fcf; --soft2: #000000;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -64,6 +76,23 @@ h1, h2, h3, h4 { font-weight: 800; letter-spacing: var(--tracking); line-height:
 html.collage-open .site-header { background: var(--bg); color: var(--ink); }
 .site-header[data-theme='dark'], html.menu-open .site-header { background: var(--ink); color: var(--bg); }
 .menu-toggle { font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 14px; }
+.site-header { gap: clamp(16px, 2.4vw, 32px); }
+/* Color mode switch: a dot showing the mode you are in + its name; a click moves to the next one. */
+.mode-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.mode-toggle__dot {
+  width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; flex: none;
+  background: transparent;
+}
+.mode-toggle[data-mode='dark'] .mode-toggle__dot { background: currentColor; }
+.mode-toggle[data-mode='color'] .mode-toggle__dot {
+  border-color: transparent;
+  background: conic-gradient(#000 0 25%, #9929ea 0 50%, #ff5fcf 0 75%, #faeb92 0);
+  box-shadow: 0 0 0 1.5px currentColor;
+}
+.mode-toggle:hover .mode-toggle__label { text-decoration: underline; text-underline-offset: 6px; }
 /* ---------- Menu [anim-3] ---------- */
 .menu-toggle { display: grid; }
 .menu-toggle__label { grid-area: 1 / 1; text-align: right; }
@@ -100,6 +129,9 @@ html.menu-open { overflow: hidden; }
   background: #fff; mix-blend-mode: difference; /* black dot on light, white on dark */
   color: var(--bg); font-size: 44px; line-height: 1;
 }
+/* Color mode: difference against yellow gives black on yellow and yellow on black, instead of off-palette blues. */
+html[data-mode='color'] .cursor:not(.is-arrow) { background: #faeb92; }
+html[data-mode='color'] .clock { color: #faeb92; }
 .cursor span { opacity: 0; transition: opacity 0.2s; }
 .cursor.is-arrow { background: var(--ink); mix-blend-mode: normal; }
 .cursor.is-arrow span { opacity: 1; }
@@ -147,7 +179,7 @@ html.menu-open { overflow: hidden; }
   transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.3, 1);
 }
 .sheet--mid { background: var(--muted); transform: rotate(14deg) translate(8%, -2%); }
-.sheet--soft { background: #d9d9d9; transform: rotate(-12deg) translate(-6%, 2%); }
+.sheet--soft { background: var(--soft2); transform: rotate(-12deg) translate(-6%, 2%); }
 .sheet--accent { background: var(--accent); transform: rotate(7deg) translate(4%, 3%); }
 .sheet--top { background: var(--soft); transform: rotate(-3deg); }
 .stack:hover .sheet--mid { transform: rotate(22deg) translate(14%, -4%); }
@@ -199,7 +231,7 @@ html.menu-open { overflow: hidden; }
 .card__media { overflow: hidden; aspect-ratio: 4 / 3; background: var(--soft); }
 .cover { width: 100%; height: 100%; object-fit: cover; }
 .cover--ph {
-  background: repeating-linear-gradient(135deg, #ececec 0 14px, #e4e4e4 14px 28px);
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--ink) 7%, var(--bg)) 0 14px, color-mix(in srgb, var(--ink) 11%, var(--bg)) 14px 28px);
 }
 .card__meta { padding-top: 20px; }
 .card__meta h3 { font-size: clamp(22px, 2.4vw, 32px); margin-bottom: 8px; }
@@ -268,6 +300,11 @@ html.menu-open { overflow: hidden; }
 .portrait { margin: 0; }
 .portrait__media { aspect-ratio: 4 / 5; overflow: hidden; background: var(--soft); }
 .portrait .cover { object-position: 50% 18%; } /* keep the face when the 4:5 frame crops a taller photo */
+/* Zoom on hover. The scroll reveal (GSAP) owns the transform of the wrapper, so the zoom lives on the image. */
+.portrait__zoom { height: 100%; }
+.portrait .cover { transition: scale 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@media (hover: hover) and (pointer: fine) { .portrait__media:hover .cover { scale: 1.18; } }
+@media (prefers-reduced-motion: reduce) { .portrait .cover { transition: none; } }
 .portrait figcaption { margin-top: 12px; font-size: 13px; color: var(--muted); }
 .split__main .section__title { margin-bottom: 32px; }
 .skills h4 { font-size: 20px; margin-bottom: 8px; }
@@ -322,18 +359,18 @@ html.menu-open { overflow: hidden; }
 .btn:focus-visible { outline-color: var(--bg); }
 .footer { background: var(--ink); color: var(--bg); padding-block: 0 40px; font-size: 14px; }
 .footer a:focus-visible { outline-color: var(--bg); }
-.footer .ph { color: #a8a8a8; }
-.footer__links { display: flex; flex-wrap: wrap; gap: 8px 20px; padding-block: 32px; border-top: 1px solid #ffffff33; margin-bottom: 24px; }
+.footer .ph { color: color-mix(in srgb, currentColor 66%, transparent); }
+.footer__links { display: flex; flex-wrap: wrap; gap: 8px 20px; padding-block: 32px; border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent); margin-bottom: 24px; }
 .icon-link {
   display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
-  border: 1px solid #ffffff44; color: var(--bg);
+  border: 1px solid color-mix(in srgb, currentColor 27%, transparent); color: var(--bg);
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 a.icon-link:hover { background: var(--accent); border-color: var(--accent); color: var(--ink); }
-.icon-link--ph { color: #a8a8a8; border-style: dashed; }
+.icon-link--ph { color: color-mix(in srgb, currentColor 66%, transparent); border-style: dashed; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { .icon-link { transition: none; } }
-.footer p { color: #a8a8a8; }
+.footer p { color: color-mix(in srgb, currentColor 66%, transparent); }
 .footer__note { margin-top: 8px; max-width: var(--measure); }
 
 /* While a page is revealed the scrollbar thumb is invisible (its width is kept): the swap changes the
@@ -379,19 +416,19 @@ html[data-route='home'] .page-close, html.collage-open .page-close, html.menu-op
   background: var(--ink); color: var(--bg);
 }
 .contact-page__intro { max-width: var(--measure); font: 400 clamp(22px, 2.4vw, 32px)/1.2 var(--font-serif); }
-.contact-rows { margin-top: clamp(28px, 4vw, 56px); border-top: 1px solid #ffffff33; }
-.contact-row { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #ffffff33; }
+.contact-rows { margin-top: clamp(28px, 4vw, 56px); border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent); }
+.contact-row { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent); }
 .contact-row__link {
   flex: 1; min-width: 0; display: grid; grid-template-columns: 7ch 1fr auto; align-items: baseline; gap: 16px;
   padding: 12px 12px; transition: background-color 0.25s;
 }
-a.contact-row__link:hover { background: #ffffff14; }
-.contact-row__label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #a8a8a8; }
+a.contact-row__link:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+.contact-row__label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in srgb, currentColor 66%, transparent); }
 .contact-row__value { font-weight: 600; font-size: clamp(18px, 1.9vw, 30px); letter-spacing: var(--tracking); overflow-wrap: anywhere; }
 .contact-row__arrow { opacity: 0; transform: translateX(-8px); transition: opacity 0.25s, transform 0.25s; }
 a.contact-row__link:hover .contact-row__arrow, a.contact-row__link:focus-visible .contact-row__arrow { opacity: 1; transform: none; }
 .contact-row__copy {
-  flex: none; padding: 6px 14px; border: 1px solid #ffffff55; border-radius: 999px;
+  flex: none; padding: 6px 14px; border: 1px solid color-mix(in srgb, currentColor 33%, transparent); border-radius: 999px;
   font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
   transition: background-color 0.2s, color 0.2s;
 }
@@ -430,7 +467,7 @@ html.collage-open { overflow: visible !important; }
 .tile--deco { aspect-ratio: var(--r); box-shadow: 0 10px 30px #0000001f; }
 .tile--accent { background: var(--accent); }
 .tile--muted { background: var(--muted); }
-.tile--soft { background: #d9d9d9; }
+.tile--soft { background: var(--soft2); }
 .tile__cap { margin-top: 8px; font-size: 13px; font-weight: 600; line-height: 1.3; }
 .tile__cap span { display: block; color: var(--muted); font-weight: 400; }
 .collage__close {

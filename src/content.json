@@ -134,6 +134,7 @@
     "menu": "Menu",
     "primary": "Primary",
     "close": "Close",
+    "modes": { "aria": "Color mode", "light": "Light", "dark": "Dark", "color": "Color" },
     "home": "Home",
     "copy": "Copy",
     "copied": "Copied",

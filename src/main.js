@@ -35,6 +35,9 @@ const header = () => `
     <nav class="site-nav" aria-label="${esc(ui.primary)}">
       ${ui.nav.map((n) => navLink(n)).join('')}
     </nav>
+    <button class="mode-toggle" type="button" data-mode-toggle>
+      <span class="mode-toggle__dot" aria-hidden="true"></span><span class="mode-toggle__label"></span>
+    </button>
     <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">
       <span class="menu-toggle__label">${esc(ui.menu)}</span>
       <span class="menu-toggle__label" aria-hidden="true">${esc(ui.close)}</span>
@@ -190,7 +193,7 @@ const pageHead = (title, lede) => `
 // The portrait stays put (sticky) while the text column scrolls past it.
 const portrait = () => `
   <figure class="portrait">
-    <div class="portrait__media" data-reveal="expand">${portraitImg()}</div>
+    <div class="portrait__media" data-reveal="expand"><div class="portrait__zoom">${portraitImg()}</div></div>
     <figcaption>${esc(person.name)} · ${esc(person.location)}</figcaption>
   </figure>`;
 
@@ -450,6 +453,26 @@ const paintHeader = () => {
 addEventListener('scroll', paintHeader, { passive: true });
 addEventListener('resize', paintHeader);
 addEventListener('pagechange', paintHeader);
+
+// Color mode: light -> dark -> color (palette in styles.css); remembered, and applied before paint by index.html.
+const MODES = ['light', 'dark', 'color'];
+const modeBtn = document.querySelector('[data-mode-toggle]');
+const setMode = (mode, save = true) => {
+  const html = document.documentElement;
+  if (mode === 'light') delete html.dataset.mode;
+  else html.dataset.mode = mode;
+  modeBtn.dataset.mode = mode;
+  modeBtn.querySelector('.mode-toggle__label').textContent = ui.modes[mode];
+  modeBtn.setAttribute('aria-label', `${ui.modes.aria}: ${ui.modes[mode]}`);
+  if (!save) return;
+  try {
+    localStorage.setItem('mode', mode);
+  } catch {
+    /* private mode: the choice just lasts for this visit */
+  }
+};
+setMode(document.documentElement.dataset.mode ?? 'light', false);
+modeBtn.addEventListener('click', () => setMode(MODES[(MODES.indexOf(modeBtn.dataset.mode) + 1) % MODES.length]));
 
 // The underlined nav item is whatever is open: a collage over the page, else the page itself (none on home).
 const paintNav = () => {

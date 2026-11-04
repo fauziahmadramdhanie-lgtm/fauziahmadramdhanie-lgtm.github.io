@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--head-->
+    <script>
+      // Every page starts at the top: the browser must not restore a stale scroll offset on reload/back. Set here,
+      // before the modules, because ScrollTrigger remembers the value it finds and puts it back after each refresh.
+      history.scrollRestoration = 'manual';
+      // Saved color mode (light | dark | color), applied before first paint so the page does not flash.
+      try {
+        var m = localStorage.getItem('mode');
+        if (m === 'dark' || m === 'color') document.documentElement.dataset.mode = m;
+      } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
