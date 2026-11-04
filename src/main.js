@@ -35,9 +35,6 @@ const header = () => `
     <nav class="site-nav" aria-label="${esc(ui.primary)}">
       ${ui.nav.map((n) => navLink(n)).join('')}
     </nav>
-    <button class="mode-toggle" type="button" data-mode-toggle>
-      <span class="mode-toggle__dot" aria-hidden="true"></span><span class="mode-toggle__label"></span>
-    </button>
     <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu">
       <span class="menu-toggle__label">${esc(ui.menu)}</span>
       <span class="menu-toggle__label" aria-hidden="true">${esc(ui.close)}</span>
@@ -49,6 +46,12 @@ const header = () => `
       ${ui.nav.map((n) => `<li>${navLink(n, 'data-menu-link')}</li>`).join('')}
     </ul>
   </nav>
+  <div class="mode-slider" role="radiogroup" aria-label="${esc(ui.modes.aria)}" data-mode-slider>
+    ${['light', 'dark', 'color']
+      .map((m) => `<button class="mode-slider__stop" type="button" role="radio" aria-checked="false" aria-label="${esc(ui.modes[m])}" data-mode="${m}"></button>`)
+      .join('')}
+    <span class="mode-slider__thumb" aria-hidden="true"></span>
+  </div>
   <p class="clock"><span>${esc(person.location)}</span> <span data-clock>${clock()}</span></p>`;
 
 const clock = () =>
@@ -454,25 +457,52 @@ addEventListener('scroll', paintHeader, { passive: true });
 addEventListener('resize', paintHeader);
 addEventListener('pagechange', paintHeader);
 
-// Color mode: light -> dark -> color (palette in styles.css); remembered, and applied before paint by index.html.
+// Color mode: a vertical slider with three stops (top light, middle dark, bottom color; palettes in styles.css).
+// Click a stop or the track, drag the thumb, or use the arrow keys. Remembered, and applied before paint by index.html.
 const MODES = ['light', 'dark', 'color'];
-const modeBtn = document.querySelector('[data-mode-toggle]');
-const setMode = (mode, save = true) => {
+const slider = document.querySelector('[data-mode-slider]');
+const stops = [...slider.querySelectorAll('[data-mode]')];
+let mode = document.documentElement.dataset.mode ?? 'light';
+const setMode = (next, save = true) => {
+  mode = next;
   const html = document.documentElement;
-  if (mode === 'light') delete html.dataset.mode;
-  else html.dataset.mode = mode;
-  modeBtn.dataset.mode = mode;
-  modeBtn.querySelector('.mode-toggle__label').textContent = ui.modes[mode];
-  modeBtn.setAttribute('aria-label', `${ui.modes.aria}: ${ui.modes[mode]}`);
+  if (next === 'light') delete html.dataset.mode;
+  else html.dataset.mode = next;
+  slider.style.setProperty('--i', MODES.indexOf(next));
+  stops.forEach((s) => s.setAttribute('aria-checked', s.dataset.mode === next));
   if (!save) return;
   try {
-    localStorage.setItem('mode', mode);
+    localStorage.setItem('mode', next);
   } catch {
     /* private mode: the choice just lasts for this visit */
   }
 };
-setMode(document.documentElement.dataset.mode ?? 'light', false);
-modeBtn.addEventListener('click', () => setMode(MODES[(MODES.indexOf(modeBtn.dataset.mode) + 1) % MODES.length]));
+setMode(mode, false);
+
+// The stop nearest to a pointer height.
+const stopAt = (y) => {
+  const r = slider.getBoundingClientRect();
+  return MODES[Math.round(Math.min(1, Math.max(0, (y - r.top) / r.height)) * (MODES.length - 1))];
+};
+let dragging = false;
+slider.addEventListener('pointerdown', (e) => {
+  dragging = true;
+  slider.setPointerCapture(e.pointerId);
+  setMode(stopAt(e.clientY));
+});
+slider.addEventListener('pointermove', (e) => dragging && stopAt(e.clientY) !== mode && setMode(stopAt(e.clientY)));
+slider.addEventListener('pointerup', () => (dragging = false));
+slider.addEventListener('pointercancel', () => (dragging = false));
+slider.addEventListener('keydown', (e) => {
+  const step = { ArrowUp: -1, ArrowLeft: -1, ArrowDown: 1, ArrowRight: 1 }[e.key];
+  if (!step) return;
+  e.preventDefault();
+  const next = MODES[Math.min(MODES.length - 1, Math.max(0, MODES.indexOf(mode) + step))];
+  setMode(next);
+  stops[MODES.indexOf(next)].focus();
+});
+// Keyboard activation (Enter / Space on a focused stop); pointer clicks were handled on pointerdown.
+stops.forEach((s) => s.addEventListener('click', () => s.dataset.mode !== mode && setMode(s.dataset.mode)));
 
 // The underlined nav item is whatever is open: a collage over the page, else the page itself (none on home).
 const paintNav = () => {

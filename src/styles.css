@@ -77,22 +77,32 @@ html.collage-open .site-header { background: var(--bg); color: var(--ink); }
 .site-header[data-theme='dark'], html.menu-open .site-header { background: var(--ink); color: var(--bg); }
 .menu-toggle { font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 14px; }
 .site-header { gap: clamp(16px, 2.4vw, 32px); }
-/* Color mode switch: a dot showing the mode you are in + its name; a click moves to the next one. */
-.mode-toggle {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 14px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+/* Color mode slider: fixed bottom right, vertical, three stops (light / dark / color) and a thumb that glides.
+   Blended like the clock so it reads on light and dark alike. */
+.mode-slider {
+  --h: 88px; --i: 0;
+  position: fixed; right: var(--pad); bottom: 56px; z-index: 95;
+  width: 24px; height: var(--h); touch-action: none; cursor: pointer;
+  color: #fff; mix-blend-mode: difference;
 }
-.mode-toggle__dot {
-  width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; flex: none;
-  background: transparent;
+.mode-slider::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; translate: -50% 0; background: currentColor; opacity: 0.35; }
+.mode-slider__stop {
+  position: absolute; left: 50%; width: 24px; height: 24px; translate: -50% -50%; border-radius: 50%;
+  display: grid; place-items: center;
 }
-.mode-toggle[data-mode='dark'] .mode-toggle__dot { background: currentColor; }
-.mode-toggle[data-mode='color'] .mode-toggle__dot {
-  border-color: transparent;
-  background: conic-gradient(#000 0 25%, #9929ea 0 50%, #ff5fcf 0 75%, #faeb92 0);
-  box-shadow: 0 0 0 1.5px currentColor;
+.mode-slider__stop::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.mode-slider__stop:nth-of-type(1) { top: 0; }
+.mode-slider__stop:nth-of-type(2) { top: 50%; }
+.mode-slider__stop:nth-of-type(3) { top: 100%; }
+.mode-slider__thumb {
+  position: absolute; left: 50%; top: 0; width: 18px; height: 18px; border-radius: 50%; background: currentColor;
+  translate: -50% calc(var(--i) * var(--h) / 2 - 50%);
+  transition: translate 0.55s cubic-bezier(0.3, 1.2, 0.3, 1); pointer-events: none;
 }
-.mode-toggle:hover .mode-toggle__label { text-decoration: underline; text-underline-offset: 6px; }
+.mode-slider :focus-visible { outline: 2px solid currentColor; outline-offset: 0; }
+html[data-mode='color'] .mode-slider { color: #faeb92; }
+html.collage-open .mode-slider { z-index: 95; }
+@media (prefers-reduced-motion: reduce) { .mode-slider__thumb { transition: none; } }
 /* ---------- Menu [anim-3] ---------- */
 .menu-toggle { display: grid; }
 .menu-toggle__label { grid-area: 1 / 1; text-align: right; }
