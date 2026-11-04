@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Fauzi Ahmad Ramdhani — Trade Policy & Institutional Affairs",
-    "description": "International Political Economy graduate working on national export development, with experience across Bank Indonesia, OJK, and Kemendag.",
+    "description": "International Political Economy graduate with experience at Bank Indonesia, the Financial Services Authority (OJK) and the Ministry of Trade.",
     "url": "https://portofauzi.github.io/",
     "language": "en"
   },
@@ -9,7 +9,7 @@
     "name": "Fauzi Ahmad Ramdhani",
     "nickname": "Uzi",
     "headline": "Government & institutional affairs professional.",
-    "positioning": "International Political Economy graduate working at the intersection of trade policy, economic analysis, and public institutions. Experience across Bank Indonesia, OJK, and the Ministry of Trade.",
+    "positioning": "International Relations graduate, concentrating in International Political Economy. Internships at Bank Indonesia and the Financial Services Authority (OJK), and currently at the Ministry of Trade. Work so far covers regional economic reporting, consumer complaint handling and public engagement programs.",
     "location": "Indonesia",
     "current_role": {
       "title": "TODO: confirm exact wording — internship (magang), Ditjen PEN, Kemendag",
@@ -33,24 +33,24 @@
     "copyright_line": "© 2026",
     "timezone": "Asia/Jakarta"
   },
-  "statement": "I connect economic analysis, policy context, and clear writing — so complex trade and institutional questions turn into something stakeholders can act on.",
+  "statement": "I write and coordinate work on economic and institutional topics: regional economic reports at Bank Indonesia, consumer complaint cases at OJK, and independent analysis at irfolks.",
   "marquee": [
     "Trade Policy",
     "Export Development",
-    "Economic Diplomacy",
+    "Stakeholder Engagement",
     "Institutional Affairs",
-    "Analytical Writing"
+    "Policy & Report Writing"
   ],
   "stats": [
-    { "value": 3, "label": "Institutions", "text": "Bank Indonesia, OJK, and the Ministry of Trade — experience across monetary, financial-sector, and trade policy.", "image": "TODO: /assets/stat-institutions.webp" },
-    { "value": "TODO", "label": "Articles on irfolks", "text": "Independent economics and geopolitics analysis, published outside formal work.", "image": "TODO: /assets/stat-irfolks.webp" },
+    { "value": 3, "label": "Institutions", "text": "Internships at Bank Indonesia and OJK, and the Ministry of Trade (Ditjen PEN) since August 2026.", "image": "TODO: /assets/stat-institutions.webp" },
+    { "value": "TODO", "label": "Articles on irfolks", "text": "Independent essays on economics and geopolitics, written outside formal work.", "image": "TODO: /assets/stat-irfolks.webp" },
     { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor.", "image": "TODO: /assets/stat-gpa.webp" }
   ],
   "experience": [
-    { "org": "Ministry of Trade (Kemendag) — Ditjen PEN", "role": "TODO: confirm — internship, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
-    { "org": "Bank Indonesia (Kediri)", "role": "Intern — Public Relations & inflation analysis", "period": "TODO", "summary": "Wrote 5+ analytical reports on regional economic data (inflation and food security), used as input for decisions in the regional inflation control forum (TPID). Planned and coordinated 10+ institutional programs end to end across local government, academic institutions and community organizations, and ran public education programs on digital financial literacy for 300+ participants." },
-    { "org": "OJK (East Java)", "role": "Intern — Education & consumer protection", "period": "TODO", "summary": "Rated 9.0/10 (Very Good) in the internship evaluation by OJK East Java. Handled 50+ cases in the digital case-administration system (IASC) and mapped coordination flows between consumers and financial service providers to standardize how cases are resolved." },
-    { "org": "Wesclic Indonesia Neotech", "role": "Copywriter", "period": "TODO", "summary": "Produced 100+ research-based pieces for digital communication and marketing, turning business concepts and technical information into clear material for different audiences, in coordination with the marketing team." }
+    { "org": "Ministry of Trade (Kemendag), Ditjen PEN", "role": "TODO: confirm — internship, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
+    { "org": "Financial Services Authority (OJK), East Java", "role": "Assistant Intern, Consumer Education and Protection Department", "period": "Apr 2026 – May 2026", "summary": "Reviewed and processed more than 50 consumer dispute cases in the IASC portal. Mapped the mediation workflow between consumers and financial service providers to identify benchmarks for handling cases consistently. Internship evaluation: 9.0/10 (Very Good), assessed by OJK East Java." },
+    { "org": "Bank Indonesia, Kediri Representative Office", "role": "Assistant Intern, Public Relations", "period": "Sep 2025 – Dec 2025", "summary": "Wrote at least five analytical reports on regional inflation and food security, used as input at TPID coordination meetings. Coordinated the publication of more than ten institutional programs with local governments, universities and community organizations, and handled documentation for stakeholder events. Delivered public education sessions on QRIS and digital financial literacy for 300+ participants." },
+    { "org": "Wesclic Indonesia Neotech", "role": "Copywriter Intern", "period": "May 2025 – Aug 2025", "summary": "Wrote more than 100 research-based, SEO-optimized articles on MSME digitalization. Adapted technical business topics for non-technical small-business owners, and worked with the marketing team on brand messaging." }
   ],
   "work": [
     {
@@ -58,7 +58,7 @@
       "title": "irfolks",
       "category": "Independent analysis",
       "year": "2025–2026",
-      "summary": "Independent macroeconomic and geopolitical analysis blog, founded and run by me: essays on dependency theory, protectionism and monetary policy that turn global trends into applicable insight.",
+      "summary": "Independent publication that I founded and manage. Essays on geopolitics and macroeconomics, including dependency theory, protectionism and monetary policy, written for a general audience.",
       "cover": "/assets/work-irfolks.webp",
       "cover_ratio": 1.982,
       "cover_tall": "/assets/work-irfolks-tall.webp",
@@ -75,20 +75,20 @@
     }
   ],
   "process": [
-    { "n": "01", "title": "Scope", "text": "Clarify the policy question, the stakeholders, and what a useful output looks like." },
-    { "n": "02", "title": "Analyze", "text": "Gather data and regulation, map the trade-offs, test the argument." },
-    { "n": "03", "title": "Write", "text": "Turn analysis into concise memos, briefs, and factsheets." },
-    { "n": "04", "title": "Coordinate", "text": "Align inputs across institutions and follow through to delivery." }
+    { "n": "01", "title": "Scope", "text": "Confirm the question, the audience and the format of the output before starting." },
+    { "n": "02", "title": "Analyze", "text": "Collect the relevant data and regulations, and note where the sources disagree." },
+    { "n": "03", "title": "Write", "text": "Turn the findings into a short report, brief or presentation." },
+    { "n": "04", "title": "Coordinate", "text": "Share drafts with the people involved and follow up until the work is delivered." }
   ],
   "education": [
-    { "school": "Universitas Darussalam Gontor (UNIDA Gontor), 2022–2026", "degree": "B.A. International Relations — International Political Economy", "note": "Cum laude, GPA 3.82 / 4.00" },
-    { "school": "SMAT Darussalam Tasikmalaya, 2019–2022", "degree": "Senior high school (full boarding)", "note": "Student council chair: 93 active members across 21 divisions; average academic score 87.8." }
+    { "school": "Universitas Darussalam Gontor (UNIDA Gontor), 2022–2026", "degree": "B.A. International Relations, concentration in International Political Economy", "note": "GPA 3.82 / 4.00, cum laude. Bank Indonesia Scholarship awardee for 2024–2025 and 2025–2026. Class president of the Class of 2022. Also: PILMAPRES finalist (2024); presenter at the International Conference on Islamic & Halal Economic Studies, Universiti Kebangsaan Malaysia (2023); first place, Genbiversary National Debate Competition (2024)." },
+    { "school": "SMAT Darussalam Tasikmalaya, 2019–2022", "degree": "Senior high school, Mathematics and Natural Sciences (full boarding)", "note": "Student organization president: 93 active members across 21 divisions. Average academic score 87.8." }
   ],
   "skills": [
-    { "title": "Diplomatic communication", "text": "Liaison Officer for senior diplomats and Ministry of Foreign Affairs officials at high-profile institutional events; at ease with internal and external stakeholders." },
-    { "title": "Leadership & coordination", "text": "Led 93 members across 21 divisions (student council chair) and 50+ active members (GenBI management), designing workflows that keep programs consistent." },
-    { "title": "Accuracy & compliance", "text": "Validated 50+ cases through a digital administration system at OJK; used to working under regulation and strict procedure." },
-    { "title": "Process improvement", "text": "Redesigned an organization's KPI framework and mapped standard benchmarks for institutional processes: fixing the system, not just finishing the task." }
+    { "title": "Data and analysis", "text": "Data analysis in Microsoft Excel (Microsoft Office Specialist, Excel Associate 2019), market research, and policy and report writing. At Bank Indonesia and OJK this meant regional economic reports and consumer case review." },
+    { "title": "Communication", "text": "Public speaking, SEO and copywriting, and correspondence with institutional stakeholders. Liaison officer for Ministry of Foreign Affairs officials and diplomats at an institutional event." },
+    { "title": "Coordination", "text": "Cross-team coordination, project and event management, and administration. Led a 93-member student organization at school and the external division of the university IR student association." },
+    { "title": "Process improvement", "text": "Redesigned the KPI framework of GenBI Ponorogo and mapped benchmarks for handling consumer disputes at OJK." }
   ],
   "credentials": [
     { "kind": "award", "name": "PILMAPRES 2024", "detail": "Top five finalist, UNIDA Gontor", "year": "2024", "image": "/assets/credentials/pilmapres.webp" },
@@ -107,21 +107,23 @@
     { "kind": "certification", "name": "Claude Academy — Claude Code 101", "detail": "", "year": "TODO", "image": "TODO" }
   ],
   "organizations": [
-    "GenBI",
-    "FPCI",
-    "FKMHII",
-    "HMPHI — Head of External Division"
+    { "org": "Generasi Baru Indonesia (GenBI), Ponorogo", "role": "Management Organizer", "period": "Mar 2024 – Mar 2026", "summary": "Planned resources and coordinated more than 50 active members across divisions. Redesigned the KPI framework used to evaluate members and simplified reporting between divisions. Ran more than ten engagement programs with 250+ external participants." },
+    { "org": "Foreign Policy Community of Indonesia (FPCI), UNIDA Chapter", "role": "Research and Development Department", "period": "Jan 2025 – Jul 2025", "summary": "Led collaborative research on foreign policy and global trends and presented the findings at regular discussion forums of 30+ members. Drafted policy recommendations from a comparative analysis of contemporary Islamic perspectives, for public education programs on international issues." },
+    { "org": "Student Council, UNIDA Gontor", "role": "External Department Secretary", "period": "Aug 2024 – Aug 2025", "summary": "Managed communication between the external division and the faculty deanery, partner organizations and outside parties. Drafted official letters, partnership proposals and activity reports." },
+    { "org": "Forum Komunikasi Mahasiswa Hubungan Internasional Indonesia (FKMHII)", "role": "National Website Administrator", "period": "Feb 2024 – Sep 2024", "summary": "Maintained the national FKMHII website: more than 50 content updates, editing and publishing news and agendas from regional coordinators across Indonesia, and periodic checks of performance and accessibility." },
+    { "org": "International Relations Student Association (HMPHI), UNIDA Gontor", "role": "Head of External Department", "period": "Aug 2023 – Aug 2024", "summary": "Led the external division and its relations with the faculty, campus bodies and partner organizations. Built partnerships with five or more institutions across government, NGOs and civil society. Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event." },
+    { "org": "International Community Service, Malaysia (UNIDA Gontor)", "role": "Volunteer", "period": "Jun 2023 – Dec 2023", "summary": "Tutored stateless migrant children and ran educational activities for them, together with other volunteers and local communities." }
   ],
   "languages": [
-    { "name": "Indonesian", "level": "Professional working" },
-    { "name": "English", "level": "Limited working" },
-    { "name": "Arabic", "level": "Limited working" },
+    { "name": "Indonesian", "level": "Native" },
+    { "name": "English", "level": "B2, professional working proficiency" },
+    { "name": "Arabic", "level": "B2, professional working proficiency" },
     { "name": "French", "level": "Elementary" }
   ],
   "faq": [
-    { "q": "What are you working on right now?", "a": "National export development at the Ministry of Trade, and writing on trade and geopolitics at irfolks." },
+    { "q": "What are you working on right now?", "a": "I work at the Ministry of Trade (Directorate General of National Export Development) since August 2026, and write on economics and geopolitics at irfolks." },
     { "q": "What kind of roles are you looking for?", "a": "Policy analysis, institutional affairs, and international cooperation roles in government, multilateral organizations, and think tanks." },
-    { "q": "Can I see your CV?", "a": "Yes — use the CV link in the footer." }
+    { "q": "Can I see your CV?", "a": "Yes. Use the CV link in the footer." }
   ],
   "contact": {
     "headline": "Let's talk.",

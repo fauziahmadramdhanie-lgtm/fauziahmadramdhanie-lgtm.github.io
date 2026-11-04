@@ -185,6 +185,14 @@ const row = (a, b, c) => `
     <span class="row__arrow" aria-hidden="true">→</span>
   </li>`;
 
+// One line of the Experience and Organizations lists.
+const entry = (e) =>
+  row(
+    esc(e.org),
+    `${ph(e.role, 'Placeholder role')}<small>${ph(e.summary, 'Placeholder summary.')}</small>`,
+    ph(e.period, 'Placeholder period'),
+  );
+
 // Big title at the top of every inner page; [data-intro] makes it rise line by line on entry.
 const pageHead = (title, lede) => `
   <section class="page-head">
@@ -234,17 +242,10 @@ const aboutPage = () => `
       <div class="split__side">${portrait()}</div>
       <div class="split__main">
         <h3 class="sub">${esc(ui.sections.experience)}</h3>
-        <ul class="rows">
-          ${content.experience
-            .map((e) =>
-              row(
-                esc(e.org),
-                `${ph(e.role, 'Placeholder role')}<small>${ph(e.summary, 'Placeholder summary.')}</small>`,
-                ph(e.period, 'Placeholder period'),
-              ),
-            )
-            .join('')}
-        </ul>
+        <ul class="rows">${content.experience.map(entry).join('')}</ul>
+
+        <h3 class="sub">${esc(ui.sections.organizations)}</h3>
+        <ul class="rows">${content.organizations.map(entry).join('')}</ul>
 
         <h3 class="sub">${esc(ui.sections.skills)}</h3>
         <div class="facts skills">
@@ -257,10 +258,6 @@ const aboutPage = () => `
             ${content.education
               .map((e) => `<p><strong>${esc(e.school)}</strong><br />${esc(e.degree)}<br />${esc(e.note)}</p>`)
               .join('')}
-          </div>
-          <div>
-            <h3 class="sub">${esc(ui.sections.organizations)}</h3>
-            <ul class="plain">${content.organizations.map((o) => `<li>${esc(o)}</li>`).join('')}</ul>
           </div>
           <div>
             <h3 class="sub">${esc(ui.sections.languages)}</h3>
