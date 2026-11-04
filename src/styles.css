@@ -195,6 +195,7 @@ html[data-mode='color'] .clock { color: #faeb92; }
 .sheet--soft { background: var(--soft2); transform: rotate(-12deg) translate(-6%, 2%); }
 .sheet--accent { background: var(--accent); transform: rotate(7deg) translate(4%, 3%); }
 .sheet--top { background: var(--soft); transform: rotate(-3deg); }
+.sheet--top .cover { object-position: 16% 50%; } /* the cover is landscape, the sheet is portrait: keep the headline side */
 .stack:hover .sheet--mid { transform: rotate(22deg) translate(14%, -4%); }
 .stack:hover .sheet--soft { transform: rotate(-20deg) translate(-12%, 3%); }
 .stack:hover .sheet--accent { transform: rotate(13deg) translate(8%, 5%); }
