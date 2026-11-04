@@ -159,6 +159,7 @@ export function initCollage() {
       }
       (want ? c.show : c.hide)(animated && !reduced());
     });
+    dispatchEvent(new Event('pagechange')); // the nav item of the open collage becomes the current one
     const now = collages.some((c) => c.open);
     if (now === locked) return;
     locked = now;
@@ -175,7 +176,9 @@ export function initCollage() {
   };
 
   const go = (route, animated = true) => {
-    history.pushState(null, '', route ?? location.pathname + location.search);
+    // closing returns to the page underneath (the router keeps its name in data-route), not always to home
+    const page = document.documentElement.dataset.route;
+    history.pushState(null, '', route ?? (page && page !== 'home' ? `#/${page}` : location.pathname + location.search));
     sync(animated);
   };
 

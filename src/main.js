@@ -450,6 +450,15 @@ addEventListener('scroll', paintHeader, { passive: true });
 addEventListener('resize', paintHeader);
 addEventListener('pagechange', paintHeader);
 
+// The underlined nav item is whatever is open: a collage over the page, else the page itself (none on home).
+const paintNav = () => {
+  const open = /^#\/(work|credentials)$/.exec(location.hash)?.[1] ?? document.documentElement.dataset.route;
+  document.querySelectorAll('.site-nav a').forEach((a) =>
+    a.getAttribute('href') === `#/${open}` ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'),
+  );
+};
+addEventListener('pagechange', paintNav);
+
 // Copy-to-clipboard buttons on the contact page.
 document.addEventListener('click', async (e) => {
   const b = e.target.closest('[data-copy]');

@@ -28,10 +28,7 @@ export function initRouter() {
     current = name;
     root.dataset.route = name; // not data-page: that attribute marks the page containers
     document.title = name === 'home' ? content.meta.title : `${labels[name]} — ${content.person.name}`;
-    document.querySelectorAll('.site-nav a').forEach((a) =>
-      a.getAttribute('href') === `#/${name}` ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'),
-    );
-    dispatchEvent(new Event('pagechange'));
+    dispatchEvent(new Event('pagechange')); // main.js repaints the header and the current nav item
   };
 
   // What changes once the new page is in place: scroll, focus, and the page's animations.
