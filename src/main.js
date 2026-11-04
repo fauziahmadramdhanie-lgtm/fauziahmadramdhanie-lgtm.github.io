@@ -430,8 +430,7 @@ document.getElementById('app').innerHTML =
   header() +
   `<main id="main">${homePage()}${aboutPage()}${contactPage()}</main>` +
   footer() +
-  collages() +
-  '<div class="curtain" data-curtain aria-hidden="true"><span></span></div>';
+  collages();
 
 setInterval(() => (document.querySelector('[data-clock]').textContent = clock()), 15000);
 

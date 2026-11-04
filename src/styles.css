@@ -336,7 +336,7 @@ a.icon-link:hover { background: var(--accent); border-color: var(--accent); colo
 .footer p { color: #a8a8a8; }
 .footer__note { margin-top: 8px; max-width: var(--measure); }
 
-/* While the curtain runs the scrollbar thumb is invisible (its width is kept): the page swap changes the
+/* While a page is revealed the scrollbar thumb is invisible (its width is kept): the swap changes the
    document height and the thumb would visibly jump. */
 html.is-transitioning { scrollbar-color: transparent transparent; }
 
@@ -346,12 +346,13 @@ html.is-transitioning { scrollbar-color: transparent transparent; }
 html[data-route='home'] .home-link { display: none; }
 .site-nav a[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; }
 
-/* Page change: an ink curtain sweeps up, shows the destination's name, and lifts off the top. */
-.curtain {
-  position: fixed; inset: 0; z-index: 200; display: none; place-items: center;
-  background: var(--ink); color: var(--bg); pointer-events: all;
+/* Page change: the new page is laid over the old one as a one-screen layer while the circle (router.js)
+   reveals it; the circle's clip-path is set inline. */
+.page-layer {
+  position: fixed; top: 0; left: 0; right: 0; height: 100svh; overflow: hidden; z-index: 79;
+  background: var(--bg);
 }
-.curtain span { font: 400 italic clamp(56px, 11vw, 160px)/1 var(--font-serif); }
+html.is-transitioning { pointer-events: none; } /* no clicks while a page is being revealed */
 
 /* Inner pages open with a giant title, like the hero's name. */
 .page-head { padding: 140px var(--pad) 32px; }

@@ -1,16 +1,19 @@
+import gsap from 'gsap';
 import content from './content.json';
-import { initAnimations } from './animations.js';
-import { sweep } from './curtain.js';
+import { initAnimations, startIntro, getLenis } from './animations.js';
+import { circle, reach } from './reveal.js';
 
-// Hash router over the pages in the DOM ([data-page]). "#/about" etc. swap the visible page behind the
-// curtain; no hash is home. "#/work" and "#/credentials" are not pages: the collages (collage.js) own them
-// and leave the page as it is.
+// Hash router over the pages in the DOM ([data-page]). "#/about" etc. reveal the new page inside a circle
+// that grows out of the clicked link, the same transition the collages use; no hash is home. "#/work" and
+// "#/credentials" are not pages: the collages (collage.js) own them and leave the page as it is.
 export function initRouter() {
   const pages = Object.fromEntries([...document.querySelectorAll('[data-page]')].map((p) => [p.dataset.page, p]));
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
   const labels = { home: content.ui.home, ...Object.fromEntries(content.ui.nav.map((n) => [n.target, n.label])) };
+  const root = document.documentElement;
   let current = null;
-  let target = null; // the page the latest request asked for; the swap shows this one
+  let busy = false;
+  let wanted = null; // a navigation requested mid-transition, replayed when it ends
 
   // '#/about' -> 'about', '' or '#/' -> 'home', '#/work' and '#/credentials' -> null (collages, not pages)
   const routeOf = (hash) => {
@@ -20,25 +23,68 @@ export function initRouter() {
   };
   const urlOf = (name) => (name === 'home' ? location.pathname + location.search : `#/${name}`);
 
-  const show = (name) => {
-    Object.entries(pages).forEach(([key, el]) => (el.hidden = key !== name));
+  // What changes once the new page is in place: state, title, nav, scroll, and the page's animations.
+  const settle = (name, introStarted) => {
     current = name;
-    document.documentElement.dataset.route = name; // not data-page: that attribute marks the page containers
+    root.dataset.route = name; // not data-page: that attribute marks the page containers
     document.title = name === 'home' ? content.meta.title : `${labels[name]} — ${content.person.name}`;
     document.querySelectorAll('.site-nav a').forEach((a) =>
       a.getAttribute('href') === `#/${name}` ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'),
     );
     scrollTo(0, 0);
-    initAnimations(pages[name]);
+    initAnimations(pages[name], { introStarted });
     pages[name].focus({ preventScroll: true });
     dispatchEvent(new Event('pagechange'));
   };
 
+  const show = (name) => {
+    Object.entries(pages).forEach(([key, el]) => (el.hidden = key !== name));
+    settle(name, false);
+  };
+
+  // The new page is laid over the old one as a fixed, one-screen layer and revealed by the growing circle;
+  // its entrance plays inside the circle. When the circle has covered the screen the old page goes and the
+  // layer becomes the page itself (same pixels, scroll 0). The scrollbar thumb stays invisible through the
+  // swap, so its jump (the document height changes) never shows.
+  const reveal = (name) => {
+    busy = true;
+    const next = pages[name];
+    root.classList.add('is-transitioning');
+    getLenis()?.stop();
+    next.style.clipPath = circle(0); // set before it shows: the tween below only renders on the next frame
+    next.hidden = false;
+    next.classList.add('page-layer');
+    startIntro(next);
+    gsap.fromTo(
+      next,
+      { clipPath: circle(0) },
+      {
+        clipPath: circle(reach()),
+        duration: 1,
+        ease: 'power3.inOut',
+        onComplete: () => {
+          Object.entries(pages).forEach(([key, el]) => (el.hidden = key !== name));
+          next.classList.remove('page-layer');
+          gsap.set(next, { clearProps: 'clipPath' });
+          settle(name, true);
+          setTimeout(() => root.classList.remove('is-transitioning'), 250);
+          busy = false;
+          if (wanted && wanted !== current) go(wanted, false);
+          wanted = null;
+        },
+      },
+    );
+  };
+
   const go = (name, push = true) => {
-    if (name === target) return;
-    target = name;
+    if (busy) {
+      wanted = name;
+      return;
+    }
+    if (name === current) return;
     if (push) history.pushState(null, '', urlOf(name));
-    sweep(labels[name], () => current !== target && show(target));
+    if (reduced()) show(name);
+    else reveal(name);
   };
 
   // Capture phase and registered after the collage's, so an open collage has closed before the page changes.
@@ -50,7 +96,7 @@ export function initRouter() {
       const name = routeOf(a.getAttribute('href'));
       if (!name) return;
       e.preventDefault();
-      if (name === target) scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' });
+      if (name === current && !busy) scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' });
       else go(name);
     },
     true,
@@ -60,6 +106,5 @@ export function initRouter() {
     if (name) go(name, false);
   });
 
-  target = routeOf(location.hash) ?? 'home'; // collage deep link: the collage opens over home
-  show(target);
+  show(routeOf(location.hash) ?? 'home'); // collage deep link: the collage opens over home
 }

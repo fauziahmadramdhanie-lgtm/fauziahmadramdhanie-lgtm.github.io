@@ -274,7 +274,16 @@ function ganttBars() {
 // build is killed first (its cleanups run: Lenis destroyed, splits reverted, triggers killed).
 let mm = null;
 let lastCleanup = null;
-export function initAnimations(page) {
+let started = null; // cleanup of an entrance already playing (see startIntro)
+
+// Plays a page's entrance now, while the router is still revealing it inside the growing circle; the next
+// initAnimations(page, { introStarted: true }) then keeps it instead of playing it a second time.
+export function startIntro(page) {
+  scope = page;
+  started = pageIntro();
+}
+
+export function initAnimations(page, { introStarted = false } = {}) {
   // kill() alone does not run the cleanups returned below (cursor, Lenis, splits would pile up on every
   // page change), so revert and run the last cleanup explicitly; every cleanup is safe to run twice.
   mm?.revert();
@@ -282,6 +291,7 @@ export function initAnimations(page) {
   lastCleanup?.();
   lastCleanup = null;
   scope = page;
+  const intro = introStarted ? started : null;
   mm = gsap.matchMedia();
   mm.add(
     {
@@ -295,7 +305,7 @@ export function initAnimations(page) {
 
       const cleanups = [smoothScroll()];
       if (desktop && fine) cleanups.push(customCursor());
-      cleanups.push(pageIntro());
+      cleanups.push(intro ?? pageIntro());
       // The pin goes first: ScrollTrigger measures later triggers against the pin spacer that exists by then.
       if (desktop) cleanups.push(numbersStage());
       cleanups.push(wordsScrub(desktop));

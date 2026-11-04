@@ -1,7 +1,6 @@
 import gsap from 'gsap';
-import content from './content.json';
 import { getLenis } from './animations.js';
-import { sweep } from './curtain.js';
+import { circle, reach } from './reveal.js';
 
 // Collages: fullscreen layers (hash routes #/work, #/credentials) holding tiles that pan with wheel, drag or
 // arrow keys. Each tile moves at its own speed (parallax) and wraps around, so the field never runs out.
@@ -50,28 +49,47 @@ export function initCollage() {
       }
     };
 
-    // The swap itself is instant: the shared curtain (curtain.js) hides it. Only the tiles' entrance plays after.
-    c.show = (intro) => {
+    c.show = (animated) => {
       c.open = true;
       root.inert = false;
+      root.style.zIndex = 81; // above a collage that is closing at the same moment
       measure();
       cur.x = cur.y = target.x = target.y = 0;
       gsap.ticker.add(tick);
       tick();
-      gsap.set(root, { autoAlpha: 1 });
+      root.style.clipPath = circle(0); // before it shows: the tween below only renders on the next frame
+      gsap.set(root, { autoAlpha: 1 }); // visible at once; the clip-path circle does the revealing
+      gsap.fromTo(
+        root,
+        { clipPath: circle(0) },
+        { clipPath: circle(reach()), duration: animated ? 1 : 0, ease: 'power3.inOut', overwrite: true, clearProps: 'clipPath' },
+      );
       gsap.fromTo(
         [title, ...tiles],
         { '--in': 0 },
-        { '--in': 1, duration: intro ? 1 : 0, delay: intro ? 0.35 : 0, stagger: 0.05, ease: 'power3.out', overwrite: 'auto' },
+        { '--in': 1, duration: animated ? 1 : 0, delay: animated ? 0.3 : 0, stagger: 0.05, ease: 'power3.out', overwrite: 'auto' },
       );
       root.querySelector('[data-collage-close]').focus({ preventScroll: true });
     };
 
-    c.hide = () => {
+    c.hide = (animated) => {
       c.open = false;
       root.inert = true;
-      gsap.set(root, { autoAlpha: 0 });
-      gsap.ticker.remove(tick);
+      root.style.zIndex = 80;
+      gsap.fromTo(
+        root,
+        { clipPath: circle(reach()) },
+        {
+          clipPath: circle(0),
+          duration: animated ? 0.8 : 0,
+          ease: 'power3.inOut',
+          overwrite: true,
+          onComplete: () => {
+            gsap.set(root, { autoAlpha: 0, clearProps: 'clipPath' });
+            if (!c.open) gsap.ticker.remove(tick);
+          },
+        },
+      );
     };
 
     root.querySelector('[data-collage-close]').addEventListener('click', () => go(null));
@@ -130,7 +148,7 @@ export function initCollage() {
   const collages = [...document.querySelectorAll('[data-collage]')].map(makeCollage);
 
   // Opens the collage whose route matches the hash and closes the others; the first to open locks the page.
-  const sync = (intro = true) => {
+  const sync = (animated = true) => {
     const was = collages.some((c) => c.open);
     collages.forEach((c) => {
       const want = location.hash === c.route;
@@ -139,7 +157,7 @@ export function initCollage() {
         opener = document.activeElement;
         lockY = scrollY;
       }
-      want ? c.show(intro && !reduced()) : c.hide();
+      (want ? c.show : c.hide)(animated && !reduced());
     });
     const now = collages.some((c) => c.open);
     if (now === locked) return;
@@ -156,17 +174,9 @@ export function initCollage() {
     }
   };
 
-  // Every change goes through the shared curtain; the swap reads the URL when it runs, so a request made
-  // while another is in flight (Work -> Credentials, or a collage closing as a page opens) ends up consistent.
-  const labels = { home: content.ui.home, ...Object.fromEntries(content.ui.nav.map((n) => [n.target, n.label])) };
-  const request = () => {
-    const next = collages.find((c) => location.hash === c.route);
-    sweep(next ? labels[next.name] : labels[document.documentElement.dataset.route] ?? labels.home, () => sync());
-  };
-
-  const go = (route) => {
+  const go = (route, animated = true) => {
     history.pushState(null, '', route ?? location.pathname + location.search);
-    request();
+    sync(animated);
   };
 
   // Capture phase: runs before the Lenis anchor handler and before the router, so an opener click is
@@ -176,14 +186,15 @@ export function initCollage() {
     (e) => {
       const a = e.target.closest('a');
       const next = collages.find((c) => c.name === a?.dataset.openCollage);
+      const href = a?.getAttribute('href');
       if (next) {
         e.preventDefault();
         go(next.route);
-      } else if (locked && a?.getAttribute('href')?.startsWith('#')) go(null);
+      } else if (locked && href?.startsWith('#')) go(null, !href.startsWith('#/')); // a page link: no second circle, the router reveals its page
     },
     true,
   );
-  addEventListener('popstate', request);
+  addEventListener('popstate', () => sync());
   addEventListener('keydown', (e) => e.key === 'Escape' && locked && go(null));
 
   sync(false); // deep link: opened straight on #/work or #/credentials
