@@ -114,7 +114,7 @@ const card = (w) => {
   const live = isUrl(w.url);
   const cover = coverHtml(w, { lazy: true, label: true });
   const body = `
-    <div class="card__media" data-reveal="expand">${cover}</div>
+    <div class="card__media" data-reveal="expand"${w.cover_ratio ? ` style="aspect-ratio:${w.cover_ratio}"` : ''}>${cover}</div>
     <div class="card__meta">
       <h3>${ph(w.title, 'Placeholder title')}</h3>
       <p>${esc(w.category)} · ${ph(w.year, '0000')}</p>
@@ -359,7 +359,7 @@ const DECO = ['accent', 'soft', 'muted'];
 const tile = (w, i) => {
   const [x, y, width, ratio, speed] = SLOTS[i % SLOTS.length];
   const attrs = (cls) =>
-    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio};--wh:40"`;
+    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${w?.cover_ratio ?? ratio};--wh:40"`;
   if (!w) return `<div ${attrs(`tile--deco tile--${DECO[(i >> 1) % DECO.length]}`)} aria-hidden="true"></div>`;
   const body = `<div class="tile__media">${coverHtml(w, { lazy: true })}</div>
     <p class="tile__cap">${ph(w.title, 'Placeholder title')}<span>${esc(w.category)}</span></p>`;
