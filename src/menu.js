@@ -33,7 +33,9 @@ export function initMenu() {
       tl.play();
       links[0].focus({ preventScroll: true });
     } else {
-      getLenis()?.start();
+      // A menu link starts a collage or a page change first (capture phase); those keep scrolling stopped.
+      const root = document.documentElement;
+      if (!root.classList.contains('collage-open') && !root.classList.contains('is-transitioning')) getLenis()?.start();
       tl.reverse();
     }
   };

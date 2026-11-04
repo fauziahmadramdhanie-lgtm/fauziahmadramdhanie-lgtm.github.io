@@ -438,7 +438,9 @@ setInterval(() => (document.querySelector('[data-clock]').textContent = clock())
 const headerBar = document.querySelector('[data-header]');
 const paintHeader = () => {
   const mid = headerBar.offsetHeight / 2;
-  const dark = [...document.querySelectorAll('[data-dark]')].some((el) => {
+  // During a page transition only the incoming page counts (it sits at scroll 0), not the old one under it.
+  const scope = document.querySelector('.page-layer') ?? document;
+  const dark = [...scope.querySelectorAll('[data-dark]')].some((el) => {
     const r = el.getBoundingClientRect();
     return r.height > 0 && r.top <= mid && r.bottom > mid;
   });

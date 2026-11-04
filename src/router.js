@@ -23,18 +23,23 @@ export function initRouter() {
   };
   const urlOf = (name) => (name === 'home' ? location.pathname + location.search : `#/${name}`);
 
-  // What changes once the new page is in place: state, title, nav, scroll, and the page's animations.
-  const settle = (name, introStarted) => {
+  // The header follows the destination from the first frame of a transition (back link, current item, color).
+  const chrome = (name) => {
     current = name;
     root.dataset.route = name; // not data-page: that attribute marks the page containers
     document.title = name === 'home' ? content.meta.title : `${labels[name]} — ${content.person.name}`;
     document.querySelectorAll('.site-nav a').forEach((a) =>
       a.getAttribute('href') === `#/${name}` ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'),
     );
+    dispatchEvent(new Event('pagechange'));
+  };
+
+  // What changes once the new page is in place: scroll, focus, and the page's animations.
+  const settle = (name, introStarted) => {
+    chrome(name);
     scrollTo(0, 0);
     initAnimations(pages[name], { introStarted });
     pages[name].focus({ preventScroll: true });
-    dispatchEvent(new Event('pagechange'));
   };
 
   const show = (name) => {
@@ -55,6 +60,7 @@ export function initRouter() {
     next.hidden = false;
     next.classList.add('page-layer');
     startIntro(next);
+    chrome(name);
     gsap.fromTo(
       next,
       { clipPath: circle(0) },
@@ -78,6 +84,7 @@ export function initRouter() {
 
   const go = (name, push = true) => {
     if (busy) {
+      if (push && name !== (wanted ?? current)) history.pushState(null, '', urlOf(name)); // the URL follows the click, the page follows later
       wanted = name;
       return;
     }
