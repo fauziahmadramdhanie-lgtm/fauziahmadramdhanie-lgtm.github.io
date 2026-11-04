@@ -193,7 +193,13 @@ export function initCollage() {
       if (next) {
         e.preventDefault();
         go(next.route);
-      } else if (locked && href?.startsWith('#')) go(null, !href.startsWith('#/')); // a page link: no second circle, the router reveals its page
+      } else if (locked && href?.startsWith('#')) {
+        // A link to another page: no second circle, the router reveals that page. A link to the page already
+        // underneath (or an in-page anchor) is just a close, so the collage shrinks into it.
+        const under = document.documentElement.dataset.route;
+        const same = href === `#/${under}` || (under === 'home' && /^#\/?$/.test(href));
+        go(null, same || !href.startsWith('#/'));
+      }
     },
     true,
   );
