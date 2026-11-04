@@ -274,7 +274,8 @@ const aboutPage = () => `
   </div>`;
 
 // ---------- Contact ----------
-// Dark page like the home hero: the contact links as large rows, the big headline docked at the bottom.
+// Dark page: the big headline on top, then a full-width photo that tilts as it scrolls, with the contact links
+// in a card laid over it.
 const shown = (url) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 const contactRow = (label, href, value, copy) => {
   const live = isUrl(href) || href?.startsWith('mailto:');
@@ -293,13 +294,16 @@ const contactRow = (label, href, value, copy) => {
 const contactPage = () => `
   <div data-page="contact" hidden tabindex="-1">
     <section class="contact-page" data-dark>
+      <h1 class="contact-page__title" data-intro="0" data-intro-chars>${esc(content.contact.headline)}</h1>
+    </section>
+    <section class="contact-photo" data-dark data-tilt>
+      <div class="contact-photo__tilt">${portraitImg()}</div>
       <ul class="contact-rows">
         ${contactRow('Email', `mailto:${person.email}`, person.email, person.email)}
         ${contactRow('LinkedIn', person.links.linkedin, shown(person.links.linkedin ?? ''))}
         ${contactRow('irfolks', person.links.irfolks, shown(person.links.irfolks ?? ''))}
         ${contactRow(ui.cv, person.links.cv, ui.cvOpen)}
       </ul>
-      <h1 class="contact-page__title" data-intro="0" data-intro-chars>${esc(content.contact.headline)}</h1>
     </section>
   </div>`;
 

@@ -284,6 +284,24 @@ function expandCovers() {
   });
 }
 
+// The contact photo is oversized inside its frame and swings through a small 3D tilt (plus a slow zoom and drift)
+// while it crosses the screen, so the angle of the picture follows the scroll.
+function photoTilt() {
+  $$('[data-tilt]').forEach((frame) => {
+    const tilt = frame.firstElementChild;
+    gsap
+      .timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: true },
+      })
+      .fromTo(
+        tilt,
+        { rotationX: 8, rotationY: -6, scale: 1.25, yPercent: -6 },
+        { rotationX: -8, rotationY: 6, scale: 1.08, yPercent: 6 },
+      );
+  });
+}
+
 // 8. Odometer: each digit column rolls from 0 to its value.
 // CSS already parks every roll on its final digit, so reduced-motion users see the real number.
 // y: 0 drops the px GSAP derives from the inline translateY(%) fallback.
@@ -396,6 +414,7 @@ export function initAnimations(page, { introStarted = false } = {}) {
       cleanups.push(textReveals());
       fadeBlocks(desktop);
       expandCovers();
+      photoTilt();
       ganttBars();
       if (!desktop) odometers();
       lastCleanup = () => cleanups.forEach((fn) => fn());
