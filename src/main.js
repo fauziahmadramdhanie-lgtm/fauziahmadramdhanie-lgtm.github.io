@@ -93,7 +93,7 @@ const heroSection = () => `
       )} · ${esc(since)}</p>
     </div>
     ${stack()}
-    <h1 class="hero__name" data-intro="0">${esc(hero.big_text)}</h1>
+    <h1 class="hero__name" data-intro="0" data-intro-chars>${esc(hero.big_text)}</h1>
     <div class="hero__side" data-intro-fade>
       <p class="hero__copy">${esc(hero.copyright_line)}</p>
     </div>
@@ -188,7 +188,7 @@ const row = (a, b, c) => `
 // Big title at the top of every inner page; [data-intro] makes it rise line by line on entry.
 const pageHead = (title, lede) => `
   <section class="page-head">
-    <h1 class="page-title" data-intro="0">${esc(title)}</h1>
+    <h1 class="page-title" data-intro="0" data-intro-chars>${esc(title)}</h1>
     ${lede ? `<p class="page-lede" data-intro="1">${esc(lede)}</p>` : ''}
   </section>`;
 
@@ -299,7 +299,7 @@ const contactPage = () => `
         ${contactRow('irfolks', person.links.irfolks, shown(person.links.irfolks ?? ''))}
         ${contactRow(ui.cv, person.links.cv, ui.cvOpen)}
       </ul>
-      <h1 class="contact-page__title" data-intro="0">${esc(content.contact.headline)}</h1>
+      <h1 class="contact-page__title" data-intro="0" data-intro-chars>${esc(content.contact.headline)}</h1>
     </section>
   </div>`;
 

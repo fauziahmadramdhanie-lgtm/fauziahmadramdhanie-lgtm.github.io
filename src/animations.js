@@ -85,12 +85,21 @@ function pageIntro(delay = 0) {
   if (fades.length) gsap.set(fades, { autoAlpha: 0, y: 24 });
   if (sheets.length) gsap.set(sheets, { '--pop': 1 }); // CSS turns --pop into translate + opacity, so :hover transforms stay intact
 
-  const lines = new Map();
+  const charEls = new Set(parts.filter((el) => 'introChars' in el.dataset)); // big titles: letter by letter
+  const lines = new Map(); // element -> what rises (its lines, or its letters for charEls)
   let tl;
   const play = () => {
     tl = gsap.timeline({ delay, defaults: { ease: 'power4.out' } });
     if (parts.length) tl.set(parts, { autoAlpha: 1 });
-    parts.forEach((el, i) => tl.from(lines.get(el), { yPercent: 110, duration: i ? 0.9 : 1.1, stagger: 0.08 }, i * 0.22));
+    parts.forEach((el, i) =>
+      tl.from(
+        lines.get(el),
+        charEls.has(el)
+          ? { yPercent: 115, rotate: 7, duration: 0.95, stagger: 0.035 }
+          : { yPercent: 110, duration: i ? 0.9 : 1.1, stagger: 0.08 },
+        i * 0.22,
+      ),
+    );
     if (sheets.length) tl.to(sheets, { '--pop': 0, duration: 1, stagger: 0.07 }, 0.5);
     if (fades.length) tl.to(fades, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12 }, 0.8);
   };
@@ -100,19 +109,51 @@ function pageIntro(delay = 0) {
   }
   const splits = parts.map((el) =>
     SplitText.create(el, {
-      type: 'lines',
+      type: charEls.has(el) ? 'lines,chars' : 'lines',
+      charsClass: 'ch',
       mask: 'lines',
       autoSplit: true, // re-splits on resize; only the first round animates (timeline is not returned on purpose)
       onSplit(self) {
         const first = !lines.has(el);
-        lines.set(el, self.lines);
+        lines.set(el, charEls.has(el) ? self.chars : self.lines);
         if (first && lines.size === parts.length) play();
       },
     }),
   );
+  const stopHover = charEls.size ? hoverChars(() => [...charEls].flatMap((el) => lines.get(el) ?? [])) : () => {};
   return () => {
+    stopHover();
     tl?.kill();
     splits.forEach((s) => s.revert());
+  };
+}
+
+// Big titles light up letter by letter under the pointer (--hot 0 -> 1 -> 0, mixed into the color in CSS).
+// The titles ignore the mouse themselves (pointer-events: none), so letters are hit-tested by position.
+function hoverChars(getChars) {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return () => {};
+  const hot = new Set();
+  let pt = null;
+  let raf = 0;
+  const frame = () => {
+    raf = 0;
+    for (const c of getChars()) {
+      const r = c.getBoundingClientRect();
+      const on = pt && pt.x > r.left - 4 && pt.x < r.right + 4 && pt.y > r.top && pt.y < r.bottom;
+      if (on === hot.has(c)) continue;
+      on ? hot.add(c) : hot.delete(c);
+      gsap.to(c, { '--hot': on ? 1 : 0, duration: on ? 0.12 : 0.9, ease: on ? 'power2.out' : 'power2.inOut', overwrite: 'auto' });
+    }
+  };
+  const move = (e) => {
+    pt = { x: e.clientX, y: e.clientY };
+    raf ||= requestAnimationFrame(frame);
+  };
+  addEventListener('pointermove', move, { passive: true });
+  return () => {
+    removeEventListener('pointermove', move);
+    cancelAnimationFrame(raf);
+    gsap.killTweensOf([...hot]);
   };
 }
 
@@ -188,7 +229,7 @@ function heroFade() {
 // Every content block fades and rises in as it enters and fades out as it leaves, scrubbed to the scroll
 // (Lenis already smooths it, so scrub: true avoids a second layer of lag).
 const FADE_TARGETS =
-  '.section__title, .lede, .sub, .card, .process li, .facts > div, .row, .faq details, .contact__title, .btn';
+  '.card, .process li, .facts > div, .row, .faq details, .btn';
 function fadeBlocks(desktop) {
   // On desktop the stats live in the pinned numbers stage, which owns their opacity.
   $$(desktop ? FADE_TARGETS : `${FADE_TARGETS}, .stat`).forEach((el) => {
@@ -201,6 +242,36 @@ function fadeBlocks(desktop) {
       .to(el, { duration: 0.6 }) // hold fully visible
       .to(el, { opacity: 0, y: -30, duration: 0.2 });
   });
+}
+
+// Headings rise line by line out of a mask the first time they scroll into view.
+const TEXT_TARGETS = '.section__title, .sub, .contact__title';
+function textReveals() {
+  const tweens = []; // onSplit may run after the matchMedia context is gone (fonts), so they are tracked by hand
+  const splits = $$(TEXT_TARGETS).map((el) => {
+    let first = true;
+    return SplitText.create(el, {
+      type: 'lines',
+      mask: 'lines',
+      autoSplit: true, // re-splits on resize; only the first round animates (the tween is not returned on purpose)
+      onSplit(self) {
+        if (!first) return;
+        first = false;
+        const tween = gsap.from(self.lines, {
+          yPercent: 110,
+          duration: 1,
+          ease: 'power4.out',
+          stagger: 0.09,
+          scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+        });
+        tweens.push(tween);
+      },
+    });
+  });
+  return () => {
+    tweens.forEach((t) => (t.scrollTrigger?.kill(), t.kill()));
+    splits.forEach((s) => s.revert());
+  };
 }
 
 // 7. Cover strips widen as they scroll in; the image settles from 1.2x. Transform/clip-path only.
@@ -322,6 +393,7 @@ export function initAnimations(page, { introStarted = false } = {}) {
       if (desktop) cleanups.push(numbersStage());
       cleanups.push(wordsScrub(desktop));
       heroFade();
+      cleanups.push(textReveals());
       fadeBlocks(desktop);
       expandCovers();
       ganttBars();

@@ -131,6 +131,9 @@ html.menu-open { overflow: hidden; }
   .menu-toggle, .menu { display: none; }
 }
 
+/* Big titles split into letters (.ch): --hot (0..1, tweened on hover) mixes the accent into the letter. */
+.ch { color: color-mix(in srgb, var(--accent) calc(var(--hot, 0) * 100%), currentColor); }
+
 /* ---------- Cursor [anim-4] ---------- */
 .cursor {
   position: fixed; left: 0; top: 0; z-index: 300; pointer-events: none;
