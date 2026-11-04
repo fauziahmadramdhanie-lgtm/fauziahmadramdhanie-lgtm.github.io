@@ -96,6 +96,7 @@ export function initRouter() {
       { clipPath: from },
       {
         clipPath: to,
+        paused: true, // started below, once the layer has been laid out and painted
         duration: closing ? 0.9 : 1,
         ease: 'power3.inOut',
         onComplete: () => {
@@ -108,8 +109,15 @@ export function initRouter() {
         },
       },
     );
+    // Un-hiding a tall page and splitting its title can stall the first frames; the animation clock only starts
+    // after they are painted (lag smoothing is off for Lenis), otherwise the circle would jump ahead.
+    const start = () => armed && ((armed = false), tween.play());
+    let armed = true;
+    requestAnimationFrame(() => requestAnimationFrame(start));
+    setTimeout(start, 120); // a hidden tab pauses rAF
     flight = () => {
       flight = null;
+      armed = false;
       tween.kill();
       removeEventListener('scroll', pin);
       cancelIntro();
