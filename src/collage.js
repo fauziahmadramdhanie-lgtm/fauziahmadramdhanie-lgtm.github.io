@@ -24,12 +24,13 @@ export function initCollage() {
     const cur = { x: 0, y: 0 };
     const target = { x: 0, y: 0 };
     const k = +root.dataset.field || 1.5; // field size as a multiple of the viewport
+    const kNarrow = +root.dataset.fieldNarrow || k; // its width on phones
     const c = { name, route, root, open: false };
     let field = { w: 0, h: 0 };
     let items = [];
 
     const measure = () => {
-      field = { w: innerWidth * k, h: innerHeight * k };
+      field = { w: innerWidth * (innerWidth < 768 ? kNarrow : k), h: innerHeight * k };
       items = tiles.map((el) => ({
         el,
         x0: el.dataset.x * field.w,

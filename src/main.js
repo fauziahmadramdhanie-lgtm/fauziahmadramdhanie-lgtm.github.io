@@ -368,18 +368,18 @@ const CRED_SLOTS = [
   [0.12, -0.12, 26, 1.4, 1],
   [-0.12, 0.12, 26, 1.4, 1],
   [0.12, 0.12, 26, 1.4, 1],
-  [-0.3, -0.12, 26, 1.4, 1],
-  [0.3, -0.12, 26, 1.4, 1],
-  [-0.3, 0.12, 26, 1.4, 1],
-  [0.3, 0.12, 26, 1.4, 1],
-  [-0.12, -0.3, 26, 1.4, 1],
-  [0.12, -0.3, 26, 1.4, 1],
-  [-0.12, 0.3, 26, 1.4, 1],
-  [0.12, 0.3, 26, 1.4, 1],
-  [-0.3, -0.3, 26, 1.4, 1],
-  [0.3, -0.3, 26, 1.4, 1],
-  [-0.3, 0.3, 26, 1.4, 1],
-  [0.3, 0.3, 26, 1.4, 1],
+  [-0.34, -0.12, 26, 1.4, 1],
+  [0.34, -0.12, 26, 1.4, 1],
+  [-0.34, 0.12, 26, 1.4, 1],
+  [0.34, 0.12, 26, 1.4, 1],
+  [-0.12, -0.36, 26, 1.4, 1],
+  [0.12, -0.36, 26, 1.4, 1],
+  [-0.12, 0.36, 26, 1.4, 1],
+  [0.12, 0.36, 26, 1.4, 1],
+  [-0.34, -0.36, 26, 1.4, 1],
+  [0.34, -0.36, 26, 1.4, 1],
+  [-0.34, 0.36, 26, 1.4, 1],
+  [0.34, 0.36, 26, 1.4, 1],
 ];
 
 const credTile = (c, i) => {
@@ -401,8 +401,9 @@ const credTile = (c, i) => {
   </div>`;
 };
 
-const collageHtml = (name, label, title, tiles, field) => `
-  <div class="collage" data-collage="${name}" data-field="${field}" role="region" aria-label="${esc(label)}" inert>
+// field: pan field as a multiple of the viewport; narrow (optional): its width multiple on phones, where tiles are bigger.
+const collageHtml = (name, label, title, tiles, field, narrow = field) => `
+  <div class="collage" data-collage="${name}" data-field="${field}" data-field-narrow="${narrow}" role="region" aria-label="${esc(label)}" inert>
     <h2 class="collage__title" aria-hidden="true">${esc(title)}</h2>
     ${tiles.join('')}
     <button class="collage__close" type="button" data-collage-close>${esc(ui.close)}</button>
@@ -423,6 +424,7 @@ const collages = () =>
     // Two orange blocks (null) take slots 1 and 2, diagonal in the inner ring like the Work collage's.
     [content.credentials[0], null, null, ...content.credentials.slice(1)].map(credTile),
     1.9,
+    2.2, // phones: two 166px columns only fit side by side, outside the screen edges, on a wider field
   );
 
 document.getElementById('app').innerHTML =
