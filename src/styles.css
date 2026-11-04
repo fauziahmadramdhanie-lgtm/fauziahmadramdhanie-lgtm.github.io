@@ -336,6 +336,10 @@ a.icon-link:hover { background: var(--accent); border-color: var(--accent); colo
 .footer p { color: #a8a8a8; }
 .footer__note { margin-top: 8px; max-width: var(--measure); }
 
+/* While the curtain runs the scrollbar thumb is invisible (its width is kept): the page swap changes the
+   document height and the thumb would visibly jump. */
+html.is-transitioning { scrollbar-color: transparent transparent; }
+
 /* ---------- Pages ---------- */
 .home-link { margin-right: auto; font-size: 14px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
 .home-link:hover { text-decoration: underline; text-underline-offset: 6px; }
