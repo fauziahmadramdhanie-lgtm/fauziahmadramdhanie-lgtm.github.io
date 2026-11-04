@@ -51,31 +51,42 @@ export function initRouter() {
   // its entrance plays inside the circle. When the circle has covered the screen the old page goes and the
   // layer becomes the page itself (same pixels, scroll 0). The scrollbar thumb stays invisible through the
   // swap, so its jump (the document height changes) never shows.
+  // Going back home is the same circle played the other way, like a collage closing: the page you are on
+  // (scrolled or not) shrinks into the link while home waits under it as the layer.
   const reveal = (name) => {
     busy = true;
-    const next = pages[name];
+    const closing = name === 'home';
+    const old = pages[current];
+    const moving = closing ? old : pages[name]; // the page the circle clips
     root.classList.add('is-transitioning');
     getLenis()?.stop();
     const y = scrollY;
+    const dy = closing ? y : 0; // a scrolled page is clipped in its own coordinates
     const pin = () => scrollY !== y && scrollTo(0, y); // overflow is not locked (see styles.css), so undo wheel/keys
-    next.style.clipPath = circle(0); // set before it shows: the tween below only renders on the next frame
-    next.hidden = false;
-    next.classList.add('page-layer');
+    const [from, to] = closing ? [circle(reach(), dy), circle(0, dy)] : [circle(0), circle(reach())];
+    moving.style.clipPath = from; // set before it shows: the tween below only renders on the next frame
+    pages[name].hidden = false;
+    if (closing) {
+      pages.home.classList.add('page-layer', 'page-layer--under');
+      old.classList.add('page-closing');
+    } else pages[name].classList.add('page-layer');
     addEventListener('scroll', pin);
-    startIntro(next);
+    startIntro(pages[name], closing ? 0.15 : 0.4);
     chrome(name);
     gsap.fromTo(
-      next,
-      { clipPath: circle(0) },
+      moving,
+      { clipPath: from },
       {
-        clipPath: circle(reach()),
-        duration: 1,
+        clipPath: to,
+        duration: closing ? 0.9 : 1,
         ease: 'power3.inOut',
         onComplete: () => {
           removeEventListener('scroll', pin);
-          Object.entries(pages).forEach(([key, el]) => (el.hidden = key !== name));
-          next.classList.remove('page-layer');
-          gsap.set(next, { clearProps: 'clipPath' });
+          Object.entries(pages).forEach(([key, el]) => {
+            el.hidden = key !== name;
+            el.classList.remove('page-layer', 'page-layer--under', 'page-closing');
+          });
+          gsap.set(moving, { clearProps: 'clipPath' });
           settle(name, true);
           setTimeout(() => root.classList.remove('is-transitioning'), 250);
           busy = false;

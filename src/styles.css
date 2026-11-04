@@ -355,6 +355,9 @@ html[data-route='home'] .home-link { display: none; }
   position: fixed; top: 0; left: 0; right: 0; height: 100svh; overflow: hidden; z-index: 79;
   background: var(--bg);
 }
+/* Going home: home waits under the page you are leaving, which stays in the flow (scroll kept) and shrinks away. */
+.page-layer--under { z-index: 78; }
+.page-closing { position: relative; z-index: 79; background: var(--bg); }
 html.is-transitioning { pointer-events: none; } /* no clicks while a page is being revealed */
 
 /* Inner pages open with a giant title, like the hero's name. */
