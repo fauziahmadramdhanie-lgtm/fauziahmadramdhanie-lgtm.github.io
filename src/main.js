@@ -388,6 +388,7 @@ const credTile = (c, i) => {
   // vw-based width alone would make a tile taller than the gap between rows.
   const attrs = (cls) =>
     `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio};--wh:34"`;
+  if (!c) return `<div ${attrs('tile--deco tile--accent')} aria-hidden="true"></div>`;
   const year = isTodo(c.year) ? '' : ` · ${esc(c.year)}`;
   if (isTodo(c.image)) {
     return `<div ${attrs('tile--text')}>
@@ -419,7 +420,8 @@ const collages = () =>
     'credentials',
     ui.sections.credentials,
     ui.sections.credentials,
-    content.credentials.map(credTile),
+    // Two orange blocks (null) take slots 1 and 2, diagonal in the inner ring like the Work collage's.
+    [content.credentials[0], null, null, ...content.credentials.slice(1)].map(credTile),
     1.9,
   );
 
