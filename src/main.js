@@ -297,7 +297,7 @@ const contactPage = () => `
       <h1 class="contact-page__title" data-intro="0" data-intro-chars>${esc(content.contact.headline)}</h1>
     </section>
     <section class="contact-photo" data-dark data-tilt>
-      <div class="contact-photo__tilt">${portraitImg()}</div>
+      <div class="contact-photo__tilt"><img class="cover" src="${esc(content.contact.photo)}" alt="${esc(content.contact.photo_alt)}" width="2000" height="1297" loading="lazy" /></div>
       <ul class="contact-rows">
         ${contactRow('Email', `mailto:${person.email}`, person.email, person.email)}
         ${contactRow('LinkedIn', person.links.linkedin, shown(person.links.linkedin ?? ''))}

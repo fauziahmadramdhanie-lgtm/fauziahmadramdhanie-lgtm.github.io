@@ -425,7 +425,6 @@ html[data-route='home'] .page-close, html.collage-open .page-close, html.menu-op
 .contact-page { position: relative; overflow-x: clip; padding-block: 112px 28px; background: var(--ink); color: var(--bg); }
 .contact-photo { position: relative; overflow: hidden; height: 100svh; perspective: 1200px; background: var(--ink); color: var(--bg); }
 .contact-photo__tilt { position: absolute; inset: 0; will-change: transform; }
-.contact-photo .cover { object-position: 50% 12%; }
 .contact-rows {
   position: absolute; z-index: 2; left: var(--pad); right: calc(var(--pad) + 36px); bottom: var(--pad); /* clear of the mode slider */
   background: var(--bg); color: var(--ink); padding: 6px clamp(16px, 2vw, 28px);
@@ -458,7 +457,6 @@ a.contact-row__link:hover .contact-row__arrow, a.contact-row__link:focus-visible
 .contact-row__label { grid-column: 1 / -1; }
 .contact-page__title { font-size: clamp(64px, 15.5vw, 280px); line-height: 0.9; position: relative; z-index: 3; pointer-events: none; }
 @media (min-width: 768px) {
-  .contact-photo__tilt { left: -30%; } /* the face sits left of the card */
   .contact-rows { left: auto; right: calc(var(--pad) + 48px); top: 50%; bottom: auto; translate: 0 -50%; width: min(600px, 46vw); }
 }
 @media (prefers-reduced-motion: reduce) { .contact-row__link, .contact-row__arrow, .contact-row__copy { transition: none; } }

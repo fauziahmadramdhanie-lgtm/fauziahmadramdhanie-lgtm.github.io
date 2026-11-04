@@ -123,6 +123,8 @@
     "headline": "Let's talk.",
     "intro": "Policy analysis, institutional affairs, and international cooperation roles in government, multilateral organizations, and think tanks.",
     "cta": "Get in touch",
+    "photo": "/assets/contact.webp",
+    "photo_alt": "Glass office towers seen from below",
     "form_endpoint": "TODO: Formspree/Getform endpoint (free tier) — or use mailto fallback"
   },
   "footer": {
