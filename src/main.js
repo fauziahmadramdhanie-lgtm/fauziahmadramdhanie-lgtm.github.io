@@ -278,7 +278,7 @@ const aboutPage = () => `
 // in a card laid over it.
 const shown = (url) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 const contactRow = (label, href, value, copy) => {
-  const live = isUrl(href) || href?.startsWith('mailto:');
+  const live = isUrl(href) || href?.startsWith('mailto:') || href?.startsWith('tel:');
   const inner = `<span class="contact-row__label">${esc(label)}</span><span class="contact-row__value">${live ? esc(value) : `<span class="ph">Placeholder link</span>`}</span><span class="contact-row__arrow" aria-hidden="true">→</span>`;
   return `
     <li class="contact-row" data-intro-fade>
@@ -301,8 +301,8 @@ const contactPage = () => `
       <ul class="contact-rows">
         ${contactRow('Email', `mailto:${person.email}`, person.email, person.email)}
         ${contactRow('LinkedIn', person.links.linkedin, shown(person.links.linkedin ?? ''))}
-        ${contactRow('irfolks', person.links.irfolks, shown(person.links.irfolks ?? ''))}
-        ${contactRow(ui.cv, person.links.cv, ui.cvOpen)}
+        ${contactRow('Phone', `tel:${person.phone.replaceAll(' ', '')}`, person.phone, person.phone)}
+        ${contactRow('Instagram', person.links.instagram, '@' + person.links.instagram.split('/').pop())}
       </ul>
     </section>
   </div>`;
