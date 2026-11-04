@@ -81,7 +81,7 @@ const portraitImg = (lazy = true) =>
 // ---------- Home ----------
 const stack = () => `
   <a class="stack" href="#/work" data-open-collage="work" data-cursor="arrow" aria-label="${esc(ui.sections.work)}">
-    ${sheets(coverHtml(content.work[0]))}
+    ${sheets(coverHtml({ cover: content.work[0].cover_tall ?? content.work[0].cover }))}
   </a>`;
 
 const heroSection = () => `
