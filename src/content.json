@@ -47,10 +47,10 @@
     { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor.", "image": "TODO: /assets/stat-gpa.webp" }
   ],
   "experience": [
-    { "org": "Ministry of Trade (Kemendag), Ditjen PEN", "role": "TODO: confirm — internship, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
-    { "org": "Financial Services Authority (OJK), East Java", "role": "Assistant Intern, Consumer Education and Protection Department", "period": "Apr 2026 – May 2026", "summary": "Reviewed and processed more than 50 consumer dispute cases in the IASC portal. Mapped the mediation workflow between consumers and financial service providers to identify benchmarks for handling cases consistently. Internship evaluation: 9.0/10 (Very Good), assessed by OJK East Java." },
-    { "org": "Bank Indonesia, Kediri Representative Office", "role": "Assistant Intern, Public Relations", "period": "Sep 2025 – Dec 2025", "summary": "Wrote at least five analytical reports on regional inflation and food security, used as input at TPID coordination meetings. Coordinated the publication of more than ten institutional programs with local governments, universities and community organizations, and handled documentation for stakeholder events. Delivered public education sessions on QRIS and digital financial literacy for 300+ participants." },
-    { "org": "Wesclic Indonesia Neotech", "role": "Copywriter Intern", "period": "May 2025 – Aug 2025", "summary": "Wrote more than 100 research-based, SEO-optimized articles on MSME digitalization. Adapted technical business topics for non-technical small-business owners, and worked with the marketing team on brand messaging." }
+    { "org": "Ministry of Trade (Kemendag)", "unit": "Directorate General of National Export Development (Ditjen PEN)", "role": "TODO: confirm — internship, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
+    { "org": "Financial Services Authority (OJK)", "unit": "East Java Provincial Office, Surabaya", "role": "Assistant Intern, Consumer Education and Protection Department", "period": "Apr 2026 – May 2026", "summary": "Reviewed and processed more than 50 consumer dispute cases in the IASC portal. Mapped the mediation workflow between consumers and financial service providers to identify benchmarks for handling cases consistently. Internship evaluation: 9.0/10 (Very Good), assessed by OJK East Java." },
+    { "org": "Bank Indonesia", "unit": "Kediri Representative Office", "role": "Assistant Intern, Public Relations", "period": "Sep 2025 – Dec 2025", "summary": "Wrote at least five analytical reports on regional inflation and food security, used as input at TPID coordination meetings. Coordinated the publication of more than ten institutional programs with local governments, universities and community organizations, and handled documentation for stakeholder events. Delivered public education sessions on QRIS and digital financial literacy for 300+ participants." },
+    { "org": "Wesclic Indonesia Neotech", "unit": "Yogyakarta", "role": "Copywriter Intern", "period": "May 2025 – Aug 2025", "summary": "Wrote more than 100 research-based, SEO-optimized articles on MSME digitalization. Adapted technical business topics for non-technical small-business owners, and worked with the marketing team on brand messaging." }
   ],
   "work": [
     {
@@ -81,14 +81,13 @@
     { "n": "04", "title": "Coordinate", "text": "Share drafts with the people involved and follow up until the work is delivered." }
   ],
   "education": [
-    { "school": "Universitas Darussalam Gontor (UNIDA Gontor), 2022–2026", "degree": "B.A. International Relations, concentration in International Political Economy", "note": "GPA 3.82 / 4.00, cum laude. Bank Indonesia Scholarship awardee for 2024–2025 and 2025–2026. Class president of the Class of 2022. Also: PILMAPRES finalist (2024); presenter at the International Conference on Islamic & Halal Economic Studies, Universiti Kebangsaan Malaysia (2023); first place, Genbiversary National Debate Competition (2024)." },
-    { "school": "SMAT Darussalam Tasikmalaya, 2019–2022", "degree": "Senior high school, Mathematics and Natural Sciences (full boarding)", "note": "Student organization president: 93 active members across 21 divisions. Average academic score 87.8." }
+    { "school": "Universitas Darussalam Gontor (UNIDA Gontor)", "period": "2022–2026", "degree": "B.A. International Relations, concentration in International Political Economy", "figure": "3.82", "figureNote": "GPA out of 4.00, cum laude", "points": ["Bank Indonesia Scholarship awardee, 2024–2025 and 2025–2026","Class president, Class of 2022","PILMAPRES finalist, 2024","Presenter, International Conference on Islamic & Halal Economic Studies, Universiti Kebangsaan Malaysia, 2023","First place, Genbiversary National Debate Competition, 2024"] },
+    { "school": "SMAT Darussalam Tasikmalaya", "period": "2019–2022", "degree": "Senior high school, Mathematics and Natural Sciences (full boarding)", "figure": "87.8", "figureNote": "average academic score", "points": ["Student organization president: 93 active members across 21 divisions"] }
   ],
   "skills": [
-    { "title": "Data and analysis", "text": "Data analysis in Microsoft Excel (Microsoft Office Specialist, Excel Associate 2019), market research, and policy and report writing. At Bank Indonesia and OJK this meant regional economic reports and consumer case review." },
-    { "title": "Communication", "text": "Public speaking, SEO and copywriting, and correspondence with institutional stakeholders. Liaison officer for Ministry of Foreign Affairs officials and diplomats at an institutional event." },
-    { "title": "Coordination", "text": "Cross-team coordination, project and event management, and administration. Led a 93-member student organization at school and the external division of the university IR student association." },
-    { "title": "Process improvement", "text": "Redesigned the KPI framework of GenBI Ponorogo and mapped benchmarks for handling consumer disputes at OJK." }
+    { "title": "Data & Analytics", "items": ["Microsoft Excel (Microsoft Certified)","Data analysis","Market research","Policy & report writing"] },
+    { "title": "Communication", "items": ["Public speaking","SEO content writing","Stakeholder engagement","Negotiation","Copywriting"] },
+    { "title": "Management", "items": ["Cross-functional team coordination","Project & event management","Administrative governance"] }
   ],
   "credentials": [
     { "kind": "award", "name": "PILMAPRES 2024", "detail": "Top five finalist, UNIDA Gontor", "year": "2024", "image": "/assets/credentials/pilmapres.webp" },
@@ -115,10 +114,10 @@
     { "org": "International Community Service, Malaysia (UNIDA Gontor)", "role": "Volunteer", "period": "Jun 2023 – Dec 2023", "summary": "Tutored stateless migrant children and ran educational activities for them, together with other volunteers and local communities." }
   ],
   "languages": [
-    { "name": "Indonesian", "level": "Native" },
-    { "name": "English", "level": "B2, professional working proficiency" },
-    { "name": "Arabic", "level": "B2, professional working proficiency" },
-    { "name": "French", "level": "Elementary" }
+    { "name": "Indonesian", "level": "Native", "bars": 5 },
+    { "name": "English", "level": "Professional working (B2)", "bars": 3 },
+    { "name": "Arabic", "level": "Professional working (B2)", "bars": 3 },
+    { "name": "French", "level": "Elementary", "bars": 1 }
   ],
   "faq": [
     { "q": "What are you working on right now?", "a": "I work at the Ministry of Trade (Directorate General of National Export Development) since August 2026, and write on economics and geopolitics at irfolks." },
@@ -158,7 +157,7 @@
     ],
     "sections": {
       "about": "About",
-      "skills": "Strengths",
+      "skills": "Skills",
       "work": "Selected work",
       "stats": "At a glance",      "process": "How I work",
       "experience": "Experience",

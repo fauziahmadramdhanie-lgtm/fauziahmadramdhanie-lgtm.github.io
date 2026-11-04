@@ -1,3 +1,4 @@
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import content from './content.json';
 import 'lenis/dist/lenis.css';
 import './styles.css';
@@ -177,22 +178,6 @@ const homePage = () => `
   <div data-page="home" tabindex="-1">${heroSection()}${marquee()}${work()}${stats()}${teaser()}</div>`;
 
 // ---------- Shared bits ----------
-const row = (a, b, c) => `
-  <li class="row">
-    <span class="row__a">${a}</span>
-    <span class="row__b">${b}</span>
-    <span class="row__c">${c}</span>
-    <span class="row__arrow" aria-hidden="true">→</span>
-  </li>`;
-
-// One line of the Experience and Organizations lists.
-const entry = (e) =>
-  row(
-    esc(e.org),
-    `${ph(e.role, 'Placeholder role')}<small>${ph(e.summary, 'Placeholder summary.')}</small>`,
-    ph(e.period, 'Placeholder period'),
-  );
-
 // Big title at the top of every inner page; [data-intro] makes it rise line by line on entry.
 const pageHead = (title, lede) => `
   <section class="page-head">
@@ -235,6 +220,60 @@ const faq = () => `
     </div>
   </section>`;
 
+// Experience as a large-type index: each line opens to its summary (one at a time, the first starts open).
+const indexItem = (e, i) => {
+  const now = /present/i.test(e.period);
+  return `
+    <li class="ix__item">
+      <button class="ix__head" type="button" aria-expanded="${i === 0}" aria-controls="ix-${i}">
+        <span class="ix__n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
+        <span class="ix__org">${esc(e.org)}</span>
+        <span class="ix__plus" aria-hidden="true"></span>
+        <span class="ix__meta">
+          <span>${ph(e.role, 'Placeholder role')}</span>
+          <span class="ix__period">${now ? `<em>${esc(ui.now)}</em> ` : ''}${ph(e.period, 'Placeholder period')}</span>
+        </span>
+      </button>
+      <div class="ix__panel" id="ix-${i}"${i === 0 ? '' : ' inert'}>
+        <div>
+          <p class="ix__unit">${esc(e.unit)}</p>
+          <p>${ph(e.summary, 'Placeholder summary.')}</p>
+        </div>
+      </div>
+    </li>`;
+};
+
+const orgCard = (o) => `
+  <li class="org">
+    <span class="org__period">${esc(o.period)}</span>
+    <h4 class="org__role">${esc(o.role)}</h4>
+    <p class="org__name">${esc(o.org)}</p>
+    <p class="org__sum">${esc(o.summary)}</p>
+  </li>`;
+
+const skillGroup = (g) => `
+  <div class="chips">
+    <h4 class="chips__label">${esc(g.title)}</h4>
+    <ul>${g.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
+  </div>`;
+
+// The figure (GPA, average score) is the headline of each education card.
+const eduCard = (e) => `
+  <article class="edu">
+    <p class="edu__fig">${esc(e.figure)}<small>${esc(e.figureNote)}</small></p>
+    <h4 class="edu__school">${esc(e.school)}</h4>
+    <p class="edu__degree">${esc(e.degree)} · ${esc(e.period)}</p>
+    <ul class="edu__pts">${e.points.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
+  </article>`;
+
+// Five segments, filled up to the level (LinkedIn's scale: elementary ... native).
+const langItem = (l) => `
+  <li class="lang">
+    <strong>${esc(l.name)}</strong>
+    <small>${esc(l.level)}</small>
+    <span class="lang__bar" role="img" aria-label="${esc(l.level)}">${Array.from({ length: 5 }, (_, k) => `<i${k < l.bars ? ' class="on"' : ''}></i>`).join('')}</span>
+  </li>`;
+
 const aboutPage = () => `
   <div data-page="about" hidden tabindex="-1">
     ${pageHead(ui.sections.about, person.positioning)}
@@ -242,28 +281,19 @@ const aboutPage = () => `
       <div class="split__side">${portrait()}</div>
       <div class="split__main">
         <h3 class="sub">${esc(ui.sections.experience)}</h3>
-        <ul class="rows">${content.experience.map(entry).join('')}</ul>
+        <ul class="ix">${content.experience.map(indexItem).join('')}</ul>
 
         <h3 class="sub">${esc(ui.sections.organizations)}</h3>
-        <ul class="rows">${content.organizations.map(entry).join('')}</ul>
+        <ul class="orgs">${content.organizations.map(orgCard).join('')}</ul>
 
         <h3 class="sub">${esc(ui.sections.skills)}</h3>
-        <div class="facts skills">
-          ${content.skills.map((s) => `<div><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></div>`).join('')}
-        </div>
+        <div class="chipset">${content.skills.map(skillGroup).join('')}</div>
 
-        <div class="facts">
-          <div>
-            <h3 class="sub">${esc(ui.sections.education)}</h3>
-            ${content.education
-              .map((e) => `<p><strong>${esc(e.school)}</strong><br />${esc(e.degree)}<br />${esc(e.note)}</p>`)
-              .join('')}
-          </div>
-          <div>
-            <h3 class="sub">${esc(ui.sections.languages)}</h3>
-            <ul class="plain">${content.languages.map((l) => `<li>${esc(l.name)} — ${esc(l.level)}</li>`).join('')}</ul>
-          </div>
-        </div>
+        <h3 class="sub">${esc(ui.sections.education)}</h3>
+        <div class="edus">${content.education.map(eduCard).join('')}</div>
+
+        <h3 class="sub">${esc(ui.sections.languages)}</h3>
+        <ul class="langs">${content.languages.map(langItem).join('')}</ul>
       </div>
     </section>
     ${processSection()}
@@ -525,6 +555,22 @@ document.addEventListener('click', async (e) => {
   } catch {
     /* clipboard blocked: the address is on screen and the row is a mailto link anyway */
   }
+});
+
+// Experience index (About): one line open at a time. A collapsed panel is inert, so its text is out of the tab order.
+// The page height changes with each toggle, so scroll triggers are measured again once the panels stop moving.
+let remeasure = 0;
+document.addEventListener('click', (e) => {
+  const head = e.target.closest('.ix__head');
+  if (!head) return;
+  const wasOpen = head.getAttribute('aria-expanded') === 'true';
+  head.closest('.ix').querySelectorAll('.ix__head').forEach((h) => {
+    const open = h === head && !wasOpen;
+    h.setAttribute('aria-expanded', open);
+    document.getElementById(h.getAttribute('aria-controls')).toggleAttribute('inert', !open);
+  });
+  clearTimeout(remeasure);
+  remeasure = setTimeout(() => ScrollTrigger.refresh(), 600);
 });
 
 initMenu();

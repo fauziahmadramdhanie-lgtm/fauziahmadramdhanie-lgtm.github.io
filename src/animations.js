@@ -229,7 +229,7 @@ function heroFade() {
 // Every content block fades and rises in as it enters and fades out as it leaves, scrubbed to the scroll
 // (Lenis already smooths it, so scrub: true avoids a second layer of lag).
 const FADE_TARGETS =
-  '.card, .process li, .facts > div, .row, .faq details, .btn';
+  '.card, .process li, .ix__item, .org, .chips, .edu, .lang, .faq details, .btn';
 function fadeBlocks(desktop) {
   // On desktop the stats live in the pinned numbers stage, which owns their opacity.
   $$(desktop ? FADE_TARGETS : `${FADE_TARGETS}, .stat`).forEach((el) => {
