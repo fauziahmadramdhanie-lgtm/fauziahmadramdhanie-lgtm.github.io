@@ -268,8 +268,8 @@ const aboutPage = () => `
   </div>`;
 
 // ---------- Contact ----------
-// Same composition as the home hero: intro top-left, paper stack on the right (the portrait on top),
-// the big headline docked at the bottom, and the contact links as large rows in between.
+// Dark page like the home hero: intro top-left, the big headline docked at the bottom, and the contact
+// links as large rows in between.
 const shown = (url) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 const contactRow = (label, href, value, copy) => {
   const live = isUrl(href) || href?.startsWith('mailto:');
@@ -289,7 +289,6 @@ const contactPage = () => `
   <div data-page="contact" hidden tabindex="-1">
     <section class="contact-page" data-dark>
       <p class="contact-page__intro" data-intro="1">${esc(content.contact.intro)}</p>
-      <div class="stack" aria-hidden="true">${sheets(portraitImg(false))}</div>
       <ul class="contact-rows">
         ${contactRow('Email', `mailto:${person.email}`, person.email, person.email)}
         ${contactRow('LinkedIn', person.links.linkedin, shown(person.links.linkedin ?? ''))}
