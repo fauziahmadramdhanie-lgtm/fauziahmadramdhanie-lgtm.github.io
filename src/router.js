@@ -154,5 +154,15 @@ export function initRouter() {
     if (name) go(name, false);
   });
 
+  // Esc closes an inner page like its Close pill (a collage or the menu handles its own Esc first).
+  // Capture phase: it must look at the classes before the collage or menu handler closes them.
+  addEventListener(
+    'keydown',
+    (e) => {
+      if (e.key === 'Escape' && current !== 'home' && !root.matches('.collage-open, .menu-open')) go('home');
+    },
+    true,
+  );
+
   show(routeOf(location.hash) ?? 'home'); // collage deep link: the collage opens over home
 }

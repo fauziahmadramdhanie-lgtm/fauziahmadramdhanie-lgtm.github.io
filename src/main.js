@@ -31,7 +31,7 @@ const navLink = (n, extra = '') =>
 const header = () => `
   <a class="skip" href="#main">${esc(ui.skip)}</a>
   <header class="site-header" data-header>
-    <a class="home-link" href="#/"><span aria-hidden="true">←</span> ${esc(ui.home)}</a>
+    <a class="page-close" href="#/">${esc(ui.close)}</a>
     <nav class="site-nav" aria-label="${esc(ui.primary)}">
       ${ui.nav.map((n) => navLink(n)).join('')}
     </nav>

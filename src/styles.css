@@ -344,9 +344,15 @@ html.is-transitioning { scrollbar-color: transparent transparent; }
 html.is-transitioning { overflow: visible !important; }
 
 /* ---------- Pages ---------- */
-.home-link { margin-right: auto; font-size: 14px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
-.home-link:hover { text-decoration: underline; text-underline-offset: 6px; }
-html[data-route='home'] .home-link { display: none; }
+/* Small Close pill, same as the collages': on inner pages it takes you home (the page shrinks into it). */
+.page-close {
+  margin-right: auto; padding: 6px 14px; border-radius: 999px;
+  background: var(--ink); color: var(--bg); font-weight: 600; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s, opacity 0.3s;
+}
+.site-header[data-theme='dark'] .page-close, html.menu-open .page-close { background: var(--bg); color: var(--ink); }
+html[data-route='home'] .page-close, html.collage-open .page-close, html.menu-open .page-close { opacity: 0; visibility: hidden; transition: none; }
+.site-header .page-close:focus-visible { outline-color: var(--accent); }
 .site-nav a[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; }
 
 /* Page change: the new page is laid over the old one as a one-screen layer while the circle (router.js)
