@@ -324,7 +324,7 @@ const contactPage = () => `
       <h1 class="contact-page__title" data-intro="0" data-intro-chars>${esc(content.contact.headline)}</h1>
     </section>
     <section class="contact-photo" data-dark data-tilt>
-      <div class="contact-photo__tilt"><img class="cover" src="${esc(content.contact.photo)}" alt="${esc(content.contact.photo_alt)}" width="2000" height="1333" loading="lazy" /></div>
+      <div class="contact-photo__tilt"><img class="cover" src="${esc(content.contact.photo)}" alt="${esc(content.contact.photo_alt)}" width="2000" height="1333" decoding="async" /></div>
       <ul class="contact-rows">
         ${contactRow('Email', `mailto:${person.email}`, person.email, person.email)}
         ${contactRow('LinkedIn', person.links.linkedin, shown(person.links.linkedin ?? ''))}
@@ -474,7 +474,9 @@ setInterval(() => (document.querySelector('[data-clock]').textContent = clock())
 
 // The fixed header bar keeps its position and takes the color of what is under it: dark over [data-dark] blocks.
 const headerBar = document.querySelector('[data-header]');
-const paintHeader = () => {
+const paintHeader = (e) => {
+  // A page transition repaints the bar itself ('headerpaint', router.js) when the circle crosses it.
+  if (e?.type === 'pagechange' && document.documentElement.classList.contains('is-transitioning')) return;
   const mid = headerBar.offsetHeight / 2;
   // During a page transition only the incoming page counts (it sits at scroll 0), not the old one under it.
   const scope = document.querySelector('.page-layer') ?? document;
@@ -487,6 +489,7 @@ const paintHeader = () => {
 addEventListener('scroll', paintHeader, { passive: true });
 addEventListener('resize', paintHeader);
 addEventListener('pagechange', paintHeader);
+addEventListener('headerpaint', paintHeader);
 
 // Color mode: a vertical slider with three stops (top light, middle dark, bottom color; palettes in styles.css).
 // Click a stop or the track, drag the thumb, or use the arrow keys. Remembered, and applied before paint by index.html.

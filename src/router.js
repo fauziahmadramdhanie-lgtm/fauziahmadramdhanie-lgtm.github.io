@@ -1,7 +1,7 @@
 import gsap from 'gsap';
 import content from './content.json';
-import { initAnimations, startIntro, cancelIntro, getLenis } from './animations.js';
-import { circle, reach } from './reveal.js';
+import { initAnimations, startIntro, cancelIntro, presetTilt, getLenis } from './animations.js';
+import { circle, reach, distTo } from './reveal.js';
 
 // Hash router over the pages in the DOM ([data-page]). "#/about" etc. reveal the new page inside a circle
 // that grows out of the clicked link, the same transition the collages use; no hash is home. "#/work" and
@@ -63,6 +63,7 @@ export function initRouter() {
     if (name === shown) {
       // back to the page that never left: nothing to animate
       chrome(name);
+      dispatchEvent(new Event('headerpaint'));
       getLenis()?.start();
       unlock();
       return;
@@ -88,9 +89,15 @@ export function initRouter() {
       pages.home.classList.add('page-layer', 'page-layer--under');
       old.classList.add('page-closing');
     } else pages[name].classList.add('page-layer');
+    if (!closing) presetTilt(pages[name]);
     addEventListener('scroll', pin);
     startIntro(pages[name], closing ? 0.15 : 0.4);
     chrome(name);
+    // The bar is solid and sits above the circle, so it takes the destination's color when the circle's edge
+    // crosses its middle, not on the first frame (a dark page would flash a black bar over a light one).
+    const flipAt = distTo(innerWidth / 2, document.querySelector('[data-header]').offsetHeight / 2);
+    let flipped = false;
+    const flip = () => flipped || ((flipped = true), dispatchEvent(new Event('headerpaint')));
     const tween = gsap.fromTo(
       moving,
       { clipPath: from },
@@ -99,7 +106,12 @@ export function initRouter() {
         paused: true, // started below, once the layer has been laid out and painted
         duration: closing ? 0.9 : 1,
         ease: 'power3.inOut',
+        onUpdate: () => {
+          const r = reach() * (closing ? 1 - tween.ratio : tween.ratio);
+          if (closing ? r <= flipAt : r >= flipAt) flip();
+        },
         onComplete: () => {
+          flip();
           flight = null;
           removeEventListener('scroll', pin);
           tidy(name);

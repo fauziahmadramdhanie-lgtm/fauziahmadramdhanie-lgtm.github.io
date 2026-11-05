@@ -18,4 +18,5 @@ document.addEventListener(
 const at = () => origin ?? { x: innerWidth / 2, y: innerHeight / 2 }; // back button: no click, so the screen center
 // dy: how far the clipped element's top is above the viewport's top (a page that is scrolled).
 export const circle = (r, dy = 0) => `circle(${r}px at ${at().x}px ${at().y + dy}px)`;
-export const reach = () => Math.hypot(Math.max(at().x, innerWidth - at().x), Math.max(at().y, innerHeight - at().y));
+export const distTo = (x, y) => Math.hypot(at().x - x, at().y - y);
+export const reach =() => Math.hypot(Math.max(at().x, innerWidth - at().x), Math.max(at().y, innerHeight - at().y));

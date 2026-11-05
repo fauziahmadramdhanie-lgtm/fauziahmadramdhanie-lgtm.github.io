@@ -286,19 +286,29 @@ function expandCovers() {
 
 // The contact photo is oversized inside its frame and swings through a small 3D tilt (plus a slow zoom and drift)
 // while it crosses the screen, so the angle of the picture follows the scroll.
+const TILT = [
+  { rotationX: 8, rotationY: -6, scale: 1.25, yPercent: -6 },
+  { rotationX: -8, rotationY: 6, scale: 1.08, yPercent: 6 },
+];
+
 function photoTilt() {
   $$('[data-tilt]').forEach((frame) => {
-    const tilt = frame.firstElementChild;
     gsap
       .timeline({
         defaults: { ease: 'none' },
         scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: true },
       })
-      .fromTo(
-        tilt,
-        { rotationX: 8, rotationY: -6, scale: 1.25, yPercent: -6 },
-        { rotationX: -8, rotationY: 6, scale: 1.08, yPercent: 6 },
-      );
+      .fromTo(frame.firstElementChild, ...TILT);
+  });
+}
+
+// The router lays a page over the old one before its animations exist. The photo's tilt, as the scroll would
+// leave it at 0, is set then, so it does not jump when photoTilt() takes over at the end of the reveal.
+export function presetTilt(page) {
+  if (!matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+  page.querySelectorAll('[data-tilt]').forEach((frame) => {
+    const { top, height } = frame.getBoundingClientRect();
+    gsap.set(frame.firstElementChild, gsap.utils.interpolate(...TILT, (innerHeight - top) / (innerHeight + height)));
   });
 }
 
