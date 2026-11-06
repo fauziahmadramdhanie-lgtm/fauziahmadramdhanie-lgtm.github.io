@@ -242,7 +242,7 @@ function fadeBlocks(desktop) {
 }
 
 // Headings rise line by line out of a mask the first time they scroll into view. The big closing title
-// (.contact__title) rises letter by letter, the same motion as the hero name.
+// (.contact__title) rises letter by letter, the same motion as the hero name, and lights up under the pointer.
 const TEXT_TARGETS = '.section__title, .sub, .contact__title';
 function textReveals() {
   const tweens = []; // onSplit may run after the matchMedia context is gone (fonts), so they are tracked by hand
@@ -269,7 +269,10 @@ function textReveals() {
       },
     });
   });
+  const big = $$('.contact__title');
+  const stopHover = big.length ? hoverChars(() => big.flatMap((el) => [...el.querySelectorAll('.ch')])) : () => {};
   return () => {
+    stopHover();
     tweens.forEach((t) => (t.scrollTrigger?.kill(), t.kill()));
     splits.forEach((s) => s.revert());
   };
