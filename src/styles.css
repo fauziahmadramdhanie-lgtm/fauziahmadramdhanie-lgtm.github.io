@@ -506,7 +506,7 @@ html.collage-open { overflow: visible !important; }
 }
 .collage__close:focus-visible { outline-color: var(--accent); }
 /* "Credentials" is a long word: a smaller title. */
-.collage[data-collage='credentials'] .collage__title { font-size: clamp(72px, 13vw, 240px); }
+.collage[data-collage='credentials'] .collage__title { font-size: clamp(52px, 13vw, 240px); }
 
 /* ---------- Card tables (cards.js) ---------- */
 /* The table covers the collage but lets clicks through; only the deck, the cards and the shade take them. */
