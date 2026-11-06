@@ -155,8 +155,7 @@
     "intro": "Open to roles in government and institutional affairs, or trade policy, preferably in international organizations.",
     "cta": "Get in touch",
     "photo": "/assets/contact.webp",
-    "photo_alt": "Office towers seen from below, converging on the sky",
-    "form_endpoint": "TODO: Formspree/Getform endpoint (free tier) — or use mailto fallback"
+    "photo_alt": "Office towers seen from below, converging on the sky"
   },
   "footer": {
     "social": ["LinkedIn", "irfolks", "Email"],
