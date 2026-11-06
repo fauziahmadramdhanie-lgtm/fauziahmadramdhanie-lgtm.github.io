@@ -48,5 +48,11 @@ Catatan: propagasi DNS bisa sampai beberapa jam. Cek IP GitHub terbaru di dokume
 - [ ] Daftarkan di Google Search Console (opsional)
 - [ ] Update konten bertahap lewat `src/content.json`, tiap push otomatis terdeploy
 
+## Otomatisasi jumlah artikel irfolks
+- Angka "Articles on irfolks" dibaca dari `https://irfolks.com/rss.xml` (satu `<item>` = satu artikel) oleh `scripts/irfolks-count.mjs`, hasilnya di `src/irfolks.json`.
+- Skrip jalan otomatis sebelum setiap `npm run build` (`prebuild`). Kalau irfolks tidak bisa dibaca, angka terakhir dipakai dan build tetap jalan.
+- `deploy.yml` juga build ulang tiap 6 jam (`schedule`), jadi artikel baru ikut terhitung tanpa push apa pun. Mau langsung hitung ulang: Actions → Deploy → Run workflow.
+- Cek manual: `npm run irfolks`. Tes: `npm test`.
+
 ## Rollback
 GitHub → Actions → pilih run sukses sebelumnya → Re-run, atau `git revert <commit>` lalu push.

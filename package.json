@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/irfolks-count.mjs",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "irfolks": "node scripts/irfolks-count.mjs",
+    "test": "node --test scripts/irfolks-count.test.mjs"
   },
   "dependencies": {
     "gsap": "^3.12.5",

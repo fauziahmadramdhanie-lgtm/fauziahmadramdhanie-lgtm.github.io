@@ -43,11 +43,11 @@
   ],
   "stats": [
     { "value": 3, "label": "Institutions", "text": "Internships at Bank Indonesia, OJK and the Ministry of Trade (Ditjen PEN, since August 2026).", "image": "/assets/work-bi.webp" },
-    { "value": "TODO", "label": "Articles on irfolks", "text": "Essays on economics and geopolitics that I write on my own." },
+    { "source": "irfolks", "label": "Articles on irfolks", "text": "Essays on economics and geopolitics that I write on my own." },
     { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor." }
   ],
   "experience": [
-    { "org": "Ministry of Trade (Kemendag)", "unit": "Directorate General of National Export Development (Ditjen PEN)", "role": "Intern, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
+    { "org": "Ministry of Trade (Kemendag)", "unit": "Directorate General of National Export Development (Ditjen PEN)", "role": "Intern, National Export Development", "period": "Aug 2026 – present", "summary": "Ongoing." },
     { "org": "Financial Services Authority (OJK)", "unit": "East Java Provincial Office, Surabaya", "role": "Assistant Intern, Consumer Education and Protection Department", "period": "Apr 2026 – May 2026", "summary": "Reviewed and processed more than 50 consumer dispute cases in the IASC portal. Mapped the mediation workflow between consumers and financial service providers to identify benchmarks for handling cases consistently. Internship evaluation: 9.0/10 (Very Good), assessed by OJK East Java." },
     { "org": "Bank Indonesia", "unit": "Kediri Representative Office", "role": "Assistant Intern, Public Relations", "period": "Sep 2025 – Dec 2025", "summary": "Wrote at least five analytical reports on regional inflation and food security, used as input at TPID coordination meetings. Coordinated the publication of more than ten institutional programs with local governments, universities and community organizations, and handled documentation for stakeholder events. Delivered public education sessions on QRIS and digital financial literacy for 300+ participants." },
     { "org": "Wesclic Indonesia Neotech", "unit": "Yogyakarta", "role": "Copywriter Intern", "period": "May 2025 – Aug 2025", "summary": "Wrote more than 100 research-based, SEO-optimized articles on MSME digitalization. Adapted technical business topics for non-technical small-business owners, and worked with the marketing team on brand messaging." }
@@ -125,7 +125,7 @@
     { "kind": "award", "name": "Model United Nations", "detail": "Active delegate, UNIDA Gontor", "year": "2022", "image": "/assets/credentials/mun-delegate.webp" },
     { "kind": "award", "name": "Writing Challenge Competition", "detail": "3rd place, UNIDA Gontor Library", "year": "2022", "image": "/assets/credentials/writing-challenge.webp" },
     { "kind": "award", "name": "Best Paper Position, Diplomatic Course", "detail": "PPIDK Timtengka", "year": "2024", "image": "/assets/credentials/best-paper.webp" },
-    { "kind": "award", "name": "Outstanding Student of International Relations", "detail": "UNIDA Gontor Faculty of Humanities", "year": "TODO", "image": "/assets/credentials/outstanding-ir.webp" },
+    { "kind": "award", "name": "Outstanding Student of International Relations", "detail": "UNIDA Gontor Faculty of Humanities", "image": "/assets/credentials/outstanding-ir.webp" },
     { "kind": "certification", "name": "Excel Associate training for GenBI", "detail": "Tekno Sains Academy", "year": "2024", "image": "/assets/credentials/mos-training.webp" },
     { "kind": "certification", "name": "Data analyst training", "detail": "Bank Indonesia Kediri", "year": "2025", "image": "/assets/credentials/data-analyst.webp" },
     { "kind": "certification", "name": "AI Career Readiness Training", "detail": "ASEAN Foundation", "year": "2026", "image": "/assets/credentials/ai-career.webp" },

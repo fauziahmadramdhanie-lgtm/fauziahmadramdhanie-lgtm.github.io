@@ -1,5 +1,6 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import content from './content.json';
+import irfolks from './irfolks.json'; // article count, refreshed from the irfolks RSS feed before each build
 import 'lenis/dist/lenis.css';
 import './styles.css';
 import { initMenu } from './menu.js';
@@ -143,7 +144,7 @@ const stat = (s) => {
   const bg = isTodo(s.image) ? '' : ` style="--stat-bg:url(${esc(s.image)}) center/cover"`;
   return `
     <article class="stat grid">
-      <div class="stat__num" data-stat${bg}>${odometer(s.value)}</div>
+      <div class="stat__num" data-stat${bg}>${odometer(s.source === 'irfolks' ? irfolks.count : s.value)}</div>
       <div class="stat__copy">
         <h3>${ph(s.label, 'Placeholder label')}</h3>
         <p>${esc(s.text)}</p>
