@@ -494,73 +494,98 @@ html.collage-open { overflow: visible !important; }
   position: fixed; inset: 0; z-index: 80; overflow: hidden;
   background: var(--bg);
   opacity: 0; visibility: hidden;
-  touch-action: none; cursor: grab; user-select: none;
+  user-select: none;
 }
-.collage.is-dragging { cursor: grabbing; }
 .collage__title {
   position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%);
   font-size: clamp(120px, 26vw, 460px); line-height: 0.8; pointer-events: none;
-  scale: calc(0.9 + 0.1 * var(--in, 1)); opacity: var(--in, 1);
+  scale: calc(0.9 + 0.1 * var(--in, 1)); opacity: calc(var(--in, 1) * var(--dim, 1));
 }
-/* --in (0 -> 1) is tweened when the collage opens; `scale`/`opacity` stay clear of the JS-driven transform. */
-.tile {
-  --s: 1; position: absolute; left: 50%; top: 50%; display: block;
-  /* The slot's width; a portrait picture (--r < 1) is narrower, so its height is the slot's width too. */
-  width: calc(min(calc(var(--w) * 1vw * var(--s)), calc(var(--wh, 100) * 1vh * var(--s))) * min(1, var(--r)));
-  will-change: transform; scale: calc(0.86 + 0.14 * var(--in, 1)); opacity: var(--in, 1);
-}
-.tile__media { aspect-ratio: var(--r); overflow: hidden; background: var(--soft); }
-.tile--deco { aspect-ratio: var(--r); box-shadow: 0 10px 30px #0000001f; }
-.tile--accent { background: var(--accent); }
-.tile--muted { background: var(--muted); }
-.tile--soft { background: var(--soft2); }
-.tile__cap { margin-top: 8px; font-size: 13px; font-weight: 600; line-height: 1.3; }
-.tile__cap span { display: block; color: var(--muted); font-weight: 400; }
-/* A long title (a paper's) keeps to two lines so every tile in the grid is the same height. */
-.tile__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; font-weight: 600; }
+/* --in (0 -> 1) is tweened when the collage opens, --dim (1 -> .08) once the cards are dealt; `scale`/`opacity` stay clear of the JS-driven transform. */
 .collage__close {
   position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 2;
   padding: 6px 14px; border-radius: 999px;
   background: var(--ink); color: var(--bg); font-weight: 600; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
 }
 .collage__close:focus-visible { outline-color: var(--accent); }
-/* Credentials collage: "Credentials" is a long word (smaller title), certificates keep their whole image,
-   and entries without an image are typographic cards. */
+/* "Credentials" is a long word: a smaller title. */
 .collage[data-collage='credentials'] .collage__title { font-size: clamp(72px, 13vw, 240px); }
-.tile--cert .tile__media { background: #fff; box-shadow: 0 8px 24px #00000024; }
-.tile--cert .cover { object-fit: contain; }
-.tile--text { aspect-ratio: var(--r); }
-.tile__text {
-  height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 18px;
-  border: 1px solid var(--line); background: var(--bg);
-}
-.tile__text span { margin-bottom: auto; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-.tile__text strong { font-size: clamp(16px, 1.6vw, 24px); line-height: 1.15; letter-spacing: -0.02em; }
-.tile__text small { font-size: 13px; color: var(--muted); }
-@media (max-width: 767px) { .tile { --s: 1.7; } }
-[data-zoom] { cursor: zoom-in; }
 
-/* ---------- Lightbox (lightbox.js): a collage picture, large ---------- */
-.lightbox {
-  position: fixed; inset: 0; z-index: 250; display: grid; place-items: center; padding: 24px 24px 72px;
-  background: rgb(0 0 0 / 0.88); animation: lb-in 0.25s ease both;
+/* ---------- Card tables (cards.js) ---------- */
+/* The table covers the collage but lets clicks through; only the deck, the cards and the shade take them. */
+.table { position: absolute; inset: 0; pointer-events: none; }
+.table > * { pointer-events: auto; }
+
+/* The card back: palette ink with a diagonal weave and an inner frame, like the backs of playing cards. */
+.card-t__back, .deck__stack i {
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--bg) 9%, var(--ink)) 0 7px, var(--ink) 7px 14px);
+  color: var(--bg); box-shadow: 0 6px 16px #0000003d;
 }
-.lightbox[hidden] { display: none; }
-.lightbox__fig { margin: 0; display: grid; justify-items: center; gap: 14px; max-width: 100%; }
-.lightbox__img { width: min(94vw, 1100px); height: 72vh; object-fit: contain; }
-.lightbox__cap { display: grid; gap: 4px; justify-items: center; max-width: 60ch; text-align: center; color: #fff; font-size: 14px; line-height: 1.35; }
-.lightbox__cap span { color: #bdbdbd; }
-.lightbox__cap span:empty { display: none; }
-.lightbox__link { margin-top: 6px; color: #fff; text-decoration: underline; text-underline-offset: 4px; }
-.lightbox__link:hover { color: var(--accent); }
-.lightbox__close {
-  position: absolute; left: 50%; bottom: 20px; translate: -50% 0;
-  padding: 6px 14px; border-radius: 999px; background: #fff; color: #0a0a0a;
+.card-t__back::after, .deck__stack i::after {
+  content: ''; position: absolute; inset: 6px; border: 1px solid color-mix(in srgb, var(--bg) 38%, transparent); border-radius: 6px; pointer-events: none;
+}
+
+.deck {
+  position: absolute; left: var(--pad); bottom: 20px; display: flex; align-items: flex-end; gap: 12px;
+  color: var(--ink); text-align: left; z-index: 2;
+}
+.deck__stack { position: relative; width: 52px; aspect-ratio: 5 / 7; border-radius: 8px; }
+.deck__stack i { position: absolute; inset: 0; border-radius: 8px; transition: opacity 0.3s, translate 0.25s; }
+.deck__stack i:nth-child(1) { translate: -6px 6px; }
+.deck__stack i:nth-child(2) { translate: -4px 4px; }
+.deck__stack i:nth-child(3) { translate: -2px 2px; }
+.deck__hint { padding-bottom: 2px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.deck.is-empty .deck__stack { outline: 1.5px dashed color-mix(in srgb, var(--ink) 45%, transparent); outline-offset: -1px; }
+.deck.is-empty .deck__stack i { opacity: 0; }
+.deck:focus-visible { outline-color: var(--accent); }
+@media (hover: hover) and (pointer: fine) {
+  .deck:not(.is-empty):hover .deck__stack i:nth-child(1) { translate: -9px 9px; }
+  .deck:not(.is-empty):hover .deck__stack i:nth-child(2) { translate: -6px 6px; }
+  .deck:not(.is-empty):hover .deck__stack i:nth-child(3) { translate: -3px 3px; }
+}
+
+.card-t { position: absolute; z-index: 1; visibility: hidden; perspective: 1700px; }
+.card-t.is-open { z-index: 6; }
+.card-t__inner { position: absolute; inset: 0; transform-style: preserve-3d; }
+.card-t__face { position: absolute; inset: 0; border-radius: 10px; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.card-t__back {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 12px 14px; text-align: left; cursor: pointer;
+  transition: translate 0.25s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.25s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-t:not(.is-open) .card-t__back:hover { translate: 0 -8px; box-shadow: 0 16px 30px #00000050; }
+}
+.card-t__back:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.card-t__no { font-size: clamp(22px, 2.4vw, 34px); font-weight: 800; line-height: 1; letter-spacing: var(--tracking); color: var(--accent); }
+.card-t__lab { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+.card-t__ttl {
+  margin-top: auto; font-size: clamp(12px, 1.2vw, 16px); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden;
+}
+
+/* The front (seen when open): the picture above its caption. */
+.card-t__front { display: flex; flex-direction: column; transform: rotateY(180deg); background: var(--bg); color: var(--ink); box-shadow: 0 28px 80px #00000066; }
+.card-t__media { flex: 1; min-height: 0; background: var(--soft); }
+.card-t__img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+.card-t__text { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: clamp(20px, 4vw, 40px); background: var(--bg); }
+.card-t__text p:first-child { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.card-t__text p:nth-child(2) { font-size: clamp(22px, 3.2vw, 38px); font-weight: 800; line-height: 1.08; letter-spacing: var(--tracking); }
+.card-t__text p:nth-child(n + 3) { font-size: 15px; color: var(--muted); }
+.card-t__cap { display: grid; gap: 2px; padding: 14px 18px 16px; border-top: 1px solid var(--line); }
+.card-t__cap strong { font-size: 16px; line-height: 1.25; }
+.card-t__cap span { font-size: 13px; color: var(--muted); }
+.card-t__acts { display: flex; align-items: center; gap: 16px; margin-top: 8px; }
+.card-t__link { font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.card-t__link:hover { color: var(--accent); }
+.card-t__close {
+  margin-left: auto; padding: 6px 14px; border-radius: 999px; background: var(--ink); color: var(--bg);
   font-weight: 600; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
 }
-.lightbox :focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-@keyframes lb-in { from { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .lightbox { animation: none; } }
+.card-t__front :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* The shade behind an open card: the page stays visible around it. */
+.table__shade { position: absolute; inset: 0; z-index: 5; background: rgb(0 0 0 / 0.58); opacity: 0; }
+.table > .table__shade:not(.is-on) { pointer-events: none; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 767px) {

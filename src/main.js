@@ -5,7 +5,7 @@ import 'lenis/dist/lenis.css';
 import './styles.css';
 import { initMenu } from './menu.js';
 import { initCollage } from './collage.js';
-import { initLightbox } from './lightbox.js';
+import { initCards } from './cards.js';
 import { initRouter } from './router.js';
 
 const { person, hero, ui } = content;
@@ -359,102 +359,77 @@ const footer = () => `
     <p class="footer__note">${esc(content.footer.note)}</p>
   </footer>`;
 
-// ---------- Work collage (route #/work) ----------
-// Square tiles of one size on a regular grid, all at the same speed: five columns in two rows, the title between
-// the rows. The grid is periodic (equal gaps, also across the wrap seam), so tiles never touch while panning.
-// [x, y] as fractions of the pan field, width in vw, aspect (w/h), parallax speed.
-// shortcut: 10 slots (content.collage has 10 entries); more entries would share a slot, add a column or row then.
-const SLOTS = [-0.4, -0.2, 0, 0.2, 0.4].flatMap((x) => [-0.14, 0.14].map((y) => [x, y, 22, 1, 1]));
+// ---------- Card tables (routes #/work and #/credentials) ----------
+// A table opens clean, with a deck in the corner. Tapping the deck deals the cards face down, left to right, into the
+// middle of the screen; tapping a card turns it over and opens it large (cards.js).
+// A card is described by { title, label, sub, image | text, url }.
 
-// content.collage entries are either { work: slug, ... } (a work item, with its link) or a tile of their own.
+// content.collage entries are either { work: slug, ... } (a work item, with its link) or a card of their own.
 const collageItems = content.collage.map((c) => (c.work ? { ...content.work.find((w) => w.slug === c.work), ...c } : c));
 
-// Marks a tile's picture as enlargeable (lightbox.js); a tile that is itself a link gets no button role.
-const zoom = (title, isLink) =>
-  ` data-zoom data-cursor="arrow"${isLink ? '' : ` role="button" tabindex="0" aria-label="${esc(ui.enlarge)}: ${esc(title)}"`}`;
+const workCard = (w) => ({
+  title: w.title,
+  label: w.category,
+  sub: w.category,
+  image: !w.cover_text && !isTodo(w.cover) ? w.cover : null,
+  text: [w.year, w.cover_text], // a typographic face for work with no image (a paper)
+  url: w.url,
+});
 
-// Each picture keeps its own proportions (cover_ratio): the tile is as wide as the slot, or as tall when the picture is
-// portrait (see .tile in styles.css), so it always fits inside its grid cell.
-const tile = (w, i) => {
-  const [x, y, width, ratio, speed] = SLOTS[i % SLOTS.length];
-  const attrs = `class="tile" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${w.cover_ratio ?? ratio};--wh:28"`;
-  const hasImage = !w.cover_text && !isTodo(w.cover);
-  const body = `<div class="tile__media"${hasImage ? zoom(w.title, isUrl(w.url)) : ''}>${coverHtml(w, { lazy: true })}</div>
-    <p class="tile__cap"><b class="tile__title">${ph(w.title, 'Placeholder title')}</b><span>${esc(w.category)}</span></p>`;
-  return isUrl(w.url)
-    ? `<a ${attrs} href="${esc(w.url)}" target="_blank" rel="noopener" data-cursor="arrow">${body}</a>`
-    : `<div ${attrs}>${body}</div>`;
+const credCard = (c) => {
+  const year = isTodo(c.year) ? '' : ` · ${c.year}`;
+  return {
+    title: c.name,
+    label: ui.kinds[c.kind],
+    sub: `${c.detail}${year}`,
+    image: isTodo(c.image) ? null : c.image,
+    text: [`${ui.kinds[c.kind]}${year}`, c.name, c.detail], // items without an image become typographic cards
+  };
 };
 
-// ---------- Credentials collage (route #/credentials) ----------
-// Landscape certificate tiles on a larger field (data-field): four frame the title, three more rings wait outside.
-// Items without an image become typographic cards, so nothing in content.json is left out.
-// Every tile moves at the same speed: with 14 big tiles, different parallax speeds make them run into each other.
-// The grid is periodic (wrap-around gaps are wider than the inner ones), so tiles never overlap while panning.
-const CRED_SLOTS = [
-  [-0.12, -0.12, 26, 1.4, 1],
-  [0.12, -0.12, 26, 1.4, 1],
-  [-0.12, 0.12, 26, 1.4, 1],
-  [0.12, 0.12, 26, 1.4, 1],
-  [-0.34, -0.12, 26, 1.4, 1],
-  [0.34, -0.12, 26, 1.4, 1],
-  [-0.34, 0.12, 26, 1.4, 1],
-  [0.34, 0.12, 26, 1.4, 1],
-  [-0.12, -0.36, 26, 1.4, 1],
-  [0.12, -0.36, 26, 1.4, 1],
-  [-0.12, 0.36, 26, 1.4, 1],
-  [0.12, 0.36, 26, 1.4, 1],
-  [-0.34, -0.36, 26, 1.4, 1],
-  [0.34, -0.36, 26, 1.4, 1],
-  [-0.34, 0.36, 26, 1.4, 1],
-  [0.34, 0.36, 26, 1.4, 1],
-];
-
-const credTile = (c, i) => {
-  const [x, y, width, ratio, speed] = CRED_SLOTS[i % CRED_SLOTS.length];
-  // --wh caps the width by the viewport height: row spacing follows the height, so on wide screens the
-  // vw-based width alone would make a tile taller than the gap between rows.
-  const attrs = (cls) =>
-    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio};--wh:34"`;
-  if (!c) return `<div ${attrs('tile--deco tile--accent')} aria-hidden="true"></div>`;
-  const year = isTodo(c.year) ? '' : ` · ${esc(c.year)}`;
-  if (isTodo(c.image)) {
-    return `<div ${attrs('tile--text')}>
-      <div class="tile__text"><span>${esc(ui.kinds[c.kind])}${year}</span><strong>${esc(c.name)}</strong>${c.detail ? `<small>${esc(c.detail)}</small>` : ''}</div>
+const cardHtml = (d, i) => {
+  const media = d.image
+    ? `<img class="card-t__img" src="${esc(d.image)}" alt="${esc(d.title)}" loading="lazy" decoding="async" />`
+    : `<div class="card-t__text">${d.text.filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}</div>`;
+  const link = isUrl(d.url)
+    ? `<a class="card-t__link" href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>`
+    : '';
+  return `
+    <div class="card-t" data-card>
+      <div class="card-t__inner">
+        <button class="card-t__face card-t__back" type="button" aria-label="${esc(ui.open)}: ${esc(d.title)}">
+          <span class="card-t__no">${String(i + 1).padStart(2, '0')}</span>
+          <span class="card-t__lab">${esc(d.label)}</span>
+          <strong class="card-t__ttl">${esc(d.title)}</strong>
+        </button>
+        <div class="card-t__face card-t__front" inert>
+          <div class="card-t__media">${media}</div>
+          <div class="card-t__cap">
+            <strong>${esc(d.title)}</strong><span>${esc(d.sub)}</span>
+            <div class="card-t__acts">${link}<button class="card-t__close" type="button">${esc(ui.close)}</button></div>
+          </div>
+        </div>
+      </div>
     </div>`;
-  }
-  return `<div ${attrs('tile--cert')}>
-    <div class="tile__media"${zoom(c.name, false)}><img class="cover" src="${esc(c.image)}" alt="${esc(ui.kinds[c.kind])}: ${esc(c.name)}" width="900" height="640" loading="lazy" /></div>
-    <p class="tile__cap">${esc(c.name)}<span>${esc(c.detail)}${year}</span></p>
-  </div>`;
 };
 
-// field: pan field as a multiple of the viewport; narrow (optional): its width multiple on phones, where tiles are bigger.
-const collageHtml = (name, label, title, tiles, field, narrow = field) => `
-  <div class="collage" data-collage="${name}" data-field="${field}" data-field-narrow="${narrow}" role="region" aria-label="${esc(label)}" inert>
+const collageHtml = (name, label, title, cards) => `
+  <div class="collage" data-collage="${name}" data-collect="${esc(ui.collect)}" role="region" aria-label="${esc(label)}" inert>
     <h2 class="collage__title" aria-hidden="true">${esc(title)}</h2>
-    ${tiles.join('')}
+    <div class="table" data-table>
+      <button class="deck" type="button" data-deck aria-label="${esc(ui.deal)}">
+        <span class="deck__stack" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="deck__hint" aria-hidden="true" data-deck-hint>${esc(ui.deal)}</span>
+      </button>
+      ${cards.map(cardHtml).join('')}
+      <div class="table__shade" data-shade></div>
+    </div>
     <button class="collage__close" type="button" data-collage-close>${esc(ui.close)}</button>
   </div>`;
 
 const collages = () =>
-  collageHtml(
-    'work',
-    ui.sections.work,
-    ui.collage.title,
-    collageItems.map(tile),
-    1.5,
-    2.2, // phones: tiles are 1.7x bigger, so the field is wider to keep the gaps
-  ) +
-  collageHtml(
-    'credentials',
-    ui.sections.credentials,
-    ui.sections.credentials,
-    // One orange block (null) takes slot 1 in the inner ring; 15 credentials + the block fill the 16 slots.
-    [content.credentials[0], null, ...content.credentials.slice(1)].map(credTile),
-    1.9,
-    2.2, // phones: two 166px columns only fit side by side, outside the screen edges, on a wider field
-  );
+  collageHtml('work', ui.sections.work, ui.collage.title, collageItems.map(workCard)) +
+  collageHtml('credentials', ui.sections.credentials, ui.sections.credentials, content.credentials.map(credCard));
 
 document.getElementById('app').innerHTML =
   header() +
@@ -568,7 +543,7 @@ document.addEventListener('click', (e) => {
   remeasure = setTimeout(() => ScrollTrigger.refresh(), 600);
 });
 
-initLightbox(); // first: its Esc handler (capture) must run before the router's and the collage's
+initCards(); // first: its Esc handler (capture) must run before the router's and the collage's
 initMenu();
 initCollage(); // before the router: both listen for link clicks in the capture phase, in this order
 initRouter();

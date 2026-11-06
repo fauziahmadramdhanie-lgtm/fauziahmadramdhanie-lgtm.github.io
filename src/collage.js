@@ -1,9 +1,10 @@
 import gsap from 'gsap';
 import { getLenis } from './animations.js';
 import { circle, reach } from './reveal.js';
+import { resetTable } from './cards.js';
 
-// Collages: fullscreen layers (hash routes #/work, #/credentials) holding tiles that pan with wheel, drag or
-// arrow keys. Each tile moves at its own speed (parallax) and wraps around, so the field never runs out.
+// Fullscreen layers (hash routes #/work, #/credentials) that hold a card table (cards.js). This file opens and closes
+// them with the circle reveal, locks the page behind them and keeps the route in the hash.
 // The hash decides which collage is open; the scroll lock and the inert page are shared by all of them.
 export function initCollage() {
   const behind = [document.getElementById('main'), document.querySelector('.footer'), document.querySelector('.skip')];
@@ -19,45 +20,13 @@ export function initCollage() {
   const makeCollage = (root) => {
     const name = root.dataset.collage;
     const route = `#/${name}`;
-    const tiles = [...root.querySelectorAll('.tile')];
     const title = root.querySelector('.collage__title');
-    const cur = { x: 0, y: 0 };
-    const target = { x: 0, y: 0 };
-    const k = +root.dataset.field || 1.5; // field size as a multiple of the viewport
-    const kNarrow = +root.dataset.fieldNarrow || k; // its width on phones
     const c = { name, route, root, open: false };
-    let field = { w: 0, h: 0 };
-    let items = [];
-
-    const measure = () => {
-      field = { w: innerWidth * (innerWidth < 768 ? kNarrow : k), h: innerHeight * k };
-      items = tiles.map((el) => ({
-        el,
-        x0: el.dataset.x * field.w,
-        y0: el.dataset.y * field.h,
-        speed: reduced() ? 1 : +el.dataset.speed,
-      }));
-    };
-
-    const tick = () => {
-      const ease = reduced() ? 1 : 0.08; // inertia
-      cur.x += (target.x - cur.x) * ease;
-      cur.y += (target.y - cur.y) * ease;
-      for (const t of items) {
-        const x = gsap.utils.wrap(-field.w / 2, field.w / 2, t.x0 - cur.x * t.speed);
-        const y = gsap.utils.wrap(-field.h / 2, field.h / 2, t.y0 - cur.y * t.speed);
-        t.el.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0)`;
-      }
-    };
 
     c.show = (animated) => {
       c.open = true;
       root.inert = false;
       root.style.zIndex = 81; // above a collage that is closing at the same moment
-      measure();
-      cur.x = cur.y = target.x = target.y = 0;
-      gsap.ticker.add(tick);
-      tick();
       root.style.clipPath = circle(0); // before it shows: the tween below only renders on the next frame
       gsap.set(root, { autoAlpha: 1 }); // visible at once; the clip-path circle does the revealing
       gsap.fromTo(
@@ -66,9 +35,9 @@ export function initCollage() {
         { clipPath: circle(reach()), duration: animated ? 1 : 0, ease: 'power3.inOut', overwrite: true, clearProps: 'clipPath' },
       );
       gsap.fromTo(
-        [title, ...tiles],
+        title,
         { '--in': 0 },
-        { '--in': 1, duration: animated ? 1 : 0, delay: animated ? 0.3 : 0, stagger: 0.05, ease: 'power3.out', overwrite: 'auto' },
+        { '--in': 1, duration: animated ? 1 : 0, delay: animated ? 0.3 : 0, ease: 'power3.out', overwrite: 'auto' },
       );
       root.querySelector('[data-collage-close]').focus({ preventScroll: true });
     };
@@ -87,62 +56,13 @@ export function initCollage() {
           overwrite: true,
           onComplete: () => {
             gsap.set(root, { autoAlpha: 0, clearProps: 'clipPath' });
-            if (!c.open) gsap.ticker.remove(tick);
+            if (!c.open) resetTable(root); // the next visit starts with a clean table
           },
         },
       );
     };
 
     root.querySelector('[data-collage-close]').addEventListener('click', () => go(null));
-    root.addEventListener(
-      'wheel',
-      (e) => {
-        e.preventDefault();
-        target.x += e.deltaX;
-        target.y += e.deltaY;
-      },
-      { passive: false },
-    );
-
-    // No pointer capture: it would retarget the click away from the tile links.
-    let drag = null;
-    let dragged = false;
-    root.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('[data-collage-close]')) return;
-      drag = { x: e.clientX, y: e.clientY, moved: 0 };
-      root.classList.add('is-dragging');
-    });
-    addEventListener('pointermove', (e) => {
-      if (!drag) return;
-      const dx = e.clientX - drag.x;
-      const dy = e.clientY - drag.y;
-      drag.x = e.clientX;
-      drag.y = e.clientY;
-      drag.moved += Math.abs(dx) + Math.abs(dy);
-      target.x -= dx;
-      target.y -= dy;
-    });
-    const endDrag = () => {
-      if (!drag) return;
-      dragged = drag.moved > 6;
-      drag = null;
-      root.classList.remove('is-dragging');
-      setTimeout(() => (dragged = false));
-    };
-    addEventListener('pointerup', endDrag);
-    addEventListener('pointercancel', endDrag);
-    root.addEventListener('click', (e) => dragged && (e.preventDefault(), e.stopPropagation()), true);
-
-    addEventListener('resize', () => c.open && measure());
-    addEventListener('keydown', (e) => {
-      if (!c.open) return;
-      const step = { ArrowLeft: [-160, 0], ArrowRight: [160, 0], ArrowUp: [0, -160], ArrowDown: [0, 160] }[e.key];
-      if (step) {
-        e.preventDefault();
-        target.x += step[0];
-        target.y += step[1];
-      }
-    });
     return c;
   };
 

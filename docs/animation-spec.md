@@ -54,9 +54,19 @@ CSS murni: dua grup teks identik, `@keyframes marquee { to { transform: translat
 ## 10. Daftar baris (Publikasi / Sertifikasi)
 Baris dengan border-bottom 1px, hover: background `#f4f4f4`, panah muncul di kanan (translateX -8 → 0). 3 kolom: judul / kategori / tahun.
 
-## 11a. Work collage (`#/work`) — sudah dibangun
-Bukan halaman terpisah: layer fullscreen di halaman yang sama (`src/collage.js`), dibuka dari tumpukan kartu hero, route `#/work`
-(Back/Esc/Close menutup). Fade 0.5s, pan lewat wheel/drag/panah, parallax per tile, wrap tak berujung. Tanpa Barba.
+## 11a. Meja kartu: Work (`#/work`) dan Credentials (`#/credentials`) — sudah dibangun
+Bukan halaman terpisah: layer fullscreen di halaman yang sama. `src/collage.js` membuka/menutupnya (lingkaran clip-path dari link
+yang diklik, route di hash, Back/Esc/Close menutup, halaman di belakang `inert`). Isinya `src/cards.js`:
+- Awalnya bersih: judul besar dan satu dek kartu (tertutup) di pojok kiri bawah.
+- Klik dek: kartu terbang dari dek satu per satu (stagger 0.085s, `power2.out`, 0.55s, sedikit berputar lalu lurus) dan mendarat
+  tertutup di tengah layar, kiri ke kanan lalu baris berikutnya, seperti pembagian kartu Spider Solitaire. Judul meredup (`--dim`).
+  Ukuran kartu 5:7 dihitung supaya semuanya muat tanpa scroll dan tanpa saling menimpa (baris dipusatkan satu per satu).
+- Klik kartu: berputar 180° (`rotationY`, perspective) sambil membesar ke tengah (0.8s, `power3.inOut`) sampai menutup sebagian
+  besar halaman, bukan penuh; latar digelapkan. Gambar tampil utuh dengan proporsinya sendiri; kartu tanpa gambar punya sisi
+  teks. Klik kartu / latar / Close / Esc membaliknya ke tempat semula. Klik dek lagi mengumpulkan semua kartu.
+- Pengecualian aturan di bawah: hanya kartu yang sedang dibuka yang menganimasikan `left/top/width/height` (satu elemen);
+  deal dan collect memakai transform saja.
+- `prefers-reduced-motion`: semua durasi 0 (langsung pindah). Tanpa Barba.
 
 ## 11. Transisi antar halaman (opsional, fase 2)
 V1 = single page + anchor scroll (Lenis `scrollTo`). Bila nanti multi-halaman (halaman study case): Barba.js, fade lewat overlay abu→putih 0.5s.
