@@ -120,7 +120,7 @@
     { "kind": "award", "name": "Best Student in Academic Activity", "detail": "UNIDA Gontor student council", "year": "2024", "image": "/assets/credentials/best-student.webp" },
     { "kind": "certification", "name": "Microsoft Office Specialist — Excel 2019 Associate", "detail": "Microsoft", "year": "2024", "image": "/assets/credentials/mos-excel.webp" },
     { "kind": "award", "name": "Outstanding Student, Faculty of Humanities", "detail": "UNIDA Gontor", "year": "2023 & 2024", "image": "/assets/credentials/outstanding-student.webp" },
-    { "kind": "award", "name": "Bank Indonesia Unggulan Scholarship", "detail": "Awardee, two consecutive years", "year": "2024–2026", "image": "TODO" },
+    { "kind": "award", "name": "Bank Indonesia Unggulan Scholarship", "detail": "Awardee, two consecutive years", "year": "2024–2026", "image": "/assets/credentials/bi-scholarship.webp" },
     { "kind": "award", "name": "Darussalam MUN", "detail": "Honourable Mention", "year": "2024", "image": "/assets/credentials/mun-mention.webp" },
     { "kind": "award", "name": "Model United Nations", "detail": "Active delegate, UNIDA Gontor", "year": "2022", "image": "/assets/credentials/mun-delegate.webp" },
     { "kind": "award", "name": "Writing Challenge Competition", "detail": "3rd place, UNIDA Gontor Library", "year": "2022", "image": "/assets/credentials/writing-challenge.webp" },
