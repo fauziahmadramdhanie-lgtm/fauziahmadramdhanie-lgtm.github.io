@@ -12,7 +12,7 @@
     "positioning": "International Relations graduate, concentrating in International Political Economy. Internships at Bank Indonesia and the Financial Services Authority (OJK), and currently at the Ministry of Trade. Work so far covers regional economic reporting, consumer complaint handling and public engagement programs.",
     "location": "Indonesia",
     "current_role": {
-      "title": "TODO: confirm exact wording — internship (magang), Ditjen PEN, Kemendag",
+      "title": "Intern",
       "org": "Directorate General of National Export Development (Ditjen PEN), Ministry of Trade",
       "since": "2026-08"
     },
@@ -47,7 +47,7 @@
     { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor.", "image": "TODO: /assets/stat-gpa.webp" }
   ],
   "experience": [
-    { "org": "Ministry of Trade (Kemendag)", "unit": "Directorate General of National Export Development (Ditjen PEN)", "role": "TODO: confirm — internship, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
+    { "org": "Ministry of Trade (Kemendag)", "unit": "Directorate General of National Export Development (Ditjen PEN)", "role": "Intern, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
     { "org": "Financial Services Authority (OJK)", "unit": "East Java Provincial Office, Surabaya", "role": "Assistant Intern, Consumer Education and Protection Department", "period": "Apr 2026 – May 2026", "summary": "Reviewed and processed more than 50 consumer dispute cases in the IASC portal. Mapped the mediation workflow between consumers and financial service providers to identify benchmarks for handling cases consistently. Internship evaluation: 9.0/10 (Very Good), assessed by OJK East Java." },
     { "org": "Bank Indonesia", "unit": "Kediri Representative Office", "role": "Assistant Intern, Public Relations", "period": "Sep 2025 – Dec 2025", "summary": "Wrote at least five analytical reports on regional inflation and food security, used as input at TPID coordination meetings. Coordinated the publication of more than ten institutional programs with local governments, universities and community organizations, and handled documentation for stakeholder events. Delivered public education sessions on QRIS and digital financial literacy for 300+ participants." },
     { "org": "Wesclic Indonesia Neotech", "unit": "Yogyakarta", "role": "Copywriter Intern", "period": "May 2025 – Aug 2025", "summary": "Wrote more than 100 research-based, SEO-optimized articles on MSME digitalization. Adapted technical business topics for non-technical small-business owners, and worked with the marketing team on brand messaging." }
@@ -119,7 +119,7 @@
     { "name": "French", "level": "Elementary", "bars": 1 }
   ],
   "faq": [
-    { "q": "What are you working on right now?", "a": "I work at the Ministry of Trade (Directorate General of National Export Development) since August 2026, and write on economics and geopolitics at irfolks." },
+    { "q": "What are you working on right now?", "a": "I have been an intern at the Ministry of Trade (Directorate General of National Export Development) since August 2026, and write on economics and geopolitics at irfolks." },
     { "q": "What kind of roles are you looking for?", "a": "Policy analysis, institutional affairs, and international cooperation roles in government, multilateral organizations, and think tanks." },
     { "q": "Can I see your CV?", "a": "Yes. Use the CV link in the footer." }
   ],
