@@ -217,8 +217,16 @@ html[data-mode='color'] .clock { color: #faeb92; }
 /* ---------- Work cards ---------- */
 .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px var(--gutter); }
 .card { display: block; }
-.card__media { overflow: hidden; aspect-ratio: 4 / 3; background: var(--soft); }
+/* Every card has the same frame (the irfolks screenshot's 1.98 : 1); other images sit inside it uncropped. */
+.card__media { overflow: hidden; aspect-ratio: 1.982 / 1; background: var(--soft); }
 .cover { width: 100%; height: 100%; object-fit: cover; }
+.card__media .cover { object-fit: contain; }
+.cover--text {
+  display: flex; flex-direction: column; justify-content: space-between; padding: clamp(20px, 3vw, 40px);
+  background: var(--ink); color: var(--bg);
+}
+.cover--text span { max-width: 18ch; font-weight: 700; font-size: clamp(20px, 2.6vw, 36px); line-height: 1.1; letter-spacing: var(--tracking); }
+.cover--text strong { font-size: 14px; font-weight: 500; opacity: 0.7; }
 .cover--ph {
   background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--ink) 7%, var(--bg)) 0 14px, color-mix(in srgb, var(--ink) 11%, var(--bg)) 14px 28px);
 }
@@ -321,7 +329,9 @@ html[data-mode='color'] .clock { color: #faeb92; }
 }
 .ix__n { grid-area: n; font-size: 13px; color: var(--muted); }
 .ix__org { grid-area: org; font-weight: 700; font-size: clamp(24px, 3vw, 44px); line-height: 1.05; letter-spacing: var(--tracking); }
-.ix__meta { grid-area: meta; display: flex; flex-wrap: wrap; gap: 2px 20px; font-size: 14px; }
+/* Period first, in a fixed-width column, so every date starts at the same x whatever the role's length. */
+.ix__meta { grid-area: meta; display: grid; grid-template-columns: 14em minmax(0, 1fr); align-items: baseline; gap: 2px 20px; font-size: 14px; }
+@media (max-width: 1100px) { .ix__meta { grid-template-columns: 1fr; } } /* the list column is too narrow for two columns */
 .ix__period { color: var(--muted); }
 .ix__period em { font-style: normal; margin-right: 4px; padding: 2px 8px; border-radius: 999px; background: var(--ink); color: var(--bg); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
 .ix__plus { grid-area: plus; position: relative; align-self: center; height: 16px; }

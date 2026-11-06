@@ -64,8 +64,11 @@ const clock = () =>
     timeZoneName: 'short',
   }).format(new Date());
 
+// cover_text: a typographic cover for work with no image (a paper): the publication's name and the year.
 const coverHtml = (w, { lazy = false, label = false } = {}) =>
-  isTodo(w?.cover)
+  w?.cover_text
+    ? `<div class="cover cover--text"><span>${esc(w.cover_text)}</span><strong>${esc(w.year)}</strong></div>`
+    : isTodo(w?.cover)
     ? `<div class="cover cover--ph"${label ? ' role="img" aria-label="Placeholder cover"' : ''}></div>`
     : `<img class="cover" src="${esc(w.cover)}" alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
 
@@ -104,7 +107,7 @@ const card = (w) => {
   const live = isUrl(w.url);
   const cover = coverHtml(w, { lazy: true, label: true });
   const body = `
-    <div class="card__media" data-reveal="expand"${w.cover_ratio ? ` style="aspect-ratio:${w.cover_ratio}"` : ''}>${cover}</div>
+    <div class="card__media" data-reveal="expand">${cover}</div>
     <div class="card__meta">
       <h3>${ph(w.title, 'Placeholder title')}</h3>
       <p>${esc(w.category)} · ${ph(w.year, '0000')}</p>
@@ -219,8 +222,8 @@ const indexItem = (e, i) => {
         <span class="ix__org">${esc(e.org)}</span>
         <span class="ix__plus" aria-hidden="true"></span>
         <span class="ix__meta">
-          <span>${ph(e.role, 'Placeholder role')}</span>
           <span class="ix__period">${now ? `<em>${esc(ui.now)}</em> ` : ''}${ph(e.period, 'Placeholder period')}</span>
+          <span>${ph(e.role, 'Placeholder role')}</span>
         </span>
       </button>
       <div class="ix__panel" id="ix-${i}"${i === 0 ? '' : ' inert'}>

@@ -9,7 +9,7 @@
     "name": "Fauzi Ahmad Ramdhani",
     "nickname": "Uzi",
     "headline": "Government & institutional affairs professional.",
-    "positioning": "International Relations graduate, concentrating in International Political Economy. Internships at Bank Indonesia and the Financial Services Authority (OJK), and currently at the Ministry of Trade. Work so far covers regional economic reporting, consumer complaint handling and public engagement programs.",
+    "positioning": "International Relations graduate, concentrating in International Political Economy. I interned at Bank Indonesia and the Financial Services Authority (OJK), and I am now an intern at the Ministry of Trade. So far my work has been regional economic reports, consumer complaints and public education programs.",
     "location": "Indonesia",
     "current_role": {
       "title": "Intern",
@@ -29,22 +29,22 @@
   },
   "hero": {
     "big_text": "Fauzi Ahmad Ramdhani",
-    "intro": "Trade policy and institutional affairs — from central bank to export development.",
+    "intro": "International Relations graduate, with internships at Bank Indonesia, OJK and the Ministry of Trade.",
     "copyright_line": "© 2026",
     "timezone": "Asia/Jakarta"
   },
-  "statement": "I write and coordinate work on economic and institutional topics: regional economic reports at Bank Indonesia, consumer complaint cases at OJK, and independent analysis at irfolks.",
+  "statement": "At Bank Indonesia I wrote regional inflation reports. At OJK I reviewed consumer complaints. On irfolks I write about economics and geopolitics in my own time.",
   "marquee": [
-    "Trade Policy",
-    "Export Development",
-    "Stakeholder Engagement",
-    "Institutional Affairs",
-    "Policy & Report Writing"
+    "Trade policy",
+    "Export development",
+    "Regional economy",
+    "Consumer protection",
+    "Report writing"
   ],
   "stats": [
-    { "value": 3, "label": "Institutions", "text": "Internships at Bank Indonesia and OJK, and the Ministry of Trade (Ditjen PEN) since August 2026.", "image": "TODO: /assets/stat-institutions.webp" },
-    { "value": "TODO", "label": "Articles on irfolks", "text": "Independent essays on economics and geopolitics, written outside formal work.", "image": "TODO: /assets/stat-irfolks.webp" },
-    { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor.", "image": "TODO: /assets/stat-gpa.webp" }
+    { "value": 3, "label": "Institutions", "text": "Internships at Bank Indonesia, OJK and the Ministry of Trade (Ditjen PEN, since August 2026).", "image": "/assets/work-bi.webp" },
+    { "value": "TODO", "label": "Articles on irfolks", "text": "Essays on economics and geopolitics that I write on my own." },
+    { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor." }
   ],
   "experience": [
     { "org": "Ministry of Trade (Kemendag)", "unit": "Directorate General of National Export Development (Ditjen PEN)", "role": "Intern, National Export Development", "period": "Aug 2026 – present", "summary": "TODO: 2 sentences, public-safe. Trade policy support, coordination with stakeholders, analytical writing." },
@@ -58,7 +58,7 @@
       "title": "irfolks",
       "category": "Independent analysis",
       "year": "2025–2026",
-      "summary": "Independent publication that I founded and manage. Essays on geopolitics and macroeconomics, including dependency theory, protectionism and monetary policy, written for a general audience.",
+      "summary": "A blog I founded and run. Essays on geopolitics and macroeconomics, such as dependency theory, protectionism and monetary policy, written for general readers.",
       "cover": "/assets/work-irfolks.webp",
       "cover_ratio": 1.982,
       "url": "https://irfolks.com"
@@ -69,15 +69,42 @@
       "category": "Academic paper",
       "year": "2024",
       "summary": "Journal article on productive waqf development policy in three member states of the Organization of Islamic Cooperation: Saudi Arabia, Egypt and Kuwait. Published in Dauliyah: Journal of Islamic and International Affairs.",
-      "cover": "TODO: /assets/work-paper.webp",
+      "cover_text": "Dauliyah: Journal of Islamic and International Affairs",
       "url": "https://ejournal.unida.gontor.ac.id/index.php/dauliyah/article/download/12513/11620"
+    },
+    {
+      "slug": "bank-indonesia-kediri",
+      "title": "Public Relations, Bank Indonesia Kediri",
+      "category": "Internship",
+      "year": "2025",
+      "summary": "Regional inflation and food security reports for TPID coordination meetings, publication of institutional programs, and public sessions on QRIS and digital financial literacy for 300+ participants.",
+      "cover": "/assets/work-bi.webp",
+      "cover_ratio": 0.745
+    },
+    {
+      "slug": "ojk-east-java",
+      "title": "Consumer disputes, OJK East Java",
+      "category": "Internship",
+      "year": "2026",
+      "summary": "Reviewed more than 50 consumer dispute cases in the Indonesia Anti-Scam Centre (IASC) portal and mapped the mediation workflow between consumers and financial service providers.",
+      "cover": "/assets/work-ojk.webp",
+      "cover_ratio": 1.878
+    },
+    {
+      "slug": "wesclic",
+      "title": "Articles for Wesclic",
+      "category": "Content writing",
+      "year": "2025",
+      "summary": "More than 100 research-based articles on MSME digitalization, written for small-business owners without a technical background.",
+      "cover": "/assets/work-wesclic.webp",
+      "cover_ratio": 2.213
     }
   ],
   "process": [
-    { "n": "01", "title": "Scope", "text": "Confirm the question, the audience and the format of the output before starting." },
-    { "n": "02", "title": "Analyze", "text": "Collect the relevant data and regulations, and note where the sources disagree." },
-    { "n": "03", "title": "Write", "text": "Turn the findings into a short report, brief or presentation." },
-    { "n": "04", "title": "Coordinate", "text": "Share drafts with the people involved and follow up until the work is delivered." }
+    { "n": "01", "title": "Ask", "text": "Start from the question and who will read the answer." },
+    { "n": "02", "title": "Collect", "text": "Gather the figures and records the work depends on." },
+    { "n": "03", "title": "Write", "text": "Put the findings into a short report or brief." },
+    { "n": "04", "title": "Follow up", "text": "Share drafts with the team and fix what they point out." }
   ],
   "education": [
     { "school": "Universitas Darussalam Gontor (UNIDA Gontor)", "period": "2022–2026", "degree": "B.A. International Relations, concentration in International Political Economy", "figure": "3.82", "figureNote": "GPA out of 4.00, cum laude", "points": ["Bank Indonesia Scholarship awardee, 2024–2025 and 2025–2026","Class president, Class of 2022","PILMAPRES finalist, 2024","Presenter, International Conference on Islamic & Halal Economic Studies, Universiti Kebangsaan Malaysia, 2023","First place, Genbiversary National Debate Competition, 2024"] },
@@ -101,8 +128,8 @@
     { "kind": "award", "name": "Outstanding Student of International Relations", "detail": "UNIDA Gontor Faculty of Humanities", "year": "TODO", "image": "/assets/credentials/outstanding-ir.webp" },
     { "kind": "certification", "name": "Excel Associate training for GenBI", "detail": "Tekno Sains Academy", "year": "2024", "image": "/assets/credentials/mos-training.webp" },
     { "kind": "certification", "name": "Data analyst training", "detail": "Bank Indonesia Kediri", "year": "2025", "image": "/assets/credentials/data-analyst.webp" },
-    { "kind": "certification", "name": "AI Career Readiness Training", "detail": "ASEAN Foundation", "year": "2026", "image": "TODO" },
-    { "kind": "certification", "name": "Claude Academy — Claude Code 101", "detail": "Anthropic", "year": "2026", "image": "TODO" }
+    { "kind": "certification", "name": "AI Career Readiness Training", "detail": "ASEAN Foundation", "year": "2026", "image": "/assets/credentials/ai-career.webp" },
+    { "kind": "certification", "name": "Claude Academy — Claude 101", "detail": "Anthropic", "year": "2026", "image": "/assets/credentials/claude-101.webp" }
   ],
   "organizations": [
     { "org": "Generasi Baru Indonesia (GenBI), Ponorogo", "role": "Management Organizer", "period": "Mar 2024 – Mar 2026", "summary": "Planned resources and coordinated more than 50 active members across divisions. Redesigned the KPI framework used to evaluate members and simplified reporting between divisions. Ran more than ten engagement programs with 250+ external participants." },
@@ -120,12 +147,12 @@
   ],
   "faq": [
     { "q": "What are you working on right now?", "a": "I have been an intern at the Ministry of Trade (Directorate General of National Export Development) since August 2026, and write on economics and geopolitics at irfolks." },
-    { "q": "What kind of roles are you looking for?", "a": "Policy analysis, institutional affairs, and international cooperation roles in government, multilateral organizations, and think tanks." },
+    { "q": "What kind of roles are you looking for?", "a": "Government and institutional affairs, or trade policy, preferably in international organizations." },
     { "q": "Can I see your CV?", "a": "Yes. Use the CV link in the footer." }
   ],
   "contact": {
     "headline": "Let's talk.",
-    "intro": "Policy analysis, institutional affairs, and international cooperation roles in government, multilateral organizations, and think tanks.",
+    "intro": "Open to roles in government and institutional affairs, or trade policy, preferably in international organizations.",
     "cta": "Get in touch",
     "photo": "/assets/contact.webp",
     "photo_alt": "Office towers seen from below, converging on the sky",
