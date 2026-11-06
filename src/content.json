@@ -65,12 +65,12 @@
     },
     {
       "slug": "publication-1",
-      "title": "TODO: title of published academic work on international economic cooperation policy",
+      "title": "Productive Waqf Development Policy As The Way For Sustainable Economic Development In Organization Of Islamic Cooperation (OIC): Saudi Arabia, Egypt, And Kuwait",
       "category": "Academic paper",
-      "year": "TODO",
-      "summary": "TODO",
+      "year": "2024",
+      "summary": "Journal article on productive waqf development policy in three member states of the Organization of Islamic Cooperation: Saudi Arabia, Egypt and Kuwait. Published in Dauliyah: Journal of Islamic and International Affairs.",
       "cover": "TODO: /assets/work-paper.webp",
-      "url": "TODO"
+      "url": "https://ejournal.unida.gontor.ac.id/index.php/dauliyah/article/download/12513/11620"
     }
   ],
   "process": [
@@ -101,8 +101,8 @@
     { "kind": "award", "name": "Outstanding Student of International Relations", "detail": "UNIDA Gontor Faculty of Humanities", "year": "TODO", "image": "/assets/credentials/outstanding-ir.webp" },
     { "kind": "certification", "name": "Excel Associate training for GenBI", "detail": "Tekno Sains Academy", "year": "2024", "image": "/assets/credentials/mos-training.webp" },
     { "kind": "certification", "name": "Data analyst training", "detail": "Bank Indonesia Kediri", "year": "2025", "image": "/assets/credentials/data-analyst.webp" },
-    { "kind": "certification", "name": "AI Career Readiness Training", "detail": "", "year": "TODO", "image": "TODO" },
-    { "kind": "certification", "name": "Claude Academy — Claude Code 101", "detail": "", "year": "TODO", "image": "TODO" }
+    { "kind": "certification", "name": "AI Career Readiness Training", "detail": "ASEAN Foundation", "year": "2026", "image": "TODO" },
+    { "kind": "certification", "name": "Claude Academy — Claude Code 101", "detail": "Anthropic", "year": "2026", "image": "TODO" }
   ],
   "organizations": [
     { "org": "Generasi Baru Indonesia (GenBI), Ponorogo", "role": "Management Organizer", "period": "Mar 2024 – Mar 2026", "summary": "Planned resources and coordinated more than 50 active members across divisions. Redesigned the KPI framework used to evaluate members and simplified reporting between divisions. Ran more than ten engagement programs with 250+ external participants." },
