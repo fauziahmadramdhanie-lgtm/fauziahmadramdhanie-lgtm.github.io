@@ -154,7 +154,7 @@ html[data-mode='color'] .clock { color: #faeb92; }
 
 /* ---------- Hero ---------- */
 .hero {
-  position: relative; overflow-x: clip; /* rotated sheets poke past the right edge on phones */
+  position: relative; overflow-x: clip;
   min-height: 100vh; min-height: 100svh; /* vh first: iOS < 15.4 has no svh */
   display: flex; flex-direction: column;
   padding-block: 110px 28px;
@@ -166,9 +166,7 @@ html[data-mode='color'] .clock { color: #faeb92; }
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px;
 }
 .hero__now span { display: block; }
-/* The name sits above the paper stack; pointer-events let clicks fall through to the stack beneath. */
 .hero__name {
-  position: relative; z-index: 3; pointer-events: none;
   font-size: clamp(48px, 14vw, 280px); line-height: 0.92; margin-top: auto; padding-top: 40px;
 }
 .hero__side { display: flex; justify-content: space-between; margin-top: 24px; font-size: 14px; }
@@ -181,31 +179,7 @@ html[data-mode='color'] .clock { color: #faeb92; }
 }
 .clock span:first-child { text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
 
-/* Card stack: sheets fan out on hover; it overlaps the wordmark on purpose. */
-.stack {
-  position: absolute; z-index: 2;
-  right: var(--pad); top: 46vh; width: 44vw; aspect-ratio: 4 / 5;
-}
-/* --pop (1 -> 0) is tweened by heroIntro: sheets rise into place without touching `transform`. */
-.sheet {
-  position: absolute; inset: 0; overflow: hidden;
-  box-shadow: 0 10px 30px #0000001f;
-  translate: 0 calc(var(--pop, 0) * 24vh); opacity: calc(1 - var(--pop, 0));
-  transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.3, 1);
-}
-.sheet--mid { background: var(--muted); transform: rotate(14deg) translate(8%, -2%); }
-.sheet--soft { background: var(--soft2); transform: rotate(-12deg) translate(-6%, 2%); }
-.sheet--accent { background: var(--accent); transform: rotate(7deg) translate(4%, 3%); }
-.sheet--top { background: var(--soft); transform: rotate(-3deg); }
-.stack:hover .sheet--mid { transform: rotate(22deg) translate(14%, -4%); }
-.stack:hover .sheet--soft { transform: rotate(-20deg) translate(-12%, 3%); }
-.stack:hover .sheet--accent { transform: rotate(13deg) translate(8%, 5%); }
-.stack:hover .sheet--top { transform: rotate(-1deg) scale(1.02); }
-@media (prefers-reduced-motion: reduce) { .sheet { transition: none; } }
-
 @media (min-width: 768px) {
-  /* Pushed to the right edge so the sheets, even fanned out on hover, never cover the intro text. */
-  .stack { right: calc(var(--pad) + 2vw); top: clamp(96px, 14vh, 200px); width: clamp(220px, 27vw, 440px); }
   .hero__side { position: absolute; right: var(--pad); bottom: 56px; flex-direction: column; align-items: flex-end; gap: 6px; margin: 0; }
   .hero__copy { color: var(--ink); font-weight: 600; font-size: clamp(20px, 2vw, 32px); letter-spacing: -0.02em; }
 }

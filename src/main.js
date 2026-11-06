@@ -69,22 +69,12 @@ const coverHtml = (w, { lazy = false, label = false } = {}) =>
     ? `<div class="cover cover--ph"${label ? ' role="img" aria-label="Placeholder cover"' : ''}></div>`
     : `<img class="cover" src="${esc(w.cover)}" alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
 
-// Sheets of rotated paper: palette-colored ones behind, `top` (an image) in front. Decorative.
-const sheets = (top) => `
-  <span class="sheet sheet--mid"></span><span class="sheet sheet--soft"></span><span class="sheet sheet--accent"></span>
-  <span class="sheet sheet--top">${top}</span>`;
-
 const portraitImg = (lazy = true) =>
   isTodo(person.photo)
     ? '<div class="cover cover--ph" role="img" aria-label="Placeholder portrait"></div>'
     : `<img class="cover" src="${esc(person.photo)}" alt="${esc(person.name)}" width="1000" height="1337"${lazy ? ' loading="lazy"' : ''} />`;
 
 // ---------- Home ----------
-const stack = () => `
-  <a class="stack" href="#/work" data-open-collage="work" data-cursor="arrow" aria-label="${esc(ui.sections.work)}">
-    ${sheets(coverHtml({ cover: content.work[0].cover_tall ?? content.work[0].cover }))}
-  </a>`;
-
 const heroSection = () => `
   <section class="hero" id="top">
     <div class="hero__top">
@@ -93,7 +83,6 @@ const heroSection = () => `
         person.current_role.org,
       )} · ${esc(since)}</p>
     </div>
-    ${stack()}
     <h1 class="hero__name" data-intro="0" data-intro-chars>${esc(hero.big_text)}</h1>
     <div class="hero__side" data-intro-fade>
       <p class="hero__copy">${esc(hero.copyright_line)}</p>

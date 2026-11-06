@@ -76,14 +76,12 @@ function customCursor() {
 }
 
 // 5. Page entrance as one connected cascade. [data-intro="n"] elements (ordered by n) rise line by line,
-// then the paper sheets pop in and [data-intro-fade] blocks follow, all with the same ease and cadence.
+// then [data-intro-fade] blocks follow, all with the same ease and cadence.
 function pageIntro(delay = 0) {
   const parts = $$('[data-intro]').sort((a, b) => a.dataset.intro - b.dataset.intro);
-  const sheets = $$('.sheet');
   const fades = $$('[data-intro-fade]');
   if (parts.length) gsap.set(parts, { autoAlpha: 0 }); // hidden until fonts load and the lines are split
   if (fades.length) gsap.set(fades, { autoAlpha: 0, y: 24 });
-  if (sheets.length) gsap.set(sheets, { '--pop': 1 }); // CSS turns --pop into translate + opacity, so :hover transforms stay intact
 
   const charEls = new Set(parts.filter((el) => 'introChars' in el.dataset)); // big titles: letter by letter
   const lines = new Map(); // element -> what rises (its lines, or its letters for charEls)
@@ -100,7 +98,6 @@ function pageIntro(delay = 0) {
         i * 0.22,
       ),
     );
-    if (sheets.length) tl.to(sheets, { '--pop': 0, duration: 1, stagger: 0.07 }, 0.5);
     if (fades.length) tl.to(fades, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12 }, 0.8);
   };
   if (!parts.length) {
