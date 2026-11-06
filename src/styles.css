@@ -219,7 +219,8 @@ html[data-mode='color'] .clock { color: #faeb92; }
 .cover--ph {
   background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--ink) 7%, var(--bg)) 0 14px, color-mix(in srgb, var(--ink) 11%, var(--bg)) 14px 28px);
 }
-.skyline { margin-top: var(--space-section); }
+/* Full bleed: edge to edge, without the page's side padding. */
+[data-page] > .skyline { margin-top: var(--space-section); padding-inline: 0; }
 .skyline__media { aspect-ratio: 21 / 9; overflow: hidden; background: var(--soft); }
 .skyline__zoom { position: relative; height: 100%; }
 /* Three colorways stacked; the active color mode's fades in (light is the default, i.e. no data-mode). */
