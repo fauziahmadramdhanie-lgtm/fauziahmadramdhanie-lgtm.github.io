@@ -66,14 +66,6 @@ const clock = () =>
     timeZoneName: 'short',
   }).format(new Date());
 
-// cover_text: a typographic cover for work with no image (a paper): the publication's name and the year.
-const coverHtml = (w, { lazy = false, label = false } = {}) =>
-  w?.cover_text
-    ? `<div class="cover cover--text"><span>${esc(w.cover_text)}</span><strong>${esc(w.year)}</strong></div>`
-    : isTodo(w?.cover)
-    ? `<div class="cover cover--ph"${label ? ' role="img" aria-label="Placeholder cover"' : ''}></div>`
-    : `<img class="cover" src="${esc(w.cover)}" alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
-
 const portraitImg = (lazy = true) =>
   isTodo(person.photo)
     ? '<div class="cover cover--ph" role="img" aria-label="Placeholder portrait"></div>'
@@ -105,25 +97,17 @@ const marquee = () => {
   return `<div class="marquee" data-marquee><div class="marquee__track">${group(false)}${group(true)}</div></div>`;
 };
 
-const card = (w) => {
-  const live = isUrl(w.url);
-  const cover = coverHtml(w, { lazy: true, label: true });
-  const body = `
-    <div class="card__media" data-reveal="expand">${cover}</div>
-    <div class="card__meta">
-      <h3>${ph(w.title, 'Placeholder title')}</h3>
-      <p>${esc(w.category)} · ${ph(w.year, '0000')}</p>
-      <p class="card__sum">${ph(w.summary, 'Placeholder summary.')}</p>
-    </div>`;
-  return live
-    ? `<a class="card" href="${esc(w.url)}" target="_blank" rel="noopener" data-cursor="arrow">${body}</a>`
-    : `<div class="card">${body}</div>`;
-};
-
-const work = () => `
-  <section class="section" id="work">
-    <h2 class="section__title">${esc(ui.sections.work)}</h2>
-    <div class="cards">${content.work.map(card).join('')}</div>
+// One photo between the marquee and the numbers, revealed like the About portrait. It comes in three colorways, one
+// per color mode (light: orange, dark: gray, color: purple and yellow); the one for the active mode fades in.
+const skyline = () => `
+  <section class="skyline" aria-hidden="true">
+    <div class="skyline__media" data-reveal="expand">
+      <div class="skyline__zoom">
+        ${['light', 'dark', 'color']
+          .map((k) => `<img class="skyline__img skyline__img--${k}" src="/assets/skyline-${k}.webp" alt="" width="1308" height="736" loading="lazy" />`)
+          .join('')}
+      </div>
+    </div>
   </section>`;
 
 // Each digit is a 10-row column so the odometer can roll it (animation 8); '.' stays static.
@@ -169,7 +153,7 @@ const teaser = () => `
   </section>`;
 
 const homePage = () => `
-  <div data-page="home" tabindex="-1">${heroSection()}${marquee()}${work()}${stats()}${teaser()}</div>`;
+  <div data-page="home" tabindex="-1">${heroSection()}${marquee()}${skyline()}${stats()}${teaser()}</div>`;
 
 // ---------- Shared bits ----------
 // Big title at the top of every inner page; [data-intro] makes it rise line by line on entry.
