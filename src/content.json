@@ -57,7 +57,7 @@
       "slug": "irfolks",
       "title": "irfolks",
       "category": "Independent analysis",
-      "year": "2025–2026",
+      "year": "2024–present",
       "summary": "A blog I founded and run. Essays on geopolitics and macroeconomics, such as dependency theory, protectionism and monetary policy, written for general readers.",
       "cover": "/assets/work-irfolks.webp",
       "cover_ratio": 1.982,
@@ -117,7 +117,7 @@
   ],
   "credentials": [
     { "kind": "award", "name": "PILMAPRES 2024", "detail": "Top five finalist, UNIDA Gontor", "year": "2024", "image": "/assets/credentials/pilmapres.webp" },
-    { "kind": "award", "name": "Best Student in Academic Activity", "detail": "UNIDA Gontor student council", "year": "2024", "image": "/assets/credentials/best-student.webp" },
+    { "kind": "award", "name": "Best Student in Academic Activity", "detail": "UNIDA Gontor student council", "year": "2025", "image": "/assets/credentials/best-student.webp" },
     { "kind": "certification", "name": "Microsoft Office Specialist — Excel 2019 Associate", "detail": "Microsoft", "year": "2024", "image": "/assets/credentials/mos-excel.webp" },
     { "kind": "award", "name": "Outstanding Student, Faculty of Humanities", "detail": "UNIDA Gontor", "year": "2023 & 2024", "image": "/assets/credentials/outstanding-student.webp" },
     { "kind": "award", "name": "Bank Indonesia Unggulan Scholarship", "detail": "Awardee, two consecutive years", "year": "2024–2026", "image": "/assets/credentials/bi-scholarship.webp" },
@@ -127,22 +127,22 @@
     { "kind": "award", "name": "Best Paper Position, Diplomatic Course", "detail": "PPIDK Timtengka", "year": "2024", "image": "/assets/credentials/best-paper.webp" },
     { "kind": "award", "name": "Outstanding Student of International Relations", "detail": "UNIDA Gontor Faculty of Humanities", "image": "/assets/credentials/outstanding-ir.webp" },
     { "kind": "certification", "name": "Excel Associate training for GenBI", "detail": "Tekno Sains Academy", "year": "2024", "image": "/assets/credentials/mos-training.webp" },
-    { "kind": "certification", "name": "Data analyst training", "detail": "Bank Indonesia Kediri", "year": "2025", "image": "/assets/credentials/data-analyst.webp" },
+    { "kind": "certification", "name": "Data analyst training", "detail": "Vektor", "year": "2025", "image": "/assets/credentials/data-analyst.webp" },
     { "kind": "certification", "name": "AI Career Readiness Training", "detail": "ASEAN Foundation", "year": "2026", "image": "/assets/credentials/ai-career.webp" },
     { "kind": "certification", "name": "Claude Academy — Claude 101", "detail": "Anthropic", "year": "2026", "image": "/assets/credentials/claude-101.webp" }
   ],
   "organizations": [
-    { "org": "Generasi Baru Indonesia (GenBI), Ponorogo", "role": "Management Organizer", "period": "Mar 2024 – Mar 2026", "summary": "Planned resources and coordinated more than 50 active members across divisions. Redesigned the KPI framework used to evaluate members and simplified reporting between divisions. Ran more than ten engagement programs with 250+ external participants." },
-    { "org": "Foreign Policy Community of Indonesia (FPCI), UNIDA Chapter", "role": "Research and Development Department", "period": "Jan 2025 – Jul 2025", "summary": "Led collaborative research on foreign policy and global trends and presented the findings at regular discussion forums of 30+ members. Drafted policy recommendations from a comparative analysis of contemporary Islamic perspectives, for public education programs on international issues." },
-    { "org": "Student Council, UNIDA Gontor", "role": "External Department Secretary", "period": "Aug 2024 – Aug 2025", "summary": "Managed communication between the external division and the faculty deanery, partner organizations and outside parties. Drafted official letters, partnership proposals and activity reports." },
-    { "org": "Forum Komunikasi Mahasiswa Hubungan Internasional Indonesia (FKMHII)", "role": "National Website Administrator", "period": "Feb 2024 – Sep 2024", "summary": "Maintained the national FKMHII website: more than 50 content updates, editing and publishing news and agendas from regional coordinators across Indonesia, and periodic checks of performance and accessibility." },
-    { "org": "International Relations Student Association (HMPHI), UNIDA Gontor", "role": "Head of External Department", "period": "Aug 2023 – Aug 2024", "summary": "Led the external division and its relations with the faculty, campus bodies and partner organizations. Built partnerships with five or more institutions across government, NGOs and civil society. Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event." },
+    { "org": "Generasi Baru Indonesia (GenBI), Ponorogo", "role": "Organization Manager", "period": "May 2024 – Apr 2026", "summary": "Planned resources and coordinated more than 50 active members across divisions. Redesigned the KPI framework used to evaluate members and simplified reporting between divisions. Ran more than ten engagement programs with 250+ external participants." },
+    { "org": "Foreign Policy Community of Indonesia (FPCI), UNIDA Chapter", "role": "Research Development Department Specialist", "period": "Jan 2025 – Jul 2025", "summary": "Led collaborative research on foreign policy and global trends and presented the findings at regular discussion forums of 30+ members. Drafted policy recommendations from a comparative analysis of contemporary Islamic perspectives, for public education programs on international issues." },
+    { "org": "Student Council, UNIDA Gontor", "role": "External Affairs Secretary", "period": "Jun 2024 – Jun 2025", "summary": "Managed communication between the external division and the faculty deanery, partner organizations and outside parties. Drafted official letters, partnership proposals and activity reports." },
+    { "org": "Forum Komunikasi Mahasiswa Hubungan Internasional Indonesia (FKMHII)", "role": "Website Administrator", "period": "Sep 2024 – Nov 2024", "summary": "Maintained the national FKMHII website: more than 50 content updates, editing and publishing news and agendas from regional coordinators across Indonesia, and periodic checks of performance and accessibility." },
+    { "org": "International Relations Student Association (HMPHI), UNIDA Gontor", "role": "Head of External Affairs", "period": "Aug 2023 – Jun 2024", "summary": "Led the external division and its relations with the faculty, campus bodies and partner organizations. Built partnerships with five or more institutions across government, NGOs and civil society. Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event." },
     { "org": "International Community Service, Malaysia (UNIDA Gontor)", "role": "Volunteer", "period": "Jun 2023 – Jul 2023", "summary": "Tutored stateless migrant children and ran educational activities for them, together with other volunteers and local communities." }
   ],
   "languages": [
-    { "name": "Indonesian", "level": "Native", "bars": 5 },
-    { "name": "English", "level": "Professional working (B2)", "bars": 3 },
-    { "name": "Arabic", "level": "Professional working (B2)", "bars": 3 },
+    { "name": "Indonesian", "level": "Professional working", "bars": 3 },
+    { "name": "English", "level": "Limited working", "bars": 2 },
+    { "name": "Arabic", "level": "Limited working", "bars": 2 },
     { "name": "French", "level": "Elementary", "bars": 1 }
   ],
   "faq": [
