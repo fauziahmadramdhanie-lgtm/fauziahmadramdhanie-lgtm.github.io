@@ -60,7 +60,6 @@
       "year": "2024–present",
       "summary": "A blog I founded and run. Essays on geopolitics and macroeconomics, such as dependency theory, protectionism and monetary policy, written for general readers.",
       "cover": "/assets/work-irfolks.webp",
-      "cover_ratio": 1.982,
       "url": "https://irfolks.com"
     },
     {
@@ -78,8 +77,7 @@
       "category": "Internship",
       "year": "2025",
       "summary": "Regional inflation and food security reports for TPID coordination meetings, publication of institutional programs, and public sessions on QRIS and digital financial literacy for 300+ participants.",
-      "cover": "/assets/work-bi.webp",
-      "cover_ratio": 0.745
+      "cover": "/assets/work-bi.webp"
     },
     {
       "slug": "ojk-east-java",
@@ -87,8 +85,7 @@
       "category": "Internship",
       "year": "2026",
       "summary": "Reviewed more than 50 consumer dispute cases in the Indonesia Anti-Scam Centre (IASC) portal and mapped the mediation workflow between consumers and financial service providers.",
-      "cover": "/assets/work-ojk.webp",
-      "cover_ratio": 1.878
+      "cover": "/assets/work-ojk.webp"
     },
     {
       "slug": "wesclic",
@@ -96,9 +93,20 @@
       "category": "Content writing",
       "year": "2025",
       "summary": "More than 100 research-based articles on MSME digitalization, written for small-business owners without a technical background.",
-      "cover": "/assets/work-wesclic.webp",
-      "cover_ratio": 2.213
+      "cover": "/assets/work-wesclic.webp"
     }
+  ],
+  "collage": [
+    { "work": "irfolks", "cover_pos": "left center" },
+    { "work": "bank-indonesia-kediri", "cover_pos": "center 25%" },
+    { "work": "ojk-east-java", "cover_pos": "center 35%" },
+    { "title": "Structuralism analysis: China and Indonesia's smelter industry", "category": "irfolks article · 2024", "cover": "/assets/work-irfolks-article.webp", "cover_pos": "left top" },
+    { "work": "wesclic", "cover_pos": "center top" },
+    { "work": "publication-1" },
+    { "title": "IASC session", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-session.webp", "cover_pos": "60% 60%" },
+    { "title": "Winnership Program, Batch 12", "category": "Wesclic certificate · 2025", "cover": "/assets/work-wesclic-cert.webp", "cover_fit": "contain" },
+    { "title": "irfolks", "category": "Brand", "cover": "/assets/work-irfolks-brand.webp", "cover_pos": "center" },
+    { "title": "Team", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-team.webp", "cover_pos": "center 30%" }
   ],
   "process": [
     { "n": "01", "title": "Ask", "text": "Start from the question and who will read the answer." },

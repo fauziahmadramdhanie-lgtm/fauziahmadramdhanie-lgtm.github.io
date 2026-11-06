@@ -71,7 +71,9 @@ const coverHtml = (w, { lazy = false, label = false } = {}) =>
     ? `<div class="cover cover--text"><span>${esc(w.cover_text)}</span><strong>${esc(w.year)}</strong></div>`
     : isTodo(w?.cover)
     ? `<div class="cover cover--ph"${label ? ' role="img" aria-label="Placeholder cover"' : ''}></div>`
-    : `<img class="cover" src="${esc(w.cover)}" alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
+    : `<img class="cover${w.cover_fit === 'contain' ? ' cover--contain' : ''}" src="${esc(w.cover)}"${
+        w.cover_pos ? ` style="object-position:${esc(w.cover_pos)}"` : ''
+      } alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
 
 const portraitImg = (lazy = true) =>
   isTodo(person.photo)
@@ -359,33 +361,23 @@ const footer = () => `
   </footer>`;
 
 // ---------- Work collage (route #/work) ----------
+// Square tiles of one size on a regular grid, all at the same speed: five columns in two rows, the title between
+// the rows. The grid is periodic (equal gaps, also across the wrap seam), so tiles never touch while panning.
 // [x, y] as fractions of the pan field, width in vw, aspect (w/h), parallax speed.
-// shortcut: 8 layout slots, extra work items reuse them cyclically; hand-place more when work grows past ~12.
-// Mirrored layout: four tiles frame the title, four wait just outside the viewport for the pan.
-const SLOTS = [
-  [-0.2, -0.21, 23, 0.8, 1],
-  [0.2, -0.21, 23, 0.8, 1],
-  [-0.2, 0.21, 23, 0.8, 1],
-  [0.2, 0.21, 23, 0.8, 1],
-  // The outer ring stays well inside the wrap seam: tiles that wrap around must not land on their neighbors.
-  [-0.4, 0, 24, 1.25, 1.2],
-  [0.4, 0, 24, 1.25, 1.2],
-  [0, -0.36, 24, 1.25, 1.2],
-  [0, 0.36, 24, 1.25, 1.2],
-];
-const DECO = ['accent', 'soft', 'muted'];
+// shortcut: 10 slots (content.collage has 10 entries); more entries would share a slot, add a column or row then.
+const SLOTS = [-0.4, -0.2, 0, 0.2, 0.4].flatMap((x) => [-0.14, 0.14].map((y) => [x, y, 22, 1, 1]));
 
-// w === undefined -> decorative palette tile that keeps the layout full until there is more work.
+// content.collage entries are either { work: slug, ... } (a work item, with its link) or a tile of their own.
+const collageItems = content.collage.map((c) => (c.work ? { ...content.work.find((w) => w.slug === c.work), ...c } : c));
+
 const tile = (w, i) => {
   const [x, y, width, ratio, speed] = SLOTS[i % SLOTS.length];
-  const attrs = (cls) =>
-    `class="tile ${cls}" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${w?.cover_ratio ?? ratio};--wh:40"`;
-  if (!w) return `<div ${attrs(`tile--deco tile--${DECO[(i >> 1) % DECO.length]}`)} aria-hidden="true"></div>`;
+  const attrs = `class="tile" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio};--wh:28"`;
   const body = `<div class="tile__media">${coverHtml(w, { lazy: true })}</div>
-    <p class="tile__cap">${ph(w.title, 'Placeholder title')}<span>${esc(w.category)}</span></p>`;
+    <p class="tile__cap"><b class="tile__title">${ph(w.title, 'Placeholder title')}</b><span>${esc(w.category)}</span></p>`;
   return isUrl(w.url)
-    ? `<a ${attrs('')} href="${esc(w.url)}" target="_blank" rel="noopener" data-cursor="arrow">${body}</a>`
-    : `<div ${attrs('')}>${body}</div>`;
+    ? `<a ${attrs} href="${esc(w.url)}" target="_blank" rel="noopener" data-cursor="arrow">${body}</a>`
+    : `<div ${attrs}>${body}</div>`;
 };
 
 // ---------- Credentials collage (route #/credentials) ----------
@@ -444,8 +436,9 @@ const collages = () =>
     'work',
     ui.sections.work,
     ui.collage.title,
-    Array.from({ length: Math.max(SLOTS.length, content.work.length) }, (_, i) => tile(content.work[i], i)),
+    collageItems.map(tile),
     1.5,
+    2.2, // phones: tiles are 1.7x bigger, so the field is wider to keep the gaps
   ) +
   collageHtml(
     'credentials',

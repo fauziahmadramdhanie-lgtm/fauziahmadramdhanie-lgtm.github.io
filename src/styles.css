@@ -515,6 +515,8 @@ html.collage-open { overflow: visible !important; }
 .tile--soft { background: var(--soft2); }
 .tile__cap { margin-top: 8px; font-size: 13px; font-weight: 600; line-height: 1.3; }
 .tile__cap span { display: block; color: var(--muted); font-weight: 400; }
+/* A long title (a paper's) keeps to two lines so every tile in the grid is the same height. */
+.tile__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; font-weight: 600; }
 .collage__close {
   position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 2;
   padding: 6px 14px; border-radius: 999px;
@@ -525,7 +527,7 @@ html.collage-open { overflow: visible !important; }
    and entries without an image are typographic cards. */
 .collage[data-collage='credentials'] .collage__title { font-size: clamp(72px, 13vw, 240px); }
 .tile--cert .tile__media { background: #fff; box-shadow: 0 8px 24px #00000024; }
-.tile--cert .cover { object-fit: contain; }
+.tile--cert .cover, .tile .cover--contain { object-fit: contain; }
 .tile--text { aspect-ratio: var(--r); }
 .tile__text {
   height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 18px;
