@@ -241,25 +241,29 @@ function fadeBlocks(desktop) {
   });
 }
 
-// Headings rise line by line out of a mask the first time they scroll into view.
+// Headings rise line by line out of a mask the first time they scroll into view. The big closing title
+// (.contact__title) rises letter by letter, the same motion as the hero name.
 const TEXT_TARGETS = '.section__title, .sub, .contact__title';
 function textReveals() {
   const tweens = []; // onSplit may run after the matchMedia context is gone (fonts), so they are tracked by hand
   const splits = $$(TEXT_TARGETS).map((el) => {
-    let first = true;
+    let tween = null;
+    let played = false;
+    const letters = el.matches('.contact__title');
     return SplitText.create(el, {
-      type: 'lines',
+      type: letters ? 'lines,chars' : 'lines',
+      charsClass: 'ch',
       mask: 'lines',
-      autoSplit: true, // re-splits on resize; only the first round animates (the tween is not returned on purpose)
+      autoSplit: true, // splits again once the fonts load and on resize: the nodes of an earlier split are gone
       onSplit(self) {
-        if (!first) return;
-        first = false;
-        const tween = gsap.from(self.lines, {
-          yPercent: 110,
-          duration: 1,
+        if (played) return; // a re-split after the reveal leaves the new lines in place
+        tween?.scrollTrigger?.kill();
+        tween?.kill(); // it still points at the old nodes
+        tween = gsap.from(letters ? self.chars : self.lines, {
+          ...(letters ? { yPercent: 115, rotate: 7, duration: 0.95, stagger: 0.035 } : { yPercent: 110, duration: 1, stagger: 0.09 }),
           ease: 'power4.out',
-          stagger: 0.09,
           scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+          onComplete: () => (played = true),
         });
         tweens.push(tween);
       },
