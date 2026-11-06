@@ -154,6 +154,22 @@ function hoverChars(getChars) {
   };
 }
 
+// A collage's big title (#/work, #/credentials) gets the hero name's treatment: its letters rise out of a mask (rise(),
+// called each time the collage opens) and light up under the pointer while the collage is open.
+export function bigTitle(el, isOpen) {
+  SplitText.create(el, { type: 'lines,chars', charsClass: 'ch', mask: 'lines', autoSplit: true });
+  const letters = () => [...el.querySelectorAll('.ch')]; // read when needed: a re-split (fonts, resize) replaces them
+  hoverChars(() => (isOpen() ? letters() : []));
+  return {
+    rise: (delay = 0.3) =>
+      gsap.fromTo(
+        letters(),
+        { yPercent: 115, rotate: 7 },
+        { yPercent: 0, rotate: 0, duration: 0.95, ease: 'power4.out', stagger: 0.035, delay, overwrite: 'auto' },
+      ),
+  };
+}
+
 // Stable pseudo-random in [0, 1): scatter positions must not change on every refresh.
 const rand = (i, k) => {
   const s = Math.sin((i + 1) * 12.9898 + k * 78.233) * 43758.5453;

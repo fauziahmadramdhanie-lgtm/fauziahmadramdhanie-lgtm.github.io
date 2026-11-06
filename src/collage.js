@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import { getLenis } from './animations.js';
+import { getLenis, bigTitle } from './animations.js';
 import { circle, reach } from './reveal.js';
 import { resetTable } from './cards.js';
 
@@ -22,6 +22,7 @@ export function initCollage() {
     const route = `#/${name}`;
     const title = root.querySelector('.collage__title');
     const c = { name, route, root, open: false };
+    const letters = bigTitle(title, () => c.open);
 
     c.show = (animated) => {
       c.open = true;
@@ -39,6 +40,7 @@ export function initCollage() {
         { '--in': 0 },
         { '--in': 1, duration: animated ? 1 : 0, delay: animated ? 0.3 : 0, ease: 'power3.out', overwrite: 'auto' },
       );
+      if (animated) letters.rise(0.3);
       root.querySelector('[data-collage-close]').focus({ preventScroll: true });
     };
 

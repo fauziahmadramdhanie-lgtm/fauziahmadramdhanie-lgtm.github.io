@@ -495,7 +495,7 @@ html.collage-open { overflow: visible !important; }
 }
 .collage__title {
   position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%);
-  font-size: clamp(120px, 26vw, 460px); line-height: 0.8; pointer-events: none;
+  font-size: clamp(120px, 26vw, 460px); line-height: 0.92; white-space: nowrap; pointer-events: none; /* as the hero name: its letters sit in line masks */
   scale: calc(0.9 + 0.1 * var(--in, 1)); opacity: calc(var(--in, 1) * var(--dim, 1));
 }
 /* --in (0 -> 1) is tweened when the collage opens, --dim (1 -> .08) once the cards are dealt; `scale`/`opacity` stay clear of the JS-driven transform. */
@@ -550,7 +550,8 @@ html.collage-open { overflow: visible !important; }
   transition: translate 0.25s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.25s;
 }
 @media (hover: hover) and (pointer: fine) {
-  .card-t:not(.is-open) .card-t__back:hover { translate: 0 -8px; box-shadow: 0 16px 30px #00000050; }
+  /* A ring, not a lift: a card that moves up looks like a different size next to its neighbors. */
+  .card-t:not(.is-open) .card-t__back:hover { box-shadow: 0 0 0 3px var(--accent), 0 14px 28px #00000050; }
 }
 .card-t__back:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .card-t__no { font-size: clamp(22px, 2.4vw, 34px); font-weight: 800; line-height: 1; letter-spacing: var(--tracking); color: var(--accent); }
