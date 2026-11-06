@@ -346,7 +346,7 @@ function numbersStage() {
   if (!stage) return () => {};
   stage.classList.add('is-stacked');
   const tl = gsap.timeline({
-    scrollTrigger: { trigger: stage, start: 'top top', end: '+=150%', pin: true, scrub: true },
+    scrollTrigger: { trigger: stage, start: 'top 62px', end: '+=150%', pin: true, scrub: true }, // 62px: the fixed header
   });
   $$('.numbers .stat').forEach((s, i) => {
     const at = i * 0.8;

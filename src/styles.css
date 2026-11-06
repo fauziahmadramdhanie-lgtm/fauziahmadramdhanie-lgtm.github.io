@@ -220,7 +220,7 @@ html[data-mode='color'] .clock { color: #faeb92; }
   background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--ink) 7%, var(--bg)) 0 14px, color-mix(in srgb, var(--ink) 11%, var(--bg)) 14px 28px);
 }
 /* Full bleed: edge to edge, without the page's side padding. */
-[data-page] > .skyline { margin-top: var(--space-section); padding-inline: 0; }
+[data-page] > .skyline { margin-top: 2.5pt; padding-inline: 0; }
 .skyline__media { aspect-ratio: 21 / 9; overflow: hidden; background: var(--soft); }
 .skyline__zoom { position: relative; height: 100%; }
 /* Three colorways stacked; the active color mode's fades in (light is the default, i.e. no data-mode). */
@@ -232,11 +232,12 @@ html[data-mode='dark'] .skyline__img--light, html[data-mode='color'] .skyline__i
 @media (prefers-reduced-motion: reduce) { .skyline__img { transition: none; } }
 
 /* ---------- Stats ---------- */
-.numbers { margin-top: var(--space-section); position: relative; }
+.numbers { margin-top: 2.5pt; position: relative; }
 .numbers__label { font-size: 14px; color: var(--muted); padding-block: 12px; }
 /* Pinned stage (desktop + motion): stats stack in one cell, number on the right, text on the left. */
 /* Pinned stage (desktop + motion): three stats in one screen, zigzag left / right / left. */
-.numbers.is-stacked { height: 100vh; height: 100svh; padding-block: 88px 24px; display: flex; flex-direction: column; }
+/* Pinned right under the 62px header (numbersStage starts at 'top 62px'), so it follows the photo with no gap. */
+.numbers.is-stacked { height: calc(100vh - 62px); height: calc(100svh - 62px); padding-block: 8px 24px; display: flex; flex-direction: column; }
 .numbers.is-stacked .numbers__label { padding-block: 0 4px; }
 .numbers.is-stacked .stat {
   flex: 1; min-height: 0; display: flex; align-items: center; gap: clamp(24px, 3vw, 56px);
