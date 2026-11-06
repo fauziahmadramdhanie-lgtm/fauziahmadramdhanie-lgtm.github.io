@@ -286,7 +286,8 @@ function expandCovers() {
 
 // The contact photo is oversized inside its frame and swings through a small 3D tilt (plus a slow zoom and drift)
 // while it crosses the screen, so the angle of the picture follows the scroll.
-const TILT = [
+// A function, not shared objects: GSAP writes its own fields (parent, startAt) into the vars it is given.
+const tilt = () => [
   { rotationX: 8, rotationY: -6, scale: 1.25, yPercent: -6 },
   { rotationX: -8, rotationY: 6, scale: 1.08, yPercent: 6 },
 ];
@@ -298,7 +299,7 @@ function photoTilt() {
         defaults: { ease: 'none' },
         scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: true },
       })
-      .fromTo(frame.firstElementChild, ...TILT);
+      .fromTo(frame.firstElementChild, ...tilt());
   });
 }
 
@@ -308,7 +309,7 @@ export function presetTilt(page) {
   if (!matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
   page.querySelectorAll('[data-tilt]').forEach((frame) => {
     const { top, height } = frame.getBoundingClientRect();
-    gsap.set(frame.firstElementChild, gsap.utils.interpolate(...TILT, (innerHeight - top) / (innerHeight + height)));
+    gsap.set(frame.firstElementChild, gsap.utils.interpolate(...tilt(), (innerHeight - top) / (innerHeight + height)));
   });
 }
 

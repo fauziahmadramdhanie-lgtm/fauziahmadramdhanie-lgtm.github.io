@@ -106,8 +106,9 @@ export function initRouter() {
         paused: true, // started below, once the layer has been laid out and painted
         duration: closing ? 0.9 : 1,
         ease: 'power3.inOut',
-        onUpdate: () => {
-          const r = reach() * (closing ? 1 - tween.ratio : tween.ratio);
+        onUpdate() {
+          // `this` is the tween: GSAP renders the start state while `tween` is still being assigned
+          const r = reach() * (closing ? 1 - this.ratio : this.ratio);
           if (closing ? r <= flipAt : r >= flipAt) flip();
         },
         onComplete: () => {
