@@ -97,16 +97,16 @@
     }
   ],
   "collage": [
-    { "work": "irfolks", "cover_pos": "left center" },
-    { "work": "bank-indonesia-kediri", "cover_pos": "center 25%" },
-    { "work": "ojk-east-java", "cover_pos": "center 35%" },
-    { "title": "Structuralism analysis: China and Indonesia's smelter industry", "category": "irfolks article · 2024", "cover": "/assets/work-irfolks-article.webp", "cover_pos": "left top" },
-    { "work": "wesclic", "cover_pos": "center top" },
-    { "work": "publication-1" },
-    { "title": "IASC session", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-session.webp", "cover_pos": "60% 60%" },
-    { "title": "Winnership Program, Batch 12", "category": "Wesclic certificate · 2025", "cover": "/assets/work-wesclic-cert.webp", "cover_fit": "contain" },
-    { "title": "irfolks", "category": "Brand", "cover": "/assets/work-irfolks-brand.webp", "cover_pos": "center" },
-    { "title": "Team", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-team.webp", "cover_pos": "center 30%" }
+    { "work": "irfolks", "cover_ratio": 1.982 },
+    { "work": "bank-indonesia-kediri", "cover_ratio": 0.745 },
+    { "work": "ojk-east-java", "cover_ratio": 1.878 },
+    { "title": "Structuralism analysis: China and Indonesia's smelter industry", "category": "irfolks article · 2024", "cover": "/assets/work-irfolks-article.webp", "cover_ratio": 2.158 },
+    { "work": "wesclic", "cover_ratio": 2.213 },
+    { "work": "publication-1", "cover_ratio": 1.25 },
+    { "title": "IASC session", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-session.webp", "cover_ratio": 1.335 },
+    { "title": "Winnership Program, Batch 12", "category": "Wesclic certificate · 2025", "cover": "/assets/work-wesclic-cert.webp", "cover_ratio": 1.42 },
+    { "title": "irfolks", "category": "Brand", "cover": "/assets/work-irfolks-brand.webp", "cover_ratio": 1.907 },
+    { "title": "Team", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-team.webp", "cover_ratio": 1.788 }
   ],
   "process": [
     { "n": "01", "title": "Ask", "text": "Start from the question and who will read the answer." },
@@ -137,7 +137,8 @@
     { "kind": "certification", "name": "Excel Associate training for GenBI", "detail": "Tekno Sains Academy", "year": "2024", "image": "/assets/credentials/mos-training.webp" },
     { "kind": "certification", "name": "Data analyst training", "detail": "Vektor", "year": "2025", "image": "/assets/credentials/data-analyst.webp" },
     { "kind": "certification", "name": "AI Career Readiness Training", "detail": "ASEAN Foundation", "year": "2026", "image": "/assets/credentials/ai-career.webp" },
-    { "kind": "certification", "name": "Claude Academy — Claude 101", "detail": "Anthropic", "year": "2026", "image": "/assets/credentials/claude-101.webp" }
+    { "kind": "certification", "name": "Claude Academy — Claude 101", "detail": "Anthropic", "year": "2026", "image": "/assets/credentials/claude-101.webp" },
+    { "kind": "certification", "name": "Claude Academy — Claude Code 101", "detail": "Anthropic", "year": "2026" }
   ],
   "organizations": [
     { "org": "Generasi Baru Indonesia (GenBI), Ponorogo", "role": "Organization Manager", "period": "May 2024 – Apr 2026", "summary": "Planned resources and coordinated more than 50 active members across divisions. Redesigned the KPI framework used to evaluate members and simplified reporting between divisions. Ran more than ten engagement programs with 250+ external participants." },
@@ -182,6 +183,7 @@
     "now": "Now",
     "cv": "CV",
     "visit": "Visit",
+    "enlarge": "Enlarge",
     "nav": [
       { "label": "Work", "target": "work" },
       { "label": "About", "target": "about" },

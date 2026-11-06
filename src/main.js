@@ -5,6 +5,7 @@ import 'lenis/dist/lenis.css';
 import './styles.css';
 import { initMenu } from './menu.js';
 import { initCollage } from './collage.js';
+import { initLightbox } from './lightbox.js';
 import { initRouter } from './router.js';
 
 const { person, hero, ui } = content;
@@ -71,9 +72,7 @@ const coverHtml = (w, { lazy = false, label = false } = {}) =>
     ? `<div class="cover cover--text"><span>${esc(w.cover_text)}</span><strong>${esc(w.year)}</strong></div>`
     : isTodo(w?.cover)
     ? `<div class="cover cover--ph"${label ? ' role="img" aria-label="Placeholder cover"' : ''}></div>`
-    : `<img class="cover${w.cover_fit === 'contain' ? ' cover--contain' : ''}" src="${esc(w.cover)}"${
-        w.cover_pos ? ` style="object-position:${esc(w.cover_pos)}"` : ''
-      } alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
+    : `<img class="cover" src="${esc(w.cover)}" alt="" width="1200" height="900"${lazy ? ' loading="lazy"' : ''} />`;
 
 const portraitImg = (lazy = true) =>
   isTodo(person.photo)
@@ -370,10 +369,17 @@ const SLOTS = [-0.4, -0.2, 0, 0.2, 0.4].flatMap((x) => [-0.14, 0.14].map((y) => 
 // content.collage entries are either { work: slug, ... } (a work item, with its link) or a tile of their own.
 const collageItems = content.collage.map((c) => (c.work ? { ...content.work.find((w) => w.slug === c.work), ...c } : c));
 
+// Marks a tile's picture as enlargeable (lightbox.js); a tile that is itself a link gets no button role.
+const zoom = (title, isLink) =>
+  ` data-zoom data-cursor="arrow"${isLink ? '' : ` role="button" tabindex="0" aria-label="${esc(ui.enlarge)}: ${esc(title)}"`}`;
+
+// Each picture keeps its own proportions (cover_ratio): the tile is as wide as the slot, or as tall when the picture is
+// portrait (see .tile in styles.css), so it always fits inside its grid cell.
 const tile = (w, i) => {
   const [x, y, width, ratio, speed] = SLOTS[i % SLOTS.length];
-  const attrs = `class="tile" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${ratio};--wh:28"`;
-  const body = `<div class="tile__media">${coverHtml(w, { lazy: true })}</div>
+  const attrs = `class="tile" data-x="${x}" data-y="${y}" data-speed="${speed}" style="--w:${width};--r:${w.cover_ratio ?? ratio};--wh:28"`;
+  const hasImage = !w.cover_text && !isTodo(w.cover);
+  const body = `<div class="tile__media"${hasImage ? zoom(w.title, isUrl(w.url)) : ''}>${coverHtml(w, { lazy: true })}</div>
     <p class="tile__cap"><b class="tile__title">${ph(w.title, 'Placeholder title')}</b><span>${esc(w.category)}</span></p>`;
   return isUrl(w.url)
     ? `<a ${attrs} href="${esc(w.url)}" target="_blank" rel="noopener" data-cursor="arrow">${body}</a>`
@@ -418,7 +424,7 @@ const credTile = (c, i) => {
     </div>`;
   }
   return `<div ${attrs('tile--cert')}>
-    <div class="tile__media"><img class="cover" src="${esc(c.image)}" alt="${esc(ui.kinds[c.kind])}: ${esc(c.name)}" width="900" height="640" loading="lazy" /></div>
+    <div class="tile__media"${zoom(c.name, false)}><img class="cover" src="${esc(c.image)}" alt="${esc(ui.kinds[c.kind])}: ${esc(c.name)}" width="900" height="640" loading="lazy" /></div>
     <p class="tile__cap">${esc(c.name)}<span>${esc(c.detail)}${year}</span></p>
   </div>`;
 };
@@ -444,8 +450,8 @@ const collages = () =>
     'credentials',
     ui.sections.credentials,
     ui.sections.credentials,
-    // Two orange blocks (null) take slots 1 and 2, diagonal in the inner ring like the Work collage's.
-    [content.credentials[0], null, null, ...content.credentials.slice(1)].map(credTile),
+    // One orange block (null) takes slot 1 in the inner ring; 15 credentials + the block fill the 16 slots.
+    [content.credentials[0], null, ...content.credentials.slice(1)].map(credTile),
     1.9,
     2.2, // phones: two 166px columns only fit side by side, outside the screen edges, on a wider field
   );
@@ -562,6 +568,7 @@ document.addEventListener('click', (e) => {
   remeasure = setTimeout(() => ScrollTrigger.refresh(), 600);
 });
 
+initLightbox(); // first: its Esc handler (capture) must run before the router's and the collage's
 initMenu();
 initCollage(); // before the router: both listen for link clicks in the capture phase, in this order
 initRouter();

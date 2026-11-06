@@ -505,7 +505,8 @@ html.collage-open { overflow: visible !important; }
 /* --in (0 -> 1) is tweened when the collage opens; `scale`/`opacity` stay clear of the JS-driven transform. */
 .tile {
   --s: 1; position: absolute; left: 50%; top: 50%; display: block;
-  width: min(calc(var(--w) * 1vw * var(--s)), calc(var(--wh, 100) * 1vh * var(--s)));
+  /* The slot's width; a portrait picture (--r < 1) is narrower, so its height is the slot's width too. */
+  width: calc(min(calc(var(--w) * 1vw * var(--s)), calc(var(--wh, 100) * 1vh * var(--s))) * min(1, var(--r)));
   will-change: transform; scale: calc(0.86 + 0.14 * var(--in, 1)); opacity: var(--in, 1);
 }
 .tile__media { aspect-ratio: var(--r); overflow: hidden; background: var(--soft); }
@@ -527,7 +528,7 @@ html.collage-open { overflow: visible !important; }
    and entries without an image are typographic cards. */
 .collage[data-collage='credentials'] .collage__title { font-size: clamp(72px, 13vw, 240px); }
 .tile--cert .tile__media { background: #fff; box-shadow: 0 8px 24px #00000024; }
-.tile--cert .cover, .tile .cover--contain { object-fit: contain; }
+.tile--cert .cover { object-fit: contain; }
 .tile--text { aspect-ratio: var(--r); }
 .tile__text {
   height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 18px;
@@ -537,6 +538,29 @@ html.collage-open { overflow: visible !important; }
 .tile__text strong { font-size: clamp(16px, 1.6vw, 24px); line-height: 1.15; letter-spacing: -0.02em; }
 .tile__text small { font-size: 13px; color: var(--muted); }
 @media (max-width: 767px) { .tile { --s: 1.7; } }
+[data-zoom] { cursor: zoom-in; }
+
+/* ---------- Lightbox (lightbox.js): a collage picture, large ---------- */
+.lightbox {
+  position: fixed; inset: 0; z-index: 250; display: grid; place-items: center; padding: 24px 24px 72px;
+  background: rgb(0 0 0 / 0.88); animation: lb-in 0.25s ease both;
+}
+.lightbox[hidden] { display: none; }
+.lightbox__fig { margin: 0; display: grid; justify-items: center; gap: 14px; max-width: 100%; }
+.lightbox__img { width: min(94vw, 1100px); height: 72vh; object-fit: contain; }
+.lightbox__cap { display: grid; gap: 4px; justify-items: center; max-width: 60ch; text-align: center; color: #fff; font-size: 14px; line-height: 1.35; }
+.lightbox__cap span { color: #bdbdbd; }
+.lightbox__cap span:empty { display: none; }
+.lightbox__link { margin-top: 6px; color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+.lightbox__link:hover { color: var(--accent); }
+.lightbox__close {
+  position: absolute; left: 50%; bottom: 20px; translate: -50% 0;
+  padding: 6px 14px; border-radius: 999px; background: #fff; color: #0a0a0a;
+  font-weight: 600; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.lightbox :focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+@keyframes lb-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .lightbox { animation: none; } }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 767px) {
