@@ -95,6 +95,8 @@ function setup(el) {
   const deal = () => {
     if (busy || dealt) return;
     busy = true;
+    // The pictures download now, not with the page: nobody sees them before the deck is tapped.
+    el.querySelectorAll('img[data-src]').forEach((img) => (img.src = img.dataset.src));
     layout();
     const from = fromDeck(deckPoint());
     gsap.set(cards, { ...from, scale: 0.35, rotation: () => gsap.utils.random(-16, 16), autoAlpha: 1 });

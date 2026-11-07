@@ -21,9 +21,11 @@ const ph = (v, fallback) => {
   return `${before ? esc(before) + ' ' : ''}<span class="ph">${esc(fallback)}</span>`;
 };
 const isUrl = (v) => /^https?:\/\//.test(v ?? '');
+// timeZone UTC: "2026-08-01" is midnight UTC, which would print as July in the Americas.
 const since = new Date(`${person.current_role.since}-01`).toLocaleDateString(content.meta.language, {
   month: 'short',
   year: 'numeric',
+  timeZone: 'UTC',
 });
 
 // Work and Credentials open a collage (collage.js); the other items are pages (#/about ...), handled by router.js.
@@ -373,7 +375,7 @@ const credCard = (c) => {
 
 const cardHtml = (d, i) => {
   const media = d.image
-    ? `<img class="card-t__img" src="${esc(d.image)}" alt="${esc(d.title)}" loading="lazy" decoding="async" />`
+    ? `<img class="card-t__img" data-src="${esc(d.image)}" alt="${esc(d.title)}" decoding="async" />` // src is set when the cards are dealt (cards.js)
     : `<div class="card-t__text">${d.text.filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}</div>`;
   const link = isUrl(d.url)
     ? `<a class="card-t__link" href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>`
