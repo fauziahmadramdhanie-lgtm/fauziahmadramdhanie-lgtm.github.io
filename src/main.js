@@ -1,5 +1,6 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import content from './content.json';
+import { esc } from './esc.js';
 import irfolks from './irfolks.json'; // article count, refreshed from the irfolks RSS feed before each build
 import 'lenis/dist/lenis.css';
 import './styles.css';
@@ -9,9 +10,6 @@ import { initCards } from './cards.js';
 import { initRouter } from './router.js';
 
 const { person, hero, ui } = content;
-
-const esc = (s) =>
-  String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 // Content still marked TODO renders as a neutral, searchable placeholder (see CLAUDE.md).
 const isTodo = (v) => v == null || /TODO/i.test(String(v));

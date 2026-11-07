@@ -1,13 +1,11 @@
 import gsap from 'gsap';
+import { fitGrid } from './grid.js';
 
 // The card tables of #/work and #/credentials. Closed, a table is clean: only the deck in the corner. Tap the deck and
 // the cards fly out of it one after another and settle face down in the middle of the screen, left to right and top to
 // bottom, like a deal in Spider Solitaire. Tap a card and it turns over while it grows into a large view that covers
 // most of the page, not all of it. Esc, the backdrop or Close turns it back into its place; the deck gathers them again.
-const ASPECT = 5 / 7; // card width / height
-const GAP = 14;
 const EDGE = { top: 76, bottom: 112, side: 20 }; // the header above; the deck and the Close pill below
-const MAX_W = 300; // widest a card gets on a big screen
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const dur = (s) => (reduced() ? 0 : s);
 const tables = [];
@@ -49,29 +47,10 @@ function setup(el) {
   let open = null; // { card, i }
   let slots = [];
 
-  // The biggest 5:7 card for which all of them fit in the free area, as a grid of rows centered one by one.
+  // Places every card in its slot (grid.js decides the size and where each one goes).
   const layout = () => {
-    const W = innerWidth;
-    const areaW = W - 2 * EDGE.side;
-    const areaH = innerHeight - EDGE.top - EDGE.bottom;
-    const n = cards.length;
-    let best = { w: 0, cols: 1 };
-    for (let cols = 1; cols <= n; cols++) {
-      const rows = Math.ceil(n / cols);
-      const w = Math.min((areaW - GAP * (cols - 1)) / cols, ((areaH - GAP * (rows - 1)) / rows) * ASPECT, MAX_W);
-      if (w > best.w + 0.5) best = { w, cols };
-    }
-    const { w, cols } = best;
-    const h = w / ASPECT;
-    const rows = Math.ceil(n / cols);
-    const top = EDGE.top + (areaH - (rows * h + (rows - 1) * GAP)) / 2;
-    slots = cards.map((_, i) => {
-      const r = Math.floor(i / cols);
-      const inRow = Math.min(cols, n - r * cols);
-      const rowW = inRow * w + (inRow - 1) * GAP;
-      return { x: (W - rowW) / 2 + (i % cols) * (w + GAP), y: top + r * (h + GAP), w, h };
-    });
-    cards.forEach((c, i) => gsap.set(c, { left: slots[i].x, top: slots[i].y, width: w, height: h }));
+    slots = fitGrid(cards.length, innerWidth, innerHeight, EDGE);
+    cards.forEach((c, i) => gsap.set(c, { left: slots[i].x, top: slots[i].y, width: slots[i].w, height: slots[i].h }));
   };
 
   const deckPoint = () => {

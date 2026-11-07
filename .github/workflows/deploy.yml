@@ -27,6 +27,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm test
       - run: npm run build
         env:
           # Kalau repo BUKAN <username>.github.io, ganti jadi /<nama-repo>/

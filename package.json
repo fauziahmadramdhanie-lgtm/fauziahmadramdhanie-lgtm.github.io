@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "irfolks": "node scripts/irfolks-count.mjs",
-    "test": "node --test scripts/irfolks-count.test.mjs"
+    "test": "node --test"
   },
   "dependencies": {
     "gsap": "^3.12.5",

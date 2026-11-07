@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import content from './content.json';
 import { initAnimations, startIntro, cancelIntro, presetTilt, getLenis } from './animations.js';
 import { circle, reach, distTo } from './reveal.js';
+import { push, closeTo } from './nav.js';
 
 // Hash router over the pages in the DOM ([data-page]). "#/about" etc. reveal the new page inside a circle
 // that grows out of the clicked link, the same transition the collages use; no hash is home. "#/work" and
@@ -139,14 +140,16 @@ export function initRouter() {
     };
   };
 
-  const go = (name, push = true) => {
+  const go = (name, pushEntry = true) => {
     if (name === current) return; // current is where the page is headed, shown is where it is
-    if (push) history.pushState(null, '', urlOf(name));
+    if (pushEntry) push(urlOf(name));
     if (reduced()) {
       flight?.();
       show(name);
     } else reveal(name);
   };
+  // Close pill and Esc: back to where the visitor came from (nav.js).
+  const close = () => closeTo(urlOf('home'), () => go('home', false));
 
   // Capture phase and registered after the collage's, so an open collage has closed before the page changes.
   document.addEventListener(
@@ -158,6 +161,7 @@ export function initRouter() {
       if (!name) return;
       e.preventDefault();
       if (name === current) flight || scrollTo({ top: 0, behavior: reduced() ? 'auto' : 'smooth' });
+      else if (a.matches('.page-close')) close();
       else go(name);
     },
     true,
@@ -172,7 +176,7 @@ export function initRouter() {
   addEventListener(
     'keydown',
     (e) => {
-      if (e.key === 'Escape' && current !== 'home' && !root.matches('.collage-open, .menu-open')) go('home');
+      if (e.key === 'Escape' && current !== 'home' && !root.matches('.collage-open, .menu-open')) close();
     },
     true,
   );

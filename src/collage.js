@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { getLenis, bigTitle } from './animations.js';
 import { circle, reach } from './reveal.js';
 import { resetTable } from './cards.js';
+import { push, closeTo } from './nav.js';
 
 // Fullscreen layers (hash routes #/work, #/credentials) that hold a card table (cards.js). This file opens and closes
 // them with the circle reveal, locks the page behind them and keeps the route in the hash.
@@ -64,7 +65,7 @@ export function initCollage() {
       );
     };
 
-    root.querySelector('[data-collage-close]').addEventListener('click', () => go(null));
+    root.querySelector('[data-collage-close]').addEventListener('click', () => close());
     return c;
   };
 
@@ -98,12 +99,17 @@ export function initCollage() {
     }
   };
 
-  const go = (route, animated = true) => {
-    // closing returns to the page underneath (the router keeps its name in data-route), not always to home
+  // closing returns to the page underneath (the router keeps its name in data-route), not always to home
+  const underUrl = () => {
     const page = document.documentElement.dataset.route;
-    history.pushState(null, '', route ?? (page && page !== 'home' ? `#/${page}` : location.pathname + location.search));
+    return page && page !== 'home' ? `#/${page}` : location.pathname + location.search;
+  };
+  const go = (route, animated = true) => {
+    push(route ?? underUrl());
     sync(animated);
   };
+  // Close pill and Esc: back to where the visitor came from (nav.js).
+  const close = () => closeTo(underUrl(), () => sync(true));
 
   // Capture phase: runs before the Lenis anchor handler and before the router, so an opener click is
   // claimed here and an in-page link (menu, header nav) closes the collage first and then scrolls normally.
@@ -127,7 +133,7 @@ export function initCollage() {
     true,
   );
   addEventListener('popstate', () => sync());
-  addEventListener('keydown', (e) => e.key === 'Escape' && locked && go(null));
+  addEventListener('keydown', (e) => e.key === 'Escape' && locked && close());
 
   sync(false); // deep link: opened straight on #/work or #/credentials
 }
