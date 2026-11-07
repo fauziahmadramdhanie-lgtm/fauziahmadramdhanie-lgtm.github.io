@@ -49,9 +49,10 @@ Catatan: propagasi DNS bisa sampai beberapa jam. Cek IP GitHub terbaru di dokume
 - [ ] Update konten bertahap lewat `src/content.json`, tiap push otomatis terdeploy
 
 ## Otomatisasi jumlah artikel irfolks
-- Angka "Articles on irfolks" dibaca dari `https://irfolks.com/rss.xml` (satu `<item>` = satu artikel) oleh `scripts/irfolks-count.mjs`, hasilnya di `src/irfolks.json`.
-- Skrip jalan otomatis sebelum setiap `npm run build` (`prebuild`). Kalau irfolks tidak bisa dibaca, angka terakhir dipakai dan build tetap jalan.
-- `deploy.yml` juga build ulang tiap 6 jam (`schedule`), jadi artikel baru ikut terhitung tanpa push apa pun. Mau langsung hitung ulang: Actions → Deploy → Run workflow.
+- Angka "Articles on irfolks" dihitung dari `https://irfolks.com/rss.xml` (satu `<item>` = satu artikel). Ada dua jalur:
+  1. **Tiap kunjungan (langsung):** halaman membaca feed itu sendiri (`src/main.js`; irfolks.com mengizinkan baca lintas-situs), jadi artikel baru tampil tanpa rebuild atau deploy. Kalau feed tidak terbaca, angka dari build dipakai.
+  2. **Saat build (cadangan):** `scripts/irfolks-count.mjs` menyimpan angka ke `src/irfolks.json` sebelum tiap `npm run build` (`prebuild`). Itu angka awal sebelum JavaScript sempat bertanya, dan angka untuk pengunjung tanpa akses ke irfolks.com.
+- `deploy.yml` juga build ulang tiap 6 jam (`schedule`) supaya angka cadangan tidak jauh tertinggal. GitHub mematikan jadwal otomatis kalau repo tidak ada aktivitas 60 hari; jalur 1 tidak terpengaruh.
 - Cek manual: `npm run irfolks`. Tes: `npm test`.
 
 ## Rollback

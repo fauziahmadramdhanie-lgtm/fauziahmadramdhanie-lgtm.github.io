@@ -1,5 +1,7 @@
+import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import content from './content.json';
+import { countItems } from './feed.js';
 import { esc } from './esc.js';
 import irfolks from './irfolks.json'; // article count, refreshed from the irfolks RSS feed before each build
 import 'lenis/dist/lenis.css';
@@ -129,7 +131,7 @@ const stat = (s) => {
   const bg = isTodo(s.image) ? '' : ` style="--stat-bg:url(${esc(s.image)}) center/cover"`;
   return `
     <article class="stat grid">
-      <div class="stat__num" data-stat${bg}>${odometer(s.source === 'irfolks' ? irfolks.count : s.value)}</div>
+      <div class="stat__num" data-stat${s.source ? ` data-live="${esc(s.source)}"` : ''}${bg}>${odometer(s.source === 'irfolks' ? irfolks.count : s.value)}</div>
       <div class="stat__copy">
         <h3>${ph(s.label, 'Placeholder label')}</h3>
         <p>${esc(s.text)}</p>
@@ -526,6 +528,38 @@ document.addEventListener('click', (e) => {
   clearTimeout(remeasure);
   remeasure = setTimeout(() => ScrollTrigger.refresh(), 600);
 });
+
+// The article count baked in at build time (irfolks.json) is only the starting value. Each visit also asks the feed
+// (irfolks.com allows reads from other sites), so a new article shows up without waiting for a rebuild.
+const showLiveCount = (n) => {
+  const odo = document.querySelector('[data-live="irfolks"] .odo');
+  if (!odo || n === irfolks.count) return;
+  const digits = [...String(n)];
+  const rolls = [...odo.querySelectorAll('.odo__roll')];
+  if (digits.length === rolls.length) {
+    // Same number of digits: point each roll at its new digit. The scroll animation reads it again once invalidated.
+    rolls.forEach((roll, i) => {
+      roll.dataset.digit = digits[i];
+      const tweens = gsap.getTweensOf(roll);
+      if (tweens.length) tweens.forEach((t) => t.invalidate());
+      else roll.style.transform = `translateY(-${digits[i] * 10}%)`; // reduced motion: parked on the digit
+    });
+    odo.setAttribute('aria-label', n);
+    ScrollTrigger.update();
+  } else {
+    odo.outerHTML = odometer(n); // another number of digits: shown as is, without the roll
+    ScrollTrigger.refresh();
+  }
+};
+(async () => {
+  try {
+    const res = await fetch(irfolks.feed, { signal: AbortSignal.timeout(6000) });
+    const xml = res.ok ? await res.text() : '';
+    if (xml.includes('<rss')) showLiveCount(countItems(xml));
+  } catch {
+    /* offline or blocked: the number from the build stays */
+  }
+})();
 
 initCards(); // first: its Esc handler (capture) must run before the router's and the collage's
 initMenu();

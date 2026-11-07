@@ -3,11 +3,12 @@
 // A network or feed error keeps the last saved number: the build must never fail because irfolks is down.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { countItems } from '../src/feed.js';
 
 const FEED = 'https://irfolks.com/rss.xml';
 const OUT = fileURLToPath(new URL('../src/irfolks.json', import.meta.url));
 
-export const countItems = (xml) => (xml.match(/<item>/g) ?? []).length;
+export { countItems };
 
 async function main() {
   let saved = { count: 0 };
