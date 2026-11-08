@@ -159,8 +159,8 @@ html[data-mode='color'] .clock { color: #faeb92; }
   display: flex; flex-direction: column;
   padding-block: 110px 28px;
 }
-.hero__top { max-width: var(--measure); }
-.hero__intro { font: 500 clamp(20px, 2vw, 28px)/1.3 var(--font-sans); letter-spacing: -0.02em; }
+.hero__top { max-width: min(860px, 100%); } /* the intro is a paragraph (the LinkedIn summary), not one sentence */
+.hero__intro { font: 500 clamp(15px, 1.3vw, 19px)/1.45 var(--font-sans); letter-spacing: -0.015em; }
 .hero__now { margin-top: 20px; font-size: 14px; line-height: 1.5; }
 .hero__now span {
   color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px;
