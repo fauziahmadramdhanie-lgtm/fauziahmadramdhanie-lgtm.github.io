@@ -99,17 +99,33 @@
   ],
   "collage": [
     { "title": "Bank Indonesia", "label": "Institution", "sub": "Public Relations internship, Kediri · 2025", "items": [
-      { "work": "bank-indonesia-kediri" }
+      { "title": "Report drafts", "cover": "/assets/work/bi-1.webp" },
+      { "title": "Group photo", "cover": "/assets/work/bi-2.webp" },
+      { "title": "Public education poster", "cover": "/assets/work/bi-3.webp" },
+      { "title": "Speaking at an event", "cover": "/assets/work/bi-4.webp" },
+      { "title": "Capacity building session", "cover": "/assets/work/bi-5.webp" },
+      { "title": "Bank Indonesia posts", "cover": "/assets/work/bi-6.webp" },
+      { "title": "Library activity with students", "cover": "/assets/work/bi-7.webp" },
+      { "title": "FinFest booth", "cover": "/assets/work/bi-8.webp" }
     ] },
     { "title": "OJK", "label": "Institution", "sub": "Consumer Education and Protection, East Java · 2026", "items": [
-      { "work": "ojk-east-java" },
-      { "title": "IASC session", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-session.webp" },
-      { "title": "Team", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-team.webp" }
+      { "title": "Presenting to an audience", "cover": "/assets/work/ojk-1.webp" },
+      { "title": "Group photo in the auditorium", "cover": "/assets/work/ojk-2.webp" },
+      { "title": "OJK East Java office", "cover": "/assets/work/ojk-3.webp" },
+      { "title": "Group photo in traditional dress", "cover": "/assets/work/ojk-4.webp" },
+      { "title": "Working at the office", "cover": "/assets/work/ojk-5.webp" },
+      { "title": "Indonesia Anti-Scam Centre portal", "cover": "/assets/work/ojk-6.webp" }
     ] },
     { "title": "Kemendag", "label": "Institution", "sub": "Directorate General of National Export Development · Aug 2026 – present", "text": ["Intern, National Export Development", "Ongoing."] },
     { "title": "Wesclic", "label": "Institution", "sub": "Copywriter internship, Yogyakarta · 2025", "items": [
-      { "work": "wesclic" },
-      { "title": "Winnership Program, Batch 12", "category": "Wesclic certificate · 2025", "cover": "/assets/work-wesclic-cert.webp" }
+      { "title": "Task board", "cover": "/assets/work/wesclic-1.webp" },
+      { "title": "Author page on the Wesclic blog", "cover": "/assets/work/wesclic-2.webp" },
+      { "title": "Article drafts in the WordPress dashboard", "cover": "/assets/work/wesclic-3.webp" },
+      { "title": "Published articles", "cover": "/assets/work/wesclic-4.webp" },
+      { "title": "Blog traffic dashboard", "cover": "/assets/work/wesclic-5.webp" },
+      { "title": "Winnership Program certificate, Batch 12", "cover": "/assets/work/wesclic-6.webp" },
+      { "title": "Winnership Program profile", "cover": "/assets/work/wesclic-7.webp" },
+      { "title": "Wesclic promotional poster", "cover": "/assets/work/wesclic-8.webp" }
     ] },
     { "title": "Personal", "label": "Project", "sub": "irfolks and a journal paper · 2024", "items": [
       { "work": "irfolks" },
