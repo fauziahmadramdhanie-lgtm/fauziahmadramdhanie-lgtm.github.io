@@ -40,20 +40,16 @@ function setup(el) {
   const hint = el.querySelector('[data-deck-hint]');
   const shade = el.querySelector('[data-shade]');
   const title = root.querySelector('.collage__title');
-  const all = [...el.querySelectorAll('[data-card]')];
-  const tabs = [...root.querySelectorAll('.tabs [data-part]')]; // Work only: the partitions
+  const cards = [...el.querySelectorAll('[data-card]')];
   const text = { deal: deck.getAttribute('aria-label'), collect: root.dataset.collect };
-  let part = tabs[0]?.dataset.part;
-  let cards = part ? all.filter((c) => c.dataset.part === part) : all; // the cards of the pressed tab
   let dealt = false;
   let busy = false;
   let open = null; // { card, i }
   let slots = [];
 
-  // Places every card in its slot (grid.js decides the size and where each one goes). The tabs row, if any, is above the grid.
+  // Places every card in its slot (grid.js decides the size and where each one goes).
   const layout = () => {
-    const bar = root.querySelector('.tabs')?.getBoundingClientRect().bottom ?? 0;
-    slots = fitGrid(cards.length, innerWidth, innerHeight, { ...EDGE, top: Math.max(EDGE.top, bar + 12) });
+    slots = fitGrid(cards.length, innerWidth, innerHeight, EDGE);
     cards.forEach((c, i) => gsap.set(c, { left: slots[i].x, top: slots[i].y, width: slots[i].w, height: slots[i].h }));
   };
 
@@ -116,13 +112,16 @@ function setup(el) {
   };
 
   // The large view: as big as fits with room around it, the picture at its own proportions above its caption.
-  const target = (img) => {
+  const target = (img, gallery) => {
     const capH = innerWidth < 600 ? 132 : 100;
     const maxW = Math.min(innerWidth - 40, 1000);
     const maxH = innerHeight - 150;
     let w;
     let h;
-    if (img?.naturalWidth) {
+    if (gallery) {
+      w = maxW;
+      h = maxH;
+    } else if (img?.naturalWidth) {
       const ratio = img.naturalWidth / img.naturalHeight;
       const ih = Math.min(maxH - capH, maxW / ratio);
       w = Math.max(ih * ratio, Math.min(maxW, 340));
@@ -145,7 +144,7 @@ function setup(el) {
     busy = true;
     const img = card.querySelector('.card-t__img');
     if (img && !img.complete) await img.decode().catch(() => {});
-    const t = target(img);
+    const t = target(img, card.querySelector('.gal'));
     const { inner, back, front } = parts(card);
     open = { card, i: cards.indexOf(card) };
     card.classList.add('is-open');
@@ -169,6 +168,7 @@ function setup(el) {
   const finishClose = (card) => {
     const { back, front } = parts(card);
     card.classList.remove('is-open');
+    card.querySelector('.gal__fig.is-zoomed')?.classList.remove('is-zoomed');
     back.tabIndex = 0;
     back.removeAttribute('aria-hidden');
     front.inert = true;
@@ -201,34 +201,15 @@ function setup(el) {
     finishClose(card);
   };
 
-  // A tab press swaps the set: if the cards were dealt, the old ones fade away and the new ones are dealt from the deck.
-  const select = (id) => {
-    if (id === part) return;
-    const old = cards;
-    const again = dealt;
-    snapClose();
-    const swap = () => {
-      gsap.killTweensOf(all);
-      gsap.set(all, { autoAlpha: 0, x: 0, y: 0, scale: 1, rotation: 0 });
-      part = id;
-      cards = all.filter((c) => c.dataset.part === id);
-      tabs.forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.part === id)));
-      busy = false;
-      dealt = false;
-      if (again) deal();
-    };
-    if (again && !busy && !reduced()) {
-      busy = true;
-      gsap.to(old, { autoAlpha: 0, scale: 0.85, duration: 0.25, stagger: 0.02, ease: 'power2.in', onComplete: swap });
-    } else swap();
-  };
-
-  tabs.forEach((t) => t.addEventListener('click', () => select(t.dataset.part)));
   deck.addEventListener('click', () => (dealt ? collect() : deal()));
-  all.forEach((card) => {
+  cards.forEach((card) => {
     const { back, front } = parts(card);
     back.addEventListener('click', () => openCard(card));
-    front.addEventListener('click', (e) => !e.target.closest('a') && close());
+    front.addEventListener('click', (e) => {
+      const fig = e.target.closest('.gal__fig'); // a photo of a gallery enlarges inside the card; a second tap shrinks it
+      if (fig) fig.classList.toggle('is-zoomed');
+      else if (!e.target.closest('a, .gal')) close();
+    });
   });
   shade.addEventListener('click', close);
 
@@ -249,8 +230,8 @@ function setup(el) {
     },
     reset() {
       snapClose();
-      gsap.killTweensOf(all);
-      gsap.set(all, { autoAlpha: 0, x: 0, y: 0, scale: 1, rotation: 0 });
+      gsap.killTweensOf(cards);
+      gsap.set(cards, { autoAlpha: 0, x: 0, y: 0, scale: 1, rotation: 0 });
       busy = false;
       setDealt(false);
     },

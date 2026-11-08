@@ -67,10 +67,10 @@ yang diklik, route di hash, Back/Esc/Close menutup, halaman di belakang `inert`)
 - Pengecualian aturan di bawah: hanya kartu yang sedang dibuka yang menganimasikan `left/top/width/height` (satu elemen);
   deal dan collect memakai transform saja.
 - `prefers-reduced-motion`: semua durasi 0 (langsung pindah). Tanpa Barba.
-- Partisi (hanya Work): baris tab di atas (`content.collage` = daftar partisi `{id, label, group, cards}`; grup Institutions |
-  Projects). Satu dek membagikan kartu partisi yang dipilih saja. Ganti tab: kartu lama memudar (0.25s), lalu kartu partisi baru
-  dibagikan dari dek bila sebelumnya sudah dibagikan; kalau kartu sedang dibuka, ia menutup tanpa animasi dulu. Grid dihitung
-  di bawah baris tab (tinggi tab ikut, di HP tab turun ke beberapa baris). Credentials tetap satu dek.
+- Work: satu kartu per bagian (`content.collage`: BI, OJK, Kemendag, Wesclic | Personal, Volunteer). Sisi depan kartu besar
+  berisi galeri foto kegiatan bagian itu (grid yang bisa digulir di dalam kartu; foto diketuk untuk diperbesar di dalam kartu,
+  diketuk lagi untuk mengecil). Item tanpa gambar (jurnal) jadi ubin teks dengan link. Bagian tanpa foto (Kemendag, Volunteer)
+  memakai sisi teks sampai fotonya ada. Credentials tetap kartu per sertifikat.
 
 ## 11. Transisi antar halaman (opsional, fase 2)
 V1 = single page + anchor scroll (Lenis `scrollTo`). Bila nanti multi-halaman (halaman study case): Barba.js, fade lewat overlay abu→putih 0.5s.
