@@ -4,7 +4,7 @@ Website portfolio personal. Referensi gaya & interaksi: https://mobius.framer.we
 JANGAN menyalin teks, nama, aset, atau brand Möbius. Ambil hanya pola layout dan interaksinya.
 
 ## Tujuan
-Portfolio yang membuat recruiter/hiring manager (pemerintah, BUMN, multilateral, think tank) langsung paham:
+Portfolio yang membuat recruiter/hiring manager (pemerintah, BUMN, multilateral, think tank, dan perusahaan untuk peran government relations / public affairs, perdagangan & ekspor, corporate communications) langsung paham:
 trade policy & institutional affairs, track record lintas institusi (BI + OJK + Kemendag), thought leadership lewat irfolks.
 Bahasa konten: English utama, struktur siap ditambah Bahasa Indonesia nanti.
 
