@@ -180,6 +180,8 @@ html[data-mode='color'] .clock { color: #faeb92; }
 .clock span:first-child { text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
 
 @media (min-width: 768px) {
+  /* The intro (the LinkedIn headline) runs wider than the usual measure so it stays at 2-3 lines and the name fits the screen. */
+  .hero__top { max-width: min(1100px, 64vw); }
   .hero__side { position: absolute; right: var(--pad); bottom: 56px; flex-direction: column; align-items: flex-end; gap: 6px; margin: 0; }
   .hero__copy { color: var(--ink); font-weight: 600; font-size: clamp(20px, 2vw, 32px); letter-spacing: -0.02em; }
 }
