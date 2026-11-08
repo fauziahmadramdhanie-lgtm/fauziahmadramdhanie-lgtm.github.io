@@ -40,16 +40,20 @@ function setup(el) {
   const hint = el.querySelector('[data-deck-hint]');
   const shade = el.querySelector('[data-shade]');
   const title = root.querySelector('.collage__title');
-  const cards = [...el.querySelectorAll('[data-card]')];
+  const all = [...el.querySelectorAll('[data-card]')];
+  const tabs = [...root.querySelectorAll('.tabs [data-part]')]; // Work only: the partitions
   const text = { deal: deck.getAttribute('aria-label'), collect: root.dataset.collect };
+  let part = tabs[0]?.dataset.part;
+  let cards = part ? all.filter((c) => c.dataset.part === part) : all; // the cards of the pressed tab
   let dealt = false;
   let busy = false;
   let open = null; // { card, i }
   let slots = [];
 
-  // Places every card in its slot (grid.js decides the size and where each one goes).
+  // Places every card in its slot (grid.js decides the size and where each one goes). The tabs row, if any, is above the grid.
   const layout = () => {
-    slots = fitGrid(cards.length, innerWidth, innerHeight, EDGE);
+    const bar = root.querySelector('.tabs')?.getBoundingClientRect().bottom ?? 0;
+    slots = fitGrid(cards.length, innerWidth, innerHeight, { ...EDGE, top: Math.max(EDGE.top, bar + 12) });
     cards.forEach((c, i) => gsap.set(c, { left: slots[i].x, top: slots[i].y, width: slots[i].w, height: slots[i].h }));
   };
 
@@ -197,8 +201,31 @@ function setup(el) {
     finishClose(card);
   };
 
+  // A tab press swaps the set: if the cards were dealt, the old ones fade away and the new ones are dealt from the deck.
+  const select = (id) => {
+    if (id === part) return;
+    const old = cards;
+    const again = dealt;
+    snapClose();
+    const swap = () => {
+      gsap.killTweensOf(all);
+      gsap.set(all, { autoAlpha: 0, x: 0, y: 0, scale: 1, rotation: 0 });
+      part = id;
+      cards = all.filter((c) => c.dataset.part === id);
+      tabs.forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.part === id)));
+      busy = false;
+      dealt = false;
+      if (again) deal();
+    };
+    if (again && !busy && !reduced()) {
+      busy = true;
+      gsap.to(old, { autoAlpha: 0, scale: 0.85, duration: 0.25, stagger: 0.02, ease: 'power2.in', onComplete: swap });
+    } else swap();
+  };
+
+  tabs.forEach((t) => t.addEventListener('click', () => select(t.dataset.part)));
   deck.addEventListener('click', () => (dealt ? collect() : deal()));
-  cards.forEach((card) => {
+  all.forEach((card) => {
     const { back, front } = parts(card);
     back.addEventListener('click', () => openCard(card));
     front.addEventListener('click', (e) => !e.target.closest('a') && close());
@@ -222,8 +249,8 @@ function setup(el) {
     },
     reset() {
       snapClose();
-      gsap.killTweensOf(cards);
-      gsap.set(cards, { autoAlpha: 0, x: 0, y: 0, scale: 1, rotation: 0 });
+      gsap.killTweensOf(all);
+      gsap.set(all, { autoAlpha: 0, x: 0, y: 0, scale: 1, rotation: 0 });
       busy = false;
       setDealt(false);
     },

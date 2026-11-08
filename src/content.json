@@ -98,16 +98,30 @@
     }
   ],
   "collage": [
-    { "work": "irfolks" },
-    { "work": "bank-indonesia-kediri" },
-    { "work": "ojk-east-java" },
-    { "title": "Structuralism analysis: China and Indonesia's smelter industry", "category": "irfolks article · 2024", "cover": "/assets/work-irfolks-article.webp" },
-    { "work": "wesclic" },
-    { "work": "publication-1" },
-    { "title": "IASC session", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-session.webp" },
-    { "title": "Winnership Program, Batch 12", "category": "Wesclic certificate · 2025", "cover": "/assets/work-wesclic-cert.webp" },
-    { "title": "irfolks", "category": "Brand", "cover": "/assets/work-irfolks-brand.webp" },
-    { "title": "Team", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-team.webp" }
+    { "id": "bi", "label": "Bank Indonesia", "group": "institutions", "cards": [
+      { "work": "bank-indonesia-kediri" }
+    ] },
+    { "id": "ojk", "label": "OJK", "group": "institutions", "cards": [
+      { "work": "ojk-east-java" },
+      { "title": "IASC session", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-session.webp" },
+      { "title": "Team", "category": "OJK East Java · 2026", "cover": "/assets/work-ojk-team.webp" }
+    ] },
+    { "id": "kemendag", "label": "Kemendag", "group": "institutions", "cards": [
+      { "title": "National Export Development, Ministry of Trade", "category": "Internship", "year": "2026", "cover_text": "Ongoing." }
+    ] },
+    { "id": "wesclic", "label": "Wesclic", "group": "institutions", "cards": [
+      { "work": "wesclic" },
+      { "title": "Winnership Program, Batch 12", "category": "Wesclic certificate · 2025", "cover": "/assets/work-wesclic-cert.webp" }
+    ] },
+    { "id": "personal", "label": "Personal", "group": "projects", "cards": [
+      { "work": "irfolks" },
+      { "title": "Structuralism analysis: China and Indonesia's smelter industry", "category": "irfolks article · 2024", "cover": "/assets/work-irfolks-article.webp" },
+      { "title": "irfolks", "category": "Brand", "cover": "/assets/work-irfolks-brand.webp" },
+      { "work": "publication-1" }
+    ] },
+    { "id": "volunteer", "label": "Volunteer", "group": "projects", "cards": [
+      { "title": "International Community Service, Malaysia", "category": "Volunteer", "year": "2023", "cover_text": "Tutored stateless migrant children and ran educational activities for them." }
+    ] }
   ],
   "process": [
     { "n": "01", "title": "Ask", "text": "Start from the question and who will read the answer." },
@@ -205,7 +219,7 @@
       "faq": "Questions",
       "credentials": "Credentials"
     },
-    "collage": { "title": "Work" },
+    "collage": { "title": "Work", "groups": { "institutions": "Institutions", "projects": "Projects" } },
     "kinds": { "award": "Award", "certification": "Certification" }
   },
   "palette": {

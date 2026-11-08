@@ -350,8 +350,12 @@ const footer = () => `
 // middle of the screen; tapping a card turns it over and opens it large (cards.js).
 // A card is described by { title, label, sub, image | text, url }.
 
-// content.collage entries are either { work: slug, ... } (a work item, with its link) or a card of their own.
-const collageItems = content.collage.map((c) => (c.work ? { ...content.work.find((w) => w.slug === c.work), ...c } : c));
+// content.collage is a list of partitions (tabs of #/work), each with cards that are either { work: slug, ... } (a work
+// item, with its link) or a card of their own.
+const partitions = content.collage.map((p) => ({
+  ...p,
+  cards: p.cards.map((c) => (c.work ? { ...content.work.find((w) => w.slug === c.work), ...c } : c)),
+}));
 
 const workCard = (w) => ({
   title: w.title,
@@ -373,7 +377,7 @@ const credCard = (c) => {
   };
 };
 
-const cardHtml = (d, i) => {
+const cardHtml = (d, i, part = '') => {
   const media = d.image
     ? `<img class="card-t__img" data-src="${esc(d.image)}" alt="${esc(d.title)}" decoding="async" />` // src is set when the cards are dealt (cards.js)
     : `<div class="card-t__text">${d.text.filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}</div>`;
@@ -381,7 +385,7 @@ const cardHtml = (d, i) => {
     ? `<a class="card-t__link" href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>`
     : '';
   return `
-    <div class="card-t" data-card>
+    <div class="card-t" data-card${part ? ` data-part="${esc(part)}"` : ''}>
       <div class="card-t__inner">
         <button class="card-t__face card-t__back" type="button" aria-label="${esc(ui.open)}: ${esc(d.title)}">
           <span class="card-t__no">${String(i + 1).padStart(2, '0')}</span>
@@ -399,23 +403,43 @@ const cardHtml = (d, i) => {
     </div>`;
 };
 
-const collageHtml = (name, label, title, cards) => `
+// Work only: one button per partition, grouped (institutions | projects). cards.js shows the cards of the pressed one.
+const tabsHtml = () => {
+  const groups = [...new Set(partitions.map((p) => p.group))];
+  return `<div class="tabs" data-tabs>${groups
+    .map(
+      (g) => `<div class="tabs__group" role="group" aria-label="${esc(ui.collage.groups[g])}">${partitions
+        .filter((p) => p.group === g)
+        .map((p) => `<button class="tabs__tab" type="button" data-part="${esc(p.id)}" aria-pressed="${p === partitions[0]}">${esc(p.label)}</button>`)
+        .join('')}</div>`,
+    )
+    .join('')}</div>`;
+};
+
+const collageHtml = (name, label, title, cards, tabs = '') => `
   <div class="collage" data-collage="${name}" data-collect="${esc(ui.collect)}" role="region" aria-label="${esc(label)}" inert>
     <h2 class="collage__title" aria-hidden="true">${esc(title)}</h2>
+    ${tabs}
     <div class="table" data-table>
       <button class="deck" type="button" data-deck aria-label="${esc(ui.deal)}">
         <span class="deck__stack" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
         <span class="deck__hint" aria-hidden="true" data-deck-hint>${esc(ui.deal)}</span>
       </button>
-      ${cards.map(cardHtml).join('')}
+      ${cards}
       <div class="table__shade" data-shade></div>
     </div>
     <button class="collage__close" type="button" data-collage-close>${esc(ui.close)}</button>
   </div>`;
 
 const collages = () =>
-  collageHtml('work', ui.sections.work, ui.collage.title, collageItems.map(workCard)) +
-  collageHtml('credentials', ui.sections.credentials, ui.sections.credentials, content.credentials.map(credCard));
+  collageHtml(
+    'work',
+    ui.sections.work,
+    ui.collage.title,
+    partitions.map((p) => p.cards.map((c, i) => cardHtml(workCard(c), i, p.id)).join('')).join(''),
+    tabsHtml(),
+  ) +
+  collageHtml('credentials', ui.sections.credentials, ui.sections.credentials, content.credentials.map((c, i) => cardHtml(credCard(c), i)).join(''));
 
 document.getElementById('app').innerHTML =
   header() +
