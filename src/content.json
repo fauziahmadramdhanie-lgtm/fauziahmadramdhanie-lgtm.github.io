@@ -127,9 +127,10 @@
       { "title": "Winnership Program profile", "cover": "/assets/work/wesclic-7.webp" },
       { "title": "Wesclic promotional poster", "cover": "/assets/work/wesclic-8.webp" }
     ] },
-    { "title": "Personal", "label": "Project", "sub": "irfolks and a journal paper · 2024", "items": [
+    { "title": "Personal", "label": "Project", "sub": "irfolks, Medium and a journal paper", "items": [
       { "work": "irfolks" },
-      { "title": "irfolks", "category": "Brand", "cover": "/assets/work-irfolks-brand.webp" },
+      { "title": "irfolks brand", "category": "Brand", "cover": "/assets/work-irfolks-brand.webp" },
+      { "title": "Essays on Medium", "category": "Medium", "year": "2024–2026", "cover_text": "Essays on politics, technology and Indonesian democracy.", "url": "https://medium.com/@fa419441" },
       { "work": "publication-1" }
     ] },
     { "title": "Volunteer", "label": "Project", "sub": "International Community Service, Malaysia · Jun – Jul 2023", "text": ["Volunteer", "Tutored stateless migrant children and ran educational activities for them."] }
