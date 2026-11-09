@@ -9,11 +9,11 @@
     "name": "Fauzi Ahmad Ramdhani",
     "nickname": "Uzi",
     "headline": "Government & institutional affairs professional.",
-    "positioning": "International Relations graduate with hands-on experience in stakeholder engagement, consumer-facing program delivery, and data-informed analysis through institutional roles at Bank Indonesia, Otoritas Jasa Keuangan and the Ministry of Trade. Proven ability to lead cross-functional initiatives, manage large-scale public engagement programs, and translate complex information into clear, actionable communication. Eager to apply strong analytical, coordination, and people management skills in government relations, public affairs, trade and corporate communications roles, in companies as well as public institutions.",
+    "positioning": "International Relations graduate with hands-on experience in stakeholder engagement, consumer-facing program delivery, and data-informed analysis through institutional roles at Bank Indonesia, the Financial Services Authority (OJK) and the Ministry of Trade. Proven ability to lead cross-functional initiatives, manage large-scale public engagement programs, and translate complex information into clear, actionable communication. Eager to apply strong analytical, coordination, and people management skills in government relations, public affairs, trade and corporate communications roles, in companies as well as public institutions.",
     "location": "Indonesia",
     "current_role": {
       "title": "Intern",
-      "org": "Directorate General of National Export Development (Ditjen PEN), Ministry of Trade",
+      "org": "Directorate General of National Export Development, Ministry of Trade",
       "since": "2026-08"
     },
     "email": "fauziahmadramdhanie@gmail.com",
@@ -43,12 +43,12 @@
     "Report writing"
   ],
   "stats": [
-    { "value": 3, "label": "Institutions", "text": "Internships at Bank Indonesia, OJK and the Ministry of Trade (Ditjen PEN, since August 2026)." },
+    { "value": 3, "label": "Institutions", "text": "Internships at Bank Indonesia, OJK and the Ministry of Trade (since August 2026)." },
     { "source": "irfolks", "label": "Articles on irfolks", "text": "Essays on economics and geopolitics that I write on my own." },
     { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor." }
   ],
   "experience": [
-    { "org": "Ministry of Trade (Kemendag)", "unit": "Directorate General of National Export Development (Ditjen PEN)", "role": "Intern, National Export Development", "period": "Aug 2026 – present", "summary": "Ongoing." },
+    { "org": "Ministry of Trade", "unit": "Directorate General of National Export Development", "role": "Intern, National Export Development", "period": "Aug 2026 – present", "summary": "Ongoing." },
     { "org": "Financial Services Authority (OJK)", "unit": "East Java Provincial Office, Surabaya", "role": "Assistant Intern, Consumer Education and Protection Department", "period": "Apr 2026 – May 2026", "summary": "Reviewed and processed more than 50 consumer dispute cases in the IASC portal. Mapped the mediation workflow between consumers and financial service providers to identify benchmarks for handling cases consistently. Internship evaluation: 9.0/10 (Very Good), assessed by OJK East Java." },
     { "org": "Bank Indonesia", "unit": "Kediri Representative Office", "role": "Assistant Intern, Public Relations", "period": "Sep 2025 – Dec 2025", "summary": "Wrote at least five analytical reports on regional inflation and food security, used as input at TPID coordination meetings. Coordinated the publication of more than ten institutional programs with local governments, universities and community organizations, and handled documentation for stakeholder events. Delivered public education sessions on QRIS and digital financial literacy for 300+ participants." },
     { "org": "Wesclic Indonesia Neotech", "unit": "Yogyakarta", "role": "Copywriter Intern", "period": "May 2025 – Aug 2025", "summary": "Wrote more than 100 research-based, SEO-optimized articles on MSME digitalization. Adapted technical business topics for non-technical small-business owners, and worked with the marketing team on brand messaging." }
@@ -116,7 +116,7 @@
       { "title": "Working at the office", "cover": "/assets/work/ojk-5.webp" },
       { "title": "Indonesia Anti-Scam Centre portal", "cover": "/assets/work/ojk-6.webp" }
     ] },
-    { "title": "Kemendag", "label": "Institution", "sub": "Directorate General of National Export Development · Aug 2026 – present", "text": ["Intern, National Export Development", "Ongoing."] },
+    { "title": "Ministry of Trade", "label": "Institution", "sub": "Directorate General of National Export Development · Aug 2026 – present", "text": ["Intern, National Export Development", "Ongoing."] },
     { "title": "Wesclic", "label": "Institution", "sub": "Copywriter internship, Yogyakarta · 2025", "items": [
       { "title": "Task board", "cover": "/assets/work/wesclic-1.webp" },
       { "title": "Author page on the Wesclic blog", "cover": "/assets/work/wesclic-2.webp" },
