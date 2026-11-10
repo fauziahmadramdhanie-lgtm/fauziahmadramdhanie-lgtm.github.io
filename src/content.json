@@ -165,7 +165,7 @@
     { "kind": "certification", "name": "Data analyst training", "detail": "Vektor", "year": "2025", "image": "/assets/credentials/data-analyst.webp" },
     { "kind": "certification", "name": "AI Career Readiness Training", "detail": "ASEAN Foundation", "year": "2026", "image": "/assets/credentials/ai-career.webp" },
     { "kind": "certification", "name": "Claude Academy — Claude 101", "detail": "Anthropic", "year": "2026", "image": "/assets/credentials/claude-101.webp" },
-    { "kind": "certification", "name": "Claude Academy — Claude Code 101", "detail": "Anthropic", "year": "2026" }
+    { "kind": "certification", "name": "Claude Academy — Claude Code 101", "detail": "Anthropic", "year": "2026", "image": "/assets/credentials/claude-code-101.webp" }
   ],
   "organizations": [
     { "org": "Generasi Baru Indonesia (GenBI), Ponorogo", "role": "Organization Manager", "period": "May 2024 – Apr 2026", "summary": "Planned resources and coordinated more than 50 active members across divisions. Redesigned the KPI framework used to evaluate members and simplified reporting between divisions. Ran more than ten engagement programs with 250+ external participants." },
