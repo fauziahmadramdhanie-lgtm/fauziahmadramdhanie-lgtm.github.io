@@ -152,7 +152,7 @@
   ],
   "credentials": [
     { "kind": "award", "name": "PILMAPRES 2024", "detail": "Top five finalist, UNIDA Gontor", "year": "2024", "image": "/assets/credentials/pilmapres.webp" },
-    { "kind": "award", "name": "Genbiversary Debate Competition", "detail": "1st place, GenBI Kediri, UIN SATU Tulungagung", "year": "2024", "image": "/assets/credentials/genbiversary-debate.webp" },
+    { "kind": "award", "name": "Genbiversary National Debate Competition", "detail": "1st place, GenBI Kediri, UIN SATU Tulungagung", "year": "2024", "image": "/assets/credentials/genbiversary-debate.webp" },
     { "kind": "award", "name": "Best Student in Academic Activity", "detail": "UNIDA Gontor student council", "year": "2025", "image": "/assets/credentials/best-student.webp" },
     { "kind": "certification", "name": "Microsoft Office Specialist — Excel 2019 Associate", "detail": "Microsoft", "year": "2024", "image": "/assets/credentials/mos-excel.webp" },
     { "kind": "award", "name": "Outstanding Student, Faculty of Humanities", "detail": "UNIDA Gontor", "year": "2023 & 2024", "image": "/assets/credentials/outstanding-student.webp" },
