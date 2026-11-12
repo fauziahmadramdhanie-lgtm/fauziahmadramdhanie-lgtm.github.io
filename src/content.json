@@ -128,7 +128,7 @@
       { "title": "Wesclic promotional poster", "cover": "/assets/work/wesclic-8.webp" }
     ] },
     { "title": "Personal", "label": "Project", "sub": "irfolks, Medium and a journal paper", "items": [
-      { "work": "irfolks" },
+      { "work": "irfolks", "cover_text": "A blog I founded and run, with essays on geopolitics and macroeconomics for general readers." },
       { "title": "Essays on Medium", "category": "Medium", "year": "2024–2026", "cover_text": "Essays on politics, technology and Indonesian democracy.", "url": "https://medium.com/@fa419441" },
       { "work": "publication-1" }
     ] },
