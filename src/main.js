@@ -363,23 +363,20 @@ const workCard = (w) => ({
   url: w.url,
 });
 
-const credCard = (c) => {
-  const year = isTodo(c.year) ? '' : ` · ${c.year}`;
-  return {
-    title: c.name,
-    label: ui.kinds[c.kind],
-    sub: `${c.detail}${year}`,
-    image: isTodo(c.image) ? null : c.image,
-    text: [`${ui.kinds[c.kind]}${year}`, c.name, c.detail], // items without an image become typographic cards
-  };
-};
+// A credential is a photo of its certificate in a section gallery; its caption is the issuer and year.
+const credItem = (c) => ({
+  title: c.name,
+  note: [c.detail, isTodo(c.year) ? '' : c.year].filter(Boolean).join(' · '),
+  image: isTodo(c.image) ? null : c.image,
+  text: [c.year, c.detail], // an item without an image becomes a text tile
+});
 
-const sectionCard = (s) => ({
+const sectionCard = (s, item = (it) => workCard(galleryItem(it))) => ({
   title: s.title,
   label: s.label,
   sub: s.sub,
   text: [s.label, ...(s.text ?? [])],
-  gallery: s.items?.map((it) => workCard(galleryItem(it))),
+  gallery: s.items?.map(item),
 });
 
 // A photo is a button (it enlarges inside the card, cards.js); a paper or other item without a picture is a text tile.
@@ -388,7 +385,7 @@ const galleryHtml = (items) =>
     .map((d) => {
       const link = isUrl(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>` : '';
       return d.image
-        ? `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(d.image)}" alt="" decoding="async" /><span>${esc(d.title)}</span></button>`
+        ? `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(d.image)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`
         : `<div class="gal__txt">${[d.text[0], d.title, d.text[1]].filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}${link}</div>`;
     })
     .join('')}</div>`;
@@ -436,8 +433,8 @@ const collageHtml = (name, label, title, cards) => `
   </div>`;
 
 const collages = () =>
-  collageHtml('work', ui.sections.work, ui.collage.title, content.collage.map(sectionCard)) +
-  collageHtml('credentials', ui.sections.credentials, ui.sections.credentials, content.credentials.map(credCard));
+  collageHtml('work', ui.sections.work, ui.collage.title, content.collage.map((s) => sectionCard(s))) +
+  collageHtml('credentials', ui.sections.credentials, ui.sections.credentials, content.credentials.map((s) => sectionCard(s, credItem)));
 
 document.getElementById('app').innerHTML =
   header() +
