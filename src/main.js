@@ -143,7 +143,7 @@ const stat = (s) => {
 // numbers roll as you scroll (see numbersStage).
 const stats = () => `
   <section class="numbers" aria-label="${esc(ui.sections.stats)}">
-    <p class="numbers__label">${esc(ui.sections.stats)}</p>
+    <h2 class="numbers__label">${esc(ui.sections.stats)}</h2>
     ${content.stats.map(stat).join('')}
   </section>`;
 
@@ -304,7 +304,7 @@ const contactPage = () => `
       <h1 class="contact-page__title" data-intro="0" data-intro-chars>${esc(content.contact.headline)}</h1>
     </section>
     <section class="contact-photo" data-dark data-tilt>
-      <div class="contact-photo__tilt"><img class="cover" src="${esc(content.contact.photo)}" alt="${esc(content.contact.photo_alt)}" width="2000" height="1333" decoding="async" /></div>
+      <div class="contact-photo__tilt"><img class="cover" src="${esc(content.contact.photo)}" alt="${esc(content.contact.photo_alt)}" width="2000" height="1333" loading="lazy" decoding="async" /></div>
       <ul class="contact-rows">
         ${contactRow('Email', `mailto:${person.email}`, person.email, person.email)}
         ${contactRow('LinkedIn', person.links.linkedin, shown(person.links.linkedin ?? ''))}

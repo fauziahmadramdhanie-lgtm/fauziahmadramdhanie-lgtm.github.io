@@ -235,7 +235,7 @@ html[data-mode='dark'] .skyline__img--light, html[data-mode='color'] .skyline__i
 
 /* ---------- Stats ---------- */
 .numbers { margin-top: 2.5pt; position: relative; }
-.numbers__label { font-size: 14px; color: var(--muted); padding-block: 12px; }
+.numbers__label { font-size: 14px; font-weight: 400; letter-spacing: 0; line-height: 1.6; color: var(--muted); padding-block: 12px; }
 /* Pinned stage (desktop + motion): stats stack in one cell, number on the right, text on the left. */
 /* Pinned stage (desktop + motion): three stats in one screen, zigzag left / right / left. */
 /* Pinned right under the 62px header (numbersStage starts at 'top 62px'), so it follows the photo with no gap. */

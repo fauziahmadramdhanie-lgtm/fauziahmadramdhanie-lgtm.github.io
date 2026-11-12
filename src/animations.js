@@ -108,6 +108,7 @@ function pageIntro(delay = 0) {
     SplitText.create(el, {
       type: charEls.has(el) ? 'lines,chars' : 'lines',
       charsClass: 'ch',
+      aria: el.matches('p') ? 'none' : 'auto', // aria-label is not allowed on a plain <p>
       mask: 'lines',
       autoSplit: true, // re-splits on resize; only the first round animates (timeline is not returned on purpose)
       onSplit(self) {
@@ -181,7 +182,7 @@ const rand = (i, k) => {
 // Phones: words just light up in order.
 function wordsScrub(desktop) {
   const splits = $$('[data-split="words"]').map((el) => {
-    const split = SplitText.create(el, { type: 'words' });
+    const split = SplitText.create(el, { type: 'words', aria: 'none' });
     if (desktop) {
       const section = el.closest('.statement');
       gsap.fromTo(
