@@ -1,9 +1,9 @@
 # Deploy: hosting & domain
 
 ## Keputusan yang sudah dipilih
-- Username GitHub: `portofauzi`
-- Nama repo: `portofauzi.github.io` (harus persis ini supaya jadi user site)
-- URL: `https://portofauzi.github.io`
+- Username GitHub: `fauziahmadramdhanie-lgtm`
+- Nama repo: `fauziahmadramdhanie-lgtm.github.io` (harus persis ini supaya jadi user site)
+- URL: `https://fauziahmadramdhanie-lgtm.github.io`
 - `BASE_PATH` di `deploy.yml` tetap `/`, jangan diubah.
 
 ## Keputusan default (gratis)
