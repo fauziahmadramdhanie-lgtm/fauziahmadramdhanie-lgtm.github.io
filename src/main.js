@@ -360,6 +360,7 @@ const workCard = (w) => ({
   sub: w.category,
   image: !w.cover_text && !isTodo(w.cover) ? w.cover : null,
   text: [w.year, w.cover_text], // a typographic face for work with no image (a paper)
+  thumb: w.cover_text && !isTodo(w.cover) ? w.cover : null, // a text tile that also has a picture
   url: w.url,
 });
 
@@ -386,7 +387,7 @@ const galleryHtml = (items) =>
       const link = isUrl(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>` : '';
       return d.image
         ? `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(d.image)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`
-        : `<div class="gal__txt">${[d.text[0], d.title, d.text[1]].filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}${link}</div>`;
+        : `<div class="gal__txt">${d.thumb ? `<img class="gal__thumb" data-src="${esc(d.thumb)}" alt="" decoding="async" />` : ''}${[d.text[0], d.title, d.text[1]].filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}${link}</div>`;
     })
     .join('')}</div>`;
 
