@@ -116,7 +116,11 @@
       { "title": "Working at the office", "cover": "/assets/work/ojk-5.webp" },
       { "title": "Indonesia Anti-Scam Centre portal", "cover": "/assets/work/ojk-6.webp" }
     ] },
-    { "title": "Ministry of Trade", "label": "Institution", "sub": "Directorate General of National Export Development · Aug 2026 – present", "text": ["National Export Development Staff (Internship)", "Export development programs, trade agreement coordination and SME export readiness."] },
+    { "title": "Ministry of Trade", "label": "Institution", "sub": "Directorate General of National Export Development · Aug 2026 – present", "items": [
+      { "title": "Campuspreneur, 41st Trade Expo Indonesia", "cover": "/assets/work/kemendag-1.webp" },
+      { "title": "Business Counselling, 41st Trade Expo Indonesia", "cover": "/assets/work/kemendag-2.webp" },
+      { "title": "41st Trade Expo Indonesia, October 2026", "cover": "/assets/work/kemendag-3.webp" }
+    ] },
     { "title": "Wesclic", "label": "Institution", "sub": "Content writing internship, remote · 2025", "items": [
       { "title": "Task board", "cover": "/assets/work/wesclic-1.webp" },
       { "title": "Author page on the Wesclic blog", "cover": "/assets/work/wesclic-2.webp" },
@@ -163,9 +167,9 @@
     ] },
     { "title": "Academic Honours", "label": "Honours", "sub": "Student awards and the Bank Indonesia scholarship · 2023–2026", "items": [
       { "name": "Best Student in Academic Activity", "detail": "University of Darussalam Gontor student council", "year": "2025", "image": "/assets/credentials/best-student.webp" },
-      { "name": "Outstanding Student, Faculty of Humanities", "detail": "University of Darussalam Gontor", "year": "2023 & 2024", "image": "/assets/credentials/outstanding-student.webp" },
+      { "name": "Exceptional Student, Faculty of Humanities", "detail": "Family Gathering, University of Darussalam Gontor", "year": "2023", "image": "/assets/credentials/outstanding-student.webp" },
       { "name": "Outstanding Student of International Relations", "detail": "University of Darussalam Gontor Faculty of Humanities", "image": "/assets/credentials/outstanding-ir.webp" },
-      { "name": "Bank Indonesia Unggulan Scholarship", "detail": "Awardee, two consecutive years", "year": "2024–2026", "image": "/assets/credentials/bi-scholarship.webp" }
+      { "name": "Bank Indonesia Scholarship", "detail": "Awardee, two consecutive years", "year": "2024–2026", "image": "/assets/credentials/bi-scholarship.webp" }
     ] },
     { "title": "Certifications & Training", "label": "Certifications", "sub": "Excel, data analysis, AI and Claude courses · 2024–2026", "items": [
       { "name": "Microsoft Office Specialist — Excel 2019 Associate", "detail": "Microsoft", "year": "2024", "image": "/assets/credentials/mos-excel.webp" },
