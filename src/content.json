@@ -43,9 +43,9 @@
     "Report writing"
   ],
   "stats": [
-    { "value": 3, "label": "Institutions", "text": "Internships at Bank Indonesia, OJK and the Ministry of Trade (since August 2026)." },
+    { "value": 4, "label": "Institutions", "text": "Internships at Wesclic, Bank Indonesia, OJK and the Ministry of Trade (since August 2026)." },
     { "source": "irfolks", "label": "Articles on irfolks", "text": "Essays on economics and geopolitics that I write on my own." },
-    { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), UNIDA Gontor." }
+    { "value": 3.82, "label": "GPA, cum laude", "text": "B.A. International Relations (International Political Economy), University of Darussalam Gontor." }
   ],
   "experience": [
     { "org": "Ministry of Trade", "unit": "Directorate General of National Export Development", "role": "Intern, National Export Development", "period": "Aug 2026 – present", "summary": "Ongoing." },
@@ -142,7 +142,7 @@
     { "n": "04", "title": "Follow up", "text": "Share drafts with the team and fix what they point out." }
   ],
   "education": [
-    { "school": "Universitas Darussalam Gontor (UNIDA Gontor)", "period": "2022–2026", "degree": "B.A. International Relations, concentration in International Political Economy", "figure": "3.82", "figureNote": "GPA out of 4.00, cum laude", "points": ["Bank Indonesia Scholarship awardee, 2024–2025 and 2025–2026","Class president, Class of 2022","PILMAPRES finalist, 2024","Presenter, International Conference on Islamic & Halal Economic Studies, Universiti Kebangsaan Malaysia, 2023","First place, Genbiversary National Debate Competition, 2024"] },
+    { "school": "University of Darussalam Gontor", "period": "2022–2026", "degree": "B.A. International Relations, concentration in International Political Economy", "figure": "3.82", "figureNote": "GPA out of 4.00, cum laude", "points": ["Bank Indonesia Scholarship awardee, 2024–2025 and 2025–2026","Class president, Class of 2022","PILMAPRES finalist, 2024","Presenter, International Conference on Islamic & Halal Economic Studies, Universiti Kebangsaan Malaysia, 2023","First place, Genbiversary National Debate Competition, 2024"] },
     { "school": "SMAT Darussalam Tasikmalaya", "period": "2019–2022", "degree": "Senior high school, Mathematics and Natural Sciences (full boarding)", "figure": "87.8", "figureNote": "average academic score", "points": ["Student organization president: 93 active members across 21 divisions"] }
   ],
   "skills": [
@@ -151,17 +151,17 @@
     { "title": "Management", "items": ["Cross-functional team coordination","Project & event management","Administrative governance"] }
   ],
   "credentials": [
-    { "kind": "award", "name": "PILMAPRES 2024", "detail": "Top five finalist, UNIDA Gontor", "year": "2024", "image": "/assets/credentials/pilmapres.webp" },
+    { "kind": "award", "name": "PILMAPRES 2024", "detail": "Top five finalist, University of Darussalam Gontor", "year": "2024", "image": "/assets/credentials/pilmapres.webp" },
     { "kind": "award", "name": "Genbiversary National Debate Competition", "detail": "1st place, GenBI Kediri, UIN SATU Tulungagung", "year": "2024", "image": "/assets/credentials/genbiversary-debate.webp" },
-    { "kind": "award", "name": "Best Student in Academic Activity", "detail": "UNIDA Gontor student council", "year": "2025", "image": "/assets/credentials/best-student.webp" },
+    { "kind": "award", "name": "Best Student in Academic Activity", "detail": "University of Darussalam Gontor student council", "year": "2025", "image": "/assets/credentials/best-student.webp" },
     { "kind": "certification", "name": "Microsoft Office Specialist — Excel 2019 Associate", "detail": "Microsoft", "year": "2024", "image": "/assets/credentials/mos-excel.webp" },
-    { "kind": "award", "name": "Outstanding Student, Faculty of Humanities", "detail": "UNIDA Gontor", "year": "2023 & 2024", "image": "/assets/credentials/outstanding-student.webp" },
+    { "kind": "award", "name": "Outstanding Student, Faculty of Humanities", "detail": "University of Darussalam Gontor", "year": "2023 & 2024", "image": "/assets/credentials/outstanding-student.webp" },
     { "kind": "award", "name": "Bank Indonesia Unggulan Scholarship", "detail": "Awardee, two consecutive years", "year": "2024–2026", "image": "/assets/credentials/bi-scholarship.webp" },
     { "kind": "award", "name": "Darussalam MUN", "detail": "Honourable Mention", "year": "2024", "image": "/assets/credentials/mun-mention.webp" },
-    { "kind": "award", "name": "Model United Nations", "detail": "Active delegate, UNIDA Gontor", "year": "2022", "image": "/assets/credentials/mun-delegate.webp" },
-    { "kind": "award", "name": "Writing Challenge Competition", "detail": "3rd place, UNIDA Gontor Library", "year": "2022", "image": "/assets/credentials/writing-challenge.webp" },
+    { "kind": "award", "name": "Model United Nations", "detail": "Active delegate, University of Darussalam Gontor", "year": "2022", "image": "/assets/credentials/mun-delegate.webp" },
+    { "kind": "award", "name": "Writing Challenge Competition", "detail": "3rd place, University of Darussalam Gontor Library", "year": "2022", "image": "/assets/credentials/writing-challenge.webp" },
     { "kind": "award", "name": "Best Paper Position, Diplomatic Course", "detail": "PPIDK Timtengka", "year": "2024", "image": "/assets/credentials/best-paper.webp" },
-    { "kind": "award", "name": "Outstanding Student of International Relations", "detail": "UNIDA Gontor Faculty of Humanities", "image": "/assets/credentials/outstanding-ir.webp" },
+    { "kind": "award", "name": "Outstanding Student of International Relations", "detail": "University of Darussalam Gontor Faculty of Humanities", "image": "/assets/credentials/outstanding-ir.webp" },
     { "kind": "certification", "name": "Excel Associate training for GenBI", "detail": "Tekno Sains Academy", "year": "2024", "image": "/assets/credentials/mos-training.webp" },
     { "kind": "certification", "name": "Data analyst training", "detail": "Vektor", "year": "2025", "image": "/assets/credentials/data-analyst.webp" },
     { "kind": "certification", "name": "AI Career Readiness Training", "detail": "ASEAN Foundation", "year": "2026", "image": "/assets/credentials/ai-career.webp" },
@@ -170,11 +170,11 @@
   ],
   "organizations": [
     { "org": "Generasi Baru Indonesia (GenBI), Ponorogo", "role": "Organization Manager", "period": "May 2024 – Apr 2026", "summary": "Planned resources and coordinated more than 50 active members across divisions. Redesigned the KPI framework used to evaluate members and simplified reporting between divisions. Ran more than ten engagement programs with 250+ external participants." },
-    { "org": "Foreign Policy Community of Indonesia (FPCI), UNIDA Chapter", "role": "Research Development Department Specialist", "period": "Jan 2025 – Jul 2025", "summary": "Led collaborative research on foreign policy and global trends and presented the findings at regular discussion forums of 30+ members. Drafted policy recommendations from a comparative analysis of contemporary Islamic perspectives, for public education programs on international issues." },
-    { "org": "Student Council, UNIDA Gontor", "role": "External Affairs Secretary", "period": "Jun 2024 – Jun 2025", "summary": "Managed communication between the external division and the faculty deanery, partner organizations and outside parties. Drafted official letters, partnership proposals and activity reports." },
+    { "org": "Foreign Policy Community of Indonesia (FPCI), University of Darussalam Gontor Chapter", "role": "Research Development Department Specialist", "period": "Jan 2025 – Jul 2025", "summary": "Led collaborative research on foreign policy and global trends and presented the findings at regular discussion forums of 30+ members. Drafted policy recommendations from a comparative analysis of contemporary Islamic perspectives, for public education programs on international issues." },
+    { "org": "Student Council, University of Darussalam Gontor", "role": "External Affairs Secretary", "period": "Jun 2024 – Jun 2025", "summary": "Managed communication between the external division and the faculty deanery, partner organizations and outside parties. Drafted official letters, partnership proposals and activity reports." },
     { "org": "Forum Komunikasi Mahasiswa Hubungan Internasional Indonesia (FKMHII)", "role": "Website Administrator", "period": "Sep 2024 – Nov 2024", "summary": "Maintained the national FKMHII website: more than 50 content updates, editing and publishing news and agendas from regional coordinators across Indonesia, and periodic checks of performance and accessibility." },
-    { "org": "International Relations Student Association (HMPHI), UNIDA Gontor", "role": "Head of External Affairs", "period": "Aug 2023 – Jun 2024", "summary": "Led the external division and its relations with the faculty, campus bodies and partner organizations. Built partnerships with five or more institutions across government, NGOs and civil society. Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event." },
-    { "org": "International Community Service, Malaysia (UNIDA Gontor)", "role": "Volunteer", "period": "Jun 2023 – Jul 2023", "summary": "Tutored stateless migrant children and ran educational activities for them, together with other volunteers and local communities." }
+    { "org": "International Relations Student Association (HMPHI), University of Darussalam Gontor", "role": "Head of External Affairs", "period": "Aug 2023 – Jun 2024", "summary": "Led the external division and its relations with the faculty, campus bodies and partner organizations. Built partnerships with five or more institutions across government, NGOs and civil society. Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event." },
+    { "org": "International Community Service, Malaysia (University of Darussalam Gontor)", "role": "Volunteer", "period": "Jun 2023 – Jul 2023", "summary": "Tutored stateless migrant children and ran educational activities for them, together with other volunteers and local communities." }
   ],
   "languages": [
     { "name": "Indonesian", "level": "Professional working", "bars": 3 },
