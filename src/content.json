@@ -132,7 +132,10 @@
       { "title": "Essays on Medium", "category": "Medium", "year": "2024–2026", "cover_text": "Essays on politics, technology and Indonesian democracy.", "url": "https://medium.com/@fa419441" },
       { "work": "publication-1" }
     ] },
-    { "title": "Volunteer", "label": "Project", "sub": "International Community Service, Malaysia · Jun – Jul 2023", "text": ["Volunteer", "Tutored stateless migrant children and ran educational activities for them."] }
+    { "title": "Volunteer", "label": "Project", "sub": "International Community Service, Malaysia · Jun – Jul 2023", "items": [
+      { "title": "Group session with the children", "cover": "/assets/work/volunteer-1.webp" },
+      { "title": "Lesson on the whiteboard", "cover": "/assets/work/volunteer-2.webp" }
+    ] }
   ],
   "process": [
     { "n": "01", "title": "Ask", "text": "Start from the question and who will read the answer." },
