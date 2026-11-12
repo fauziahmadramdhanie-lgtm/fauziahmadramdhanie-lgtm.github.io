@@ -38,7 +38,7 @@ GitHub repo → Settings → Pages → Source: **GitHub Actions**. Tab Actions m
    - Apex domain (`fauzi.my.id`): 4 record **A** ke `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
    - `www`: record **CNAME** ke `<username>.github.io`
 4. GitHub → Settings → Pages → Custom domain: isi domain, tunggu verifikasi DNS, lalu centang **Enforce HTTPS**.
-5. Di `content.json` update `meta.url` ke domain baru.
+5. Di `content.json` update `meta.url` ke domain baru, dan URL di `public/robots.txt` dan `public/sitemap.xml`.
 
 Catatan: propagasi DNS bisa sampai beberapa jam. Cek IP GitHub terbaru di dokumentasi GitHub Pages sebelum setting.
 
