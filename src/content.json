@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Fauzi Ahmad Ramdhani — Trade Policy & Institutional Affairs",
-    "description": "International Political Economy graduate with experience at Bank Indonesia, the Financial Services Authority (OJK) and the Ministry of Trade.",
+    "description": "International Relations graduate with experience at Bank Indonesia, OJK and the Ministry of Trade. Trade policy, public affairs and stakeholder engagement.",
     "url": "https://portofauzi.github.io/",
     "language": "en"
   },
@@ -71,30 +71,6 @@
       "summary": "Journal article on productive waqf development policy in three member states of the Organization of Islamic Cooperation: Saudi Arabia, Egypt and Kuwait. Published in Dauliyah: Journal of Islamic and International Affairs.",
       "cover_text": "Dauliyah: Journal of Islamic and International Affairs",
       "url": "https://ejournal.unida.gontor.ac.id/index.php/dauliyah/article/download/12513/11620"
-    },
-    {
-      "slug": "bank-indonesia-kediri",
-      "title": "Public Relations, Bank Indonesia Kediri",
-      "category": "Internship",
-      "year": "2025",
-      "summary": "Regional inflation and food security reports for TPID coordination meetings, publication of institutional programs, and public sessions on QRIS and digital financial literacy for 300+ participants.",
-      "cover": "/assets/work-bi.webp"
-    },
-    {
-      "slug": "ojk-east-java",
-      "title": "Consumer disputes, OJK East Java",
-      "category": "Internship",
-      "year": "2026",
-      "summary": "Reviewed more than 50 consumer dispute cases in the Indonesia Anti-Scam Centre (IASC) portal and mapped the mediation workflow between consumers and financial service providers.",
-      "cover": "/assets/work-ojk.webp"
-    },
-    {
-      "slug": "wesclic",
-      "title": "Articles for Wesclic",
-      "category": "Content writing",
-      "year": "2025",
-      "summary": "More than 100 research-based articles on MSME digitalization, written for small-business owners without a technical background.",
-      "cover": "/assets/work-wesclic.webp"
     }
   ],
   "collage": [
