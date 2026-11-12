@@ -129,7 +129,6 @@
     ] },
     { "title": "Personal", "label": "Project", "sub": "irfolks, Medium and a journal paper", "items": [
       { "work": "irfolks" },
-      { "title": "irfolks brand", "category": "Brand", "cover": "/assets/work-irfolks-brand.webp" },
       { "title": "Essays on Medium", "category": "Medium", "year": "2024–2026", "cover_text": "Essays on politics, technology and Indonesian democracy.", "url": "https://medium.com/@fa419441" },
       { "work": "publication-1" }
     ] },
