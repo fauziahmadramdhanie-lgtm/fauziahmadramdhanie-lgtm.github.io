@@ -113,17 +113,17 @@
       { "work": "publication-1", "about": "Published a journal article on productive waqf development policy in Saudi Arabia, Egypt and Kuwait, in Dauliyah: Journal of Islamic and International Affairs." }
     ] },
     { "title": "Volunteer", "label": "Project", "sub": "Community service and student organizations", "items": [
-      { "title": "Community service with stateless migrant children", "cover": "/assets/work/volunteer-1.webp", "about": "Supported stateless migrant children in Malaysia through International Community Service, June to July 2023." },
-      { "title": "Tutoring session", "cover": "/assets/work/volunteer-2.webp", "about": "Ran tutoring sessions for the children during the program." },
-      { "title": "HMPHI: welcoming senior diplomats, October 2023", "cover": "/assets/work/hmphi-1.webp", "about": "Main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event. Built partnerships with five or more institutions across government, NGOs and civil society." },
-      { "title": "FAITH: donation for 30 orphans", "cover": "/assets/work/faith-1.webp", "about": "Chaired FAITH, a donation program for 30 orphans in Ponorogo." },
-      { "title": "FAITH: learning on global general knowledge", "cover": "/assets/work/faith-2.webp", "about": "Paired the donation with a learning session on global general knowledge." },
-      { "title": "FAITH: Panti Asuhan Al Ummah", "cover": "/assets/work/faith-3.webp", "about": "The children of the orphanage who took part in the donation and the learning session." },
-      { "title": "GenBI Kediri session", "cover": "/assets/work/genbi-1.webp", "about": "Ran more than ten engagement programs with 250+ external participants." },
-      { "title": "GenBI Kediri inauguration 2024", "cover": "/assets/work/genbi-2.webp", "about": "Planned resources and coordinated more than 50 active members across divisions, with 100% on-time program delivery." },
-      { "title": "Bank Indonesia event in Madiun", "cover": "/assets/work/genbi-3.webp", "about": "A Bank Indonesia event at Gedung Guru PGRI, Madiun, 15 August 2024." },
-      { "title": "KKNT: fieldwork in Desa Simo", "cover": "/assets/work/kknt-1.webp", "about": "Delivered an SME digitalization program: QRIS, a digital record-keeping system and social media engagement." },
-      { "title": "KKNT: product showcase (Gelar Produk)", "cover": "/assets/work/kknt-2.webp", "about": "Presented the results of the SME digitalization program at the KKNT product showcase." }
+      { "title": "International Community Service, Malaysia", "cover": "/assets/work/volunteer-1.webp", "about": "Volunteered with stateless migrant children and local communities in Malaysia, June to July 2023." },
+      { "title": "Tutoring stateless migrant children", "cover": "/assets/work/volunteer-2.webp", "about": "Tutored the children and ran educational activities together with other volunteers." },
+      { "title": "HMPHI: liaison for Ministry of Foreign Affairs diplomats", "cover": "/assets/work/hmphi-1.webp", "about": "Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event. Built partnerships with five or more institutions across government, NGOs and civil society." },
+      { "title": "FAITH: led a donation program for 30 orphans", "cover": "/assets/work/faith-1.webp", "about": "Chaired FAITH (Iftar Time with FKMHII), a donation program for 30 orphans in Ponorogo, 23 March 2024." },
+      { "title": "FAITH: global general knowledge session", "cover": "/assets/work/faith-2.webp", "about": "Combined the donation with a learning session on global general knowledge for the children." },
+      { "title": "FAITH: Panti Asuhan Al Ummah", "cover": "/assets/work/faith-3.webp", "about": "Reached the children of Panti Asuhan Al Ummah through the donation and the learning session." },
+      { "title": "GenBI Kediri: engagement programs", "cover": "/assets/work/genbi-1.webp", "about": "Ran more than ten engagement programs with 250+ external participants." },
+      { "title": "GenBI Kediri: leading 50+ members", "cover": "/assets/work/genbi-2.webp", "about": "Planned resources and coordinated more than 50 active members across divisions, with 100% on-time program delivery. Redesigned the KPI framework and simplified reporting between divisions, speeding up internal coordination by 50%." },
+      { "title": "GenBI: Bank Indonesia event in Madiun", "cover": "/assets/work/genbi-3.webp", "about": "Took part in a Bank Indonesia event at Gedung Guru PGRI, Madiun, 15 August 2024." },
+      { "title": "KKNT 36: SME digitalization in Desa Simo", "cover": "/assets/work/kknt-1.webp", "about": "Delivered an SME digitalization program: QRIS payments, a digital record-keeping system and social media engagement." },
+      { "title": "KKNT 36: product showcase", "cover": "/assets/work/kknt-2.webp", "about": "Presented the results of the SME digitalization program at the KKNT product showcase (Gelar Produk)." }
     ] }
   ],
   "process": [
