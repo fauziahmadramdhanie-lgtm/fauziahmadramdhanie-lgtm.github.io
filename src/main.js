@@ -388,7 +388,7 @@ const galleryHtml = (items, zig) =>
     .map((d) => {
       const link = isUrl(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>` : '';
       const fig = `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(d.image)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`;
-      if (zig && d.image) return `<div class="gal__row">${fig}<div class="gal__about"><strong>${esc(d.title)}</strong>${d.about ? `<p>${esc(d.about)}</p>` : ''}</div></div>`;
+      if (zig && d.image) return `<div class="gal__row">${fig}<div class="gal__about"><strong>${esc(d.title)}</strong>${d.about ? `<p>${esc(d.about)}</p>` : ''}${link}</div></div>`;
       return d.image
         ? fig
         : `<div class="gal__txt">${d.thumb ? `<img class="gal__thumb" data-src="${esc(d.thumb)}" alt="" decoding="async" />` : ''}${[d.text[0], d.title, d.text[1]].filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}${link}</div>`;
