@@ -601,8 +601,8 @@ html.collage-open { overflow: visible !important; }
 .gal__txt p:first-child { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .gal__txt p:nth-child(2) { font-size: 15px; font-weight: 700; line-height: 1.25; }
 .gal__txt p:nth-child(n + 3) { font-size: 13px; color: var(--muted); }
-.gal__txt a, .gal__about a { margin-top: 4px; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
-.gal__txt a:hover, .gal__about a:hover { color: var(--accent); }
+.gal__txt a { margin-top: 4px; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.gal__txt a:hover { color: var(--accent); }
 /* Work galleries (.gal--zig): one row per photo with what I did beside it, the sides alternating. */
 .gal--zig { display: flex; flex-direction: column; gap: 22px; }
 .gal__row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; }
