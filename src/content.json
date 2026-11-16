@@ -77,18 +77,18 @@
     { "title": "Bank Indonesia", "label": "Institution", "sub": "Public Relations internship, Kediri · 2025", "items": [
       { "title": "Report drafts", "cover": "/assets/work/bi-1.webp", "about": "Wrote at least five analytical reports on regional inflation and food security, used as input at TPID coordination meetings." },
       { "title": "Group photo", "cover": "/assets/work/bi-2.webp", "about": "Joined the Public Relations team at the Kediri Representative Office, September to December 2025: reporting, publications and stakeholder events." },
-      { "title": "Public education poster on transaction security", "cover": "/assets/work/bi-3.webp", "about": "Created public education content on transaction security and appeared as its spokesperson." },
-      { "title": "Master of ceremonies at Bank Indonesia events", "cover": "/assets/work/bi-4.webp", "about": "Hosted Bank Indonesia events as master of ceremonies throughout the internship." },
+      { "title": "Transaction security poster", "cover": "/assets/work/bi-3.webp", "about": "Created public education content on transaction security and appeared as its spokesperson." },
+      { "title": "Hosting Bank Indonesia events", "cover": "/assets/work/bi-4.webp", "about": "Hosted Bank Indonesia events as master of ceremonies throughout the internship." },
       { "title": "Capacity building session", "cover": "/assets/work/bi-5.webp", "about": "Handled documentation for stakeholder events, including capacity building sessions." },
       { "title": "Bank Indonesia posts", "cover": "/assets/work/bi-6.webp", "about": "Coordinated the publication of more than ten institutional programs with local governments, universities and community organizations." },
       { "title": "Library activity with students", "cover": "/assets/work/bi-7.webp", "about": "Documented a library activity with students, one of the institutional programs run with local partners." },
-      { "title": "Bank Indonesia booth at FinFest", "cover": "/assets/work/bi-8.webp", "about": "Represented Bank Indonesia at its FinFest booth, handling the booth for the public." }
+      { "title": "FinFest booth", "cover": "/assets/work/bi-8.webp", "about": "Represented Bank Indonesia at its FinFest booth, handling the booth for the public." }
     ] },
     { "title": "OJK", "label": "Institution", "sub": "Consumer Education and Protection, East Java · 2026", "items": [
       { "title": "Presenting to an audience", "cover": "/assets/work/ojk-1.webp", "about": "Presented to an audience during the Consumer Education and Protection internship at OJK East Java." },
       { "title": "Group photo in the auditorium", "cover": "/assets/work/ojk-2.webp", "about": "Worked in the Consumer Education and Protection Department of the OJK East Java Provincial Office, Surabaya." },
       { "title": "OJK East Java office", "cover": "/assets/work/ojk-3.webp", "about": "Earned an internship evaluation of 9.0/10 (Very Good) from OJK East Java, April to May 2026." },
-      { "title": "Choir welcoming OJK head office leadership", "cover": "/assets/work/ojk-4.webp", "about": "Performed in a choir, in traditional dress, to welcome leadership from the OJK head office." },
+      { "title": "Choir for the head office visit", "cover": "/assets/work/ojk-4.webp", "about": "Performed in a choir, in traditional dress, to welcome leadership from the OJK head office." },
       { "title": "Working at the office", "cover": "/assets/work/ojk-5.webp", "about": "Mapped the mediation workflow between consumers and financial service providers, to set benchmarks for handling cases consistently." },
       { "title": "Indonesia Anti-Scam Centre portal", "cover": "/assets/work/ojk-6.webp", "about": "Reviewed and processed more than 50 consumer dispute cases in the Indonesia Anti-Scam Centre portal." }
     ] },
@@ -113,17 +113,17 @@
       { "work": "publication-1", "about": "Published a journal article on productive waqf development policy in Saudi Arabia, Egypt and Kuwait, in Dauliyah: Journal of Islamic and International Affairs." }
     ] },
     { "title": "Volunteer", "label": "Project", "sub": "Community service and student organizations", "items": [
-      { "title": "International Community Service, Malaysia", "cover": "/assets/work/volunteer-1.webp", "about": "Volunteered with stateless migrant children and local communities in Malaysia, June to July 2023." },
-      { "title": "Tutoring stateless migrant children", "cover": "/assets/work/volunteer-2.webp", "about": "Tutored the children and ran educational activities together with other volunteers." },
-      { "title": "HMPHI: liaison for Ministry of Foreign Affairs diplomats", "cover": "/assets/work/hmphi-1.webp", "about": "Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event. Built partnerships with five or more institutions across government, NGOs and civil society." },
-      { "title": "FAITH: led a donation program for 30 orphans", "cover": "/assets/work/faith-1.webp", "about": "Chaired FAITH (Iftar Time with FKMHII), a donation program for 30 orphans in Ponorogo, 23 March 2024." },
-      { "title": "FAITH: global general knowledge session", "cover": "/assets/work/faith-2.webp", "about": "Combined the donation with a learning session on global general knowledge for the children." },
-      { "title": "FAITH: Panti Asuhan Al Ummah", "cover": "/assets/work/faith-3.webp", "about": "Reached the children of Panti Asuhan Al Ummah through the donation and the learning session." },
-      { "title": "GenBI Kediri: engagement programs", "cover": "/assets/work/genbi-1.webp", "about": "Ran more than ten engagement programs with 250+ external participants." },
-      { "title": "GenBI Kediri: leading 50+ members", "cover": "/assets/work/genbi-2.webp", "about": "Planned resources and coordinated more than 50 active members across divisions, with 100% on-time program delivery. Redesigned the KPI framework and simplified reporting between divisions, speeding up internal coordination by 50%." },
-      { "title": "GenBI: QRIS socialization program", "cover": "/assets/work/genbi-3.webp", "about": "Delivered a QRIS socialization program for more than 300 people under Bank Indonesia sponsorship." },
-      { "title": "KKNT 36: SME digitalization in Desa Simo", "cover": "/assets/work/kknt-1.webp", "about": "Delivered an SME digitalization program: QRIS payments, a digital record-keeping system and social media engagement." },
-      { "title": "KKNT 36: best group of the batch", "cover": "/assets/work/kknt-2.webp", "about": "Presented the SME digitalization program at the KKNT product showcase (Gelar Produk), where our group was named best group of KKNT 36." }
+      { "title": "Community service in Malaysia", "cover": "/assets/work/volunteer-1.webp", "about": "Volunteered with stateless migrant children and local communities in Malaysia, June to July 2023." },
+      { "title": "Tutoring the children", "cover": "/assets/work/volunteer-2.webp", "about": "Tutored the children and ran educational activities together with other volunteers." },
+      { "title": "Receiving Foreign Ministry diplomats", "cover": "/assets/work/hmphi-1.webp", "about": "Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event. Built partnerships with five or more institutions across government, NGOs and civil society." },
+      { "title": "Santunan for 30 orphans", "cover": "/assets/work/faith-1.webp", "about": "Chaired FAITH (Iftar Time with FKMHII), a donation program for 30 orphans in Ponorogo, 23 March 2024." },
+      { "title": "Learning session for the children", "cover": "/assets/work/faith-2.webp", "about": "Combined the donation with a learning session on global general knowledge for the children." },
+      { "title": "At Panti Asuhan Al Ummah", "cover": "/assets/work/faith-3.webp", "about": "Reached the children of Panti Asuhan Al Ummah through the donation and the learning session." },
+      { "title": "A GenBI Kediri session", "cover": "/assets/work/genbi-1.webp", "about": "Ran more than ten engagement programs with 250+ external participants." },
+      { "title": "GenBI Kediri inauguration", "cover": "/assets/work/genbi-2.webp", "about": "Planned resources and coordinated more than 50 active members across divisions, with 100% on-time program delivery. Redesigned the KPI framework and simplified reporting between divisions, speeding up internal coordination by 50%." },
+      { "title": "QRIS outreach with Bank Indonesia", "cover": "/assets/work/genbi-3.webp", "about": "Delivered a QRIS socialization program for more than 300 people under Bank Indonesia sponsorship." },
+      { "title": "Fieldwork in Desa Simo", "cover": "/assets/work/kknt-1.webp", "about": "Delivered an SME digitalization program: QRIS payments, a digital record-keeping system and social media engagement." },
+      { "title": "Best group of KKNT 36", "cover": "/assets/work/kknt-2.webp", "about": "Presented the SME digitalization program at the KKNT product showcase (Gelar Produk), where our group was named best group of KKNT 36." }
     ] }
   ],
   "process": [
