@@ -361,6 +361,7 @@ const workCard = (w) => ({
   image: !w.cover_text && !isTodo(w.cover) ? w.cover : null,
   text: [w.year, w.cover_text], // a typographic face for work with no image (a paper)
   thumb: w.cover_text && !isTodo(w.cover) ? w.cover : null, // a text tile that also has a picture
+  about: w.about, // what I did, shown beside the photo in a zig-zag gallery
   url: w.url,
 });
 
@@ -381,19 +382,22 @@ const sectionCard = (s, item = (it) => workCard(galleryItem(it))) => ({
 });
 
 // A photo is a button (it enlarges inside the card, cards.js); a paper or other item without a picture is a text tile.
-const galleryHtml = (items) =>
-  `<div class="gal">${items
+// With `zig`, each photo is a row with its text beside it, the sides alternating (styles.css .gal--zig).
+const galleryHtml = (items, zig) =>
+  `<div class="gal${zig ? ' gal--zig' : ''}">${items
     .map((d) => {
       const link = isUrl(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>` : '';
+      const fig = `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(d.image)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`;
+      if (zig && d.image) return `<div class="gal__row">${fig}<div class="gal__about"><strong>${esc(d.title)}</strong>${d.about ? `<p>${esc(d.about)}</p>` : ''}</div></div>`;
       return d.image
-        ? `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(d.image)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`
+        ? fig
         : `<div class="gal__txt">${d.thumb ? `<img class="gal__thumb" data-src="${esc(d.thumb)}" alt="" decoding="async" />` : ''}${[d.text[0], d.title, d.text[1]].filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}${link}</div>`;
     })
     .join('')}</div>`;
 
 const cardHtml = (d, i) => {
   const media = d.gallery
-    ? galleryHtml(d.gallery)
+    ? galleryHtml(d.gallery, d.zig)
     : d.image
     ? `<img class="card-t__img" data-src="${esc(d.image)}" alt="${esc(d.title)}" decoding="async" />` // src is set when the cards are dealt (cards.js)
     : `<div class="card-t__text">${d.text.filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}</div>`;
@@ -434,7 +438,7 @@ const collageHtml = (name, label, title, cards) => `
   </div>`;
 
 const collages = () =>
-  collageHtml('work', ui.sections.work, ui.collage.title, content.collage.map((s) => sectionCard(s))) +
+  collageHtml('work', ui.sections.work, ui.collage.title, content.collage.map((s) => ({ ...sectionCard(s), zig: s.items?.every((i) => i.cover) }))) +
   collageHtml('credentials', ui.sections.credentials, ui.sections.credentials, content.credentials.map((s) => sectionCard(s, credItem)));
 
 document.getElementById('app').innerHTML =

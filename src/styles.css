@@ -603,6 +603,19 @@ html.collage-open { overflow: visible !important; }
 .gal__txt p:nth-child(n + 3) { font-size: 13px; color: var(--muted); }
 .gal__txt a { margin-top: 4px; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .gal__txt a:hover { color: var(--accent); }
+/* Work galleries (.gal--zig): one row per photo with what I did beside it, the sides alternating. */
+.gal--zig { display: flex; flex-direction: column; gap: 22px; }
+.gal__row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; }
+.gal__row:nth-child(even) .gal__fig { order: 2; }
+.gal__row .gal__fig > span { display: none; } /* the title sits in the text beside the photo; the zoomed photo shows it again */
+.gal__row .gal__fig.is-zoomed > span { display: block; }
+.gal__about { display: grid; gap: 6px; }
+.gal__about strong { font-size: 15px; line-height: 1.25; }
+.gal__about p { font-size: 13px; line-height: 1.5; color: var(--muted); }
+@media (max-width: 767px) {
+  .gal__row { grid-template-columns: 1fr; gap: 8px; }
+  .gal__row:nth-child(even) .gal__fig { order: 0; }
+}
 .card-t__cap { display: grid; gap: 2px; padding: 14px 18px 16px; border-top: 1px solid var(--line); }
 .card-t__cap strong { font-size: 16px; line-height: 1.25; }
 .card-t__cap span { font-size: 13px; color: var(--muted); }
