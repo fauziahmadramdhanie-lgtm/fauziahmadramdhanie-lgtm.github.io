@@ -108,9 +108,9 @@
       { "title": "Wesclic promotional poster", "cover": "/assets/work/wesclic-8.webp", "about": "Worked with the marketing team on brand messaging for Wesclic." }
     ] },
     { "title": "Personal", "label": "Project", "sub": "irfolks, Medium and a journal paper", "items": [
-      { "work": "irfolks", "cover_text": "A blog I founded and run, with essays on geopolitics and macroeconomics for general readers." },
-      { "title": "Essays on Medium", "category": "Medium", "year": "2024–2026", "cover_text": "Essays on politics, technology and Indonesian democracy.", "url": "https://medium.com/@fa419441" },
-      { "work": "publication-1" }
+      { "work": "irfolks", "title": "irfolks.com", "about": "Founded and run irfolks.com, an independent blog of essays on geopolitics and macroeconomics, from dependency theory to protectionism and monetary policy, written for general readers." },
+      { "title": "Essays on Medium", "category": "Medium", "year": "2024–2026", "about": "Published essays on politics, technology and Indonesian democracy on Medium.", "url": "https://medium.com/@fa419441" },
+      { "work": "publication-1", "about": "Published a journal article on productive waqf development policy in Saudi Arabia, Egypt and Kuwait, in Dauliyah: Journal of Islamic and International Affairs." }
     ] },
     { "title": "Volunteer", "label": "Project", "sub": "International Community Service, Malaysia · Jun – Jul 2023", "items": [
       { "title": "Community service with stateless migrant children", "cover": "/assets/work/volunteer-1.webp", "about": "Supported stateless migrant children in Malaysia through International Community Service, June to July 2023." },

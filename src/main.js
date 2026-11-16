@@ -387,10 +387,14 @@ const galleryHtml = (items, zig) =>
   `<div class="gal${zig ? ' gal--zig' : ''}">${items
     .map((d) => {
       const link = isUrl(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>` : '';
-      const fig = `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(d.image)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`;
-      if (zig && d.image) return `<div class="gal__row">${fig}<div class="gal__about"><strong>${esc(d.title)}</strong>${d.about ? `<p>${esc(d.about)}</p>` : ''}</div></div>`;
+      const fig = (src) => `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(src)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`;
+      if (zig) {
+        const src = d.image || d.thumb;
+        const lead = src ? fig(src) : `<div class="gal__plate"><span>${esc(d.label)}</span>${d.text[0] ? `<small>${esc(d.text[0])}</small>` : ''}</div>`; // no picture: a typographic plate
+        return `<div class="gal__row">${lead}<div class="gal__about"><strong>${esc(d.title)}</strong>${d.about ? `<p>${esc(d.about)}</p>` : ''}${link}</div></div>`;
+      }
       return d.image
-        ? fig
+        ? fig(d.image)
         : `<div class="gal__txt">${d.thumb ? `<img class="gal__thumb" data-src="${esc(d.thumb)}" alt="" decoding="async" />` : ''}${[d.text[0], d.title, d.text[1]].filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join('')}${link}</div>`;
     })
     .join('')}</div>`;
@@ -438,7 +442,7 @@ const collageHtml = (name, label, title, cards) => `
   </div>`;
 
 const collages = () =>
-  collageHtml('work', ui.sections.work, ui.collage.title, content.collage.map((s) => ({ ...sectionCard(s), zig: s.items?.every((i) => i.cover) }))) +
+  collageHtml('work', ui.sections.work, ui.collage.title, content.collage.map((s) => ({ ...sectionCard(s), zig: true }))) +
   collageHtml('credentials', ui.sections.credentials, ui.sections.credentials, content.credentials.map((s) => sectionCard(s, credItem)));
 
 document.getElementById('app').innerHTML =
