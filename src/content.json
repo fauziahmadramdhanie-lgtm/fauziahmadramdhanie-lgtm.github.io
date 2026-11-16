@@ -107,6 +107,23 @@
       { "title": "Winnership Program profile", "cover": "/assets/work/wesclic-7.webp", "about": "Profile in the Winnership Program, Batch 12." },
       { "title": "Wesclic promotional poster", "cover": "/assets/work/wesclic-8.webp", "about": "Worked with the marketing team on brand messaging for Wesclic." }
     ] },
+    { "title": "GenBI", "label": "Organization", "sub": "Organization Manager, Ponorogo · May 2024 – Apr 2026", "items": [
+      { "title": "GenBI Kediri session", "cover": "/assets/work/genbi-1.webp", "about": "Ran more than ten engagement programs with 250+ external participants." },
+      { "title": "GenBI Kediri inauguration 2024", "cover": "/assets/work/genbi-2.webp", "about": "Planned resources and coordinated more than 50 active members across divisions, with 100% on-time program delivery." },
+      { "title": "Bank Indonesia event in Madiun", "cover": "/assets/work/genbi-3.webp", "about": "A Bank Indonesia event at Gedung Guru PGRI, Madiun, 15 August 2024." }
+    ] },
+    { "title": "HMPHI", "label": "Organization", "sub": "Head of External Affairs, University of Darussalam Gontor · Aug 2023 – Jun 2024", "items": [
+      { "title": "Welcoming senior diplomats, October 2023", "cover": "/assets/work/hmphi-1.webp", "about": "Main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event. Built partnerships with five or more institutions across government, NGOs and civil society." }
+    ] },
+    { "title": "FAITH", "label": "Project", "sub": "Iftar Time with FKMHII, Ponorogo · 23 Mar 2024", "items": [
+      { "title": "Donation for 30 orphans", "cover": "/assets/work/faith-1.webp", "about": "Chaired FAITH, a donation program for 30 orphans in Ponorogo." },
+      { "title": "Learning on global general knowledge", "cover": "/assets/work/faith-2.webp", "about": "Paired the donation with a learning session on global general knowledge." },
+      { "title": "Panti Asuhan Al Ummah", "cover": "/assets/work/faith-3.webp", "about": "The children of the orphanage who took part in the donation and the learning session." }
+    ] },
+    { "title": "KKNT", "label": "Project", "sub": "KKNT 36, Group II, Desa Simo · University of Darussalam Gontor", "items": [
+      { "title": "Fieldwork in Desa Simo", "cover": "/assets/work/kknt-1.webp", "about": "Delivered an SME digitalization program: QRIS, a digital record-keeping system and social media engagement." },
+      { "title": "Product showcase (Gelar Produk)", "cover": "/assets/work/kknt-2.webp", "about": "Presented the results of the SME digitalization program at the KKNT product showcase." }
+    ] },
     { "title": "Personal", "label": "Project", "sub": "irfolks, Medium and a journal paper", "items": [
       { "work": "irfolks", "title": "irfolks.com", "about": "Founded and run irfolks.com, an independent blog of essays on geopolitics and macroeconomics, from dependency theory to protectionism and monetary policy, written for general readers." },
       { "title": "Essays on Medium", "category": "Medium", "year": "2024–2026", "about": "Published essays on politics, technology and Indonesian democracy on Medium.", "url": "https://medium.com/@fa419441" },
