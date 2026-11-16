@@ -384,7 +384,7 @@ const sectionCard = (s, item = (it) => workCard(galleryItem(it))) => ({
 // A photo is a button (it enlarges inside the card, cards.js); a paper or other item without a picture is a text tile.
 // With `zig`, each photo is a row with its text beside it, the sides alternating (styles.css .gal--zig).
 const galleryHtml = (items, zig) =>
-  `<div class="gal${zig ? ' gal--zig' : ''}">${items
+  `<div class="gal${zig ? ' gal--zig' : ''}" data-lenis-prevent>${items
     .map((d) => {
       const link = isUrl(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>` : '';
       const fig = (src) => `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(src)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`;
