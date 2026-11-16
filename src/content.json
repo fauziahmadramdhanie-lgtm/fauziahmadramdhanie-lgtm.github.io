@@ -77,12 +77,12 @@
     { "title": "Bank Indonesia", "label": "Institution", "sub": "Public Relations internship, Kediri · 2025", "items": [
       { "title": "Report drafts", "cover": "/assets/work/bi-1.webp", "about": "Wrote at least five analytical reports on regional inflation and food security, used as input at TPID coordination meetings." },
       { "title": "Group photo", "cover": "/assets/work/bi-2.webp", "about": "Joined the Public Relations team at the Kediri Representative Office, September to December 2025: reporting, publications and stakeholder events." },
-      { "title": "Transaction security poster", "cover": "/assets/work/bi-3.webp", "about": "Created public education content on transaction security and appeared as its spokesperson." },
+      { "title": "Transaction security poster", "cover": "/assets/work/bi-3.webp", "focus": "50% 56%", "about": "Created public education content on transaction security and appeared as its spokesperson." },
       { "title": "Hosting Bank Indonesia events", "cover": "/assets/work/bi-4.webp", "about": "Hosted Bank Indonesia events as master of ceremonies throughout the internship." },
       { "title": "Capacity building session", "cover": "/assets/work/bi-5.webp", "about": "Handled documentation for stakeholder events, including capacity building sessions." },
       { "title": "Bank Indonesia posts", "cover": "/assets/work/bi-6.webp", "about": "Coordinated the publication of more than ten institutional programs with local governments, universities and community organizations." },
       { "title": "Library activity with students", "cover": "/assets/work/bi-7.webp", "about": "Documented a library activity with students, one of the institutional programs run with local partners." },
-      { "title": "FinFest booth", "cover": "/assets/work/bi-8.webp", "about": "Represented Bank Indonesia at its FinFest booth, handling the booth for the public." }
+      { "title": "FinFest booth", "cover": "/assets/work/bi-8.webp", "focus": "50% 47%", "about": "Represented Bank Indonesia at its FinFest booth, handling the booth for the public." }
     ] },
     { "title": "OJK", "label": "Institution", "sub": "Consumer Education and Protection, East Java · 2026", "items": [
       { "title": "Presenting to an audience", "cover": "/assets/work/ojk-1.webp", "about": "Presented to an audience during the Consumer Education and Protection internship at OJK East Java." },
@@ -104,11 +104,11 @@
       { "title": "Published articles", "cover": "/assets/work/wesclic-4.webp", "about": "Turned technical business topics into plain articles for non-technical small-business owners." },
       { "title": "Blog traffic dashboard", "cover": "/assets/work/wesclic-5.webp", "about": "Traffic dashboard of the Wesclic blog, where the articles were published." },
       { "title": "Winnership Program certificate, Batch 12", "cover": "/assets/work/wesclic-6.webp", "about": "Received the Winnership Program certificate, Batch 12." },
-      { "title": "Winnership Program profile", "cover": "/assets/work/wesclic-7.webp", "about": "Profile in the Winnership Program, Batch 12." },
-      { "title": "Wesclic promotional poster", "cover": "/assets/work/wesclic-8.webp", "about": "Worked with the marketing team on brand messaging for Wesclic." }
+      { "title": "Winnership Program profile", "cover": "/assets/work/wesclic-7.webp", "focus": "50% 0%", "about": "Profile in the Winnership Program, Batch 12." },
+      { "title": "Wesclic promotional poster", "cover": "/assets/work/wesclic-8.webp", "focus": "50% 10%", "about": "Worked with the marketing team on brand messaging for Wesclic." }
     ] },
     { "title": "Personal", "label": "Project", "sub": "irfolks, Medium and a journal paper", "items": [
-      { "work": "irfolks", "title": "irfolks.com", "about": "Founded and run irfolks.com, an independent blog of essays on geopolitics and macroeconomics, from dependency theory to protectionism and monetary policy, written for general readers." },
+      { "work": "irfolks", "title": "irfolks.com", "focus": "0% 50%", "about": "Founded and run irfolks.com, an independent blog of essays on geopolitics and macroeconomics, from dependency theory to protectionism and monetary policy, written for general readers." },
       { "title": "Essays on Medium", "category": "Medium", "year": "2024–2026", "about": "Published essays on politics, technology and Indonesian democracy on Medium.", "url": "https://medium.com/@fa419441" },
       { "work": "publication-1", "about": "Published a journal article on productive waqf development policy in Saudi Arabia, Egypt and Kuwait, in Dauliyah: Journal of Islamic and International Affairs." }
     ] },
@@ -117,12 +117,12 @@
       { "title": "Tutoring the children", "cover": "/assets/work/volunteer-2.webp", "about": "Tutored the children and ran educational activities together with other volunteers." },
       { "title": "Receiving Foreign Ministry diplomats", "cover": "/assets/work/hmphi-1.webp", "about": "Served as the main liaison officer for senior officials and diplomats of the Ministry of Foreign Affairs at an institutional event. Built partnerships with five or more institutions across government, NGOs and civil society." },
       { "title": "Santunan for 30 orphans", "cover": "/assets/work/faith-1.webp", "about": "Chaired FAITH (Iftar Time with FKMHII), a donation program for 30 orphans in Ponorogo, 23 March 2024." },
-      { "title": "Learning session for the children", "cover": "/assets/work/faith-2.webp", "about": "Combined the donation with a learning session on global general knowledge for the children." },
+      { "title": "Learning session for the children", "cover": "/assets/work/faith-2.webp", "focus": "50% 42%", "about": "Combined the donation with a learning session on global general knowledge for the children." },
       { "title": "At Panti Asuhan Al Ummah", "cover": "/assets/work/faith-3.webp", "about": "Reached the children of Panti Asuhan Al Ummah through the donation and the learning session." },
       { "title": "A GenBI Kediri session", "cover": "/assets/work/genbi-1.webp", "about": "Ran more than ten engagement programs with 250+ external participants." },
       { "title": "GenBI Kediri inauguration", "cover": "/assets/work/genbi-2.webp", "about": "Planned resources and coordinated more than 50 active members across divisions, with 100% on-time program delivery. Redesigned the KPI framework and simplified reporting between divisions, speeding up internal coordination by 50%." },
       { "title": "QRIS outreach with Bank Indonesia", "cover": "/assets/work/genbi-3.webp", "about": "Delivered a QRIS socialization program for more than 300 people under Bank Indonesia sponsorship." },
-      { "title": "Fieldwork in Desa Simo", "cover": "/assets/work/kknt-1.webp", "about": "Delivered an SME digitalization program: QRIS payments, a digital record-keeping system and social media engagement." },
+      { "title": "Fieldwork in Desa Simo", "cover": "/assets/work/kknt-1.webp", "focus": "50% 5%", "about": "Delivered an SME digitalization program: QRIS payments, a digital record-keeping system and social media engagement." },
       { "title": "Best group of KKNT 36", "cover": "/assets/work/kknt-2.webp", "about": "Presented the SME digitalization program at the KKNT product showcase (Gelar Produk), where our group was named best group of KKNT 36." }
     ] }
   ],

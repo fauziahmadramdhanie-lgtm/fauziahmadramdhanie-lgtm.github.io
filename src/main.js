@@ -362,6 +362,7 @@ const workCard = (w) => ({
   text: [w.year, w.cover_text], // a typographic face for work with no image (a paper)
   thumb: w.cover_text && !isTodo(w.cover) ? w.cover : null, // a text tile that also has a picture
   about: w.about, // what I did, shown beside the photo in a zig-zag gallery
+  focus: w.focus, // object-position of the landscape crop (default: centre)
   url: w.url,
 });
 
@@ -387,7 +388,7 @@ const galleryHtml = (items, zig) =>
   `<div class="gal${zig ? ' gal--zig' : ''}" data-lenis-prevent>${items
     .map((d) => {
       const link = isUrl(d.url) ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(ui.visit)}</a>` : '';
-      const fig = (src) => `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(src)}" alt="" decoding="async" /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`;
+      const fig = (src) => `<button class="gal__fig" type="button" aria-label="${esc(d.title)}"><img data-src="${esc(src)}" alt="" decoding="async"${d.focus ? ` style="--pos:${esc(d.focus)}"` : ''} /><span>${esc(d.title)}${d.note ? `<br>${esc(d.note)}` : ''}</span></button>`;
       if (zig) {
         const src = d.image || d.thumb;
         const lead = src ? fig(src) : `<div class="gal__plate"><span>${esc(d.label)}</span>${d.text[0] ? `<small>${esc(d.text[0])}</small>` : ''}</div>`; // no picture: a typographic plate
